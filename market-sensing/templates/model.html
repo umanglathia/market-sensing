@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block body %}
+	<fieldset>
+		<legend> Please enter the following values </legend>
+		<form action="/predict" method="post">
+		<div>
+			<label for="num_tubes"> Number of Tubes </label>
+			<input id="num_tubes" name="num_tubes" type="text">
+		</div>
+		<div>
+			<label for="length"> Length </label>
+			<input id="length" name="length" type="text">
+		</div>
+		<div>
+			<label for="width"> Width </label>
+			<input id="width" name="width" type="text">
+		</div>
+		<div>
+			<label for="height"> Height </label>
+			<input id="height" name="height" type="text">
+		</div>
+		<div>
+			<label for="peak-volume"> Peak Volume </label>
+			<input id="peak-volume" name="peak-volume" type="text">
+		</div>
+		<div>
+			<label for="lifetime-volume"> Lifetime Volume </label>
+			<input id="lifetime-volume" name="lifetime-volume" type="text">
+		</div>
+		<div>
+			<label for="customer"> Customer </label>
+			<input id="customer" name="customer" type="text">
+		</div>
+		<div>
+			<label for="year"> Current Year </label>
+			<input id="year" name="year" type="text">
+		</div>
+		<div>
+			<button type="submit"> Predict Market Value </button>
+		</div>
+		<form>
+	</fieldset>
+	
+{% endblock %}
