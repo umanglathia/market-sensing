@@ -1,0 +1,19 @@
+{% extends "initial_search.html" %}
+{% block results %}
+<div class="container text-center">
+	<div class="row">
+		<div class="col-sm-4 jumbotron">
+			<h1 class="display-4"> Market Value: </h1>
+			<h1 class="display-4"> ${{ quote }} </h1>
+		</div>
+		<div class="col-sm-8">
+			{% for similar in similar_list %}
+			<div class="jumbotron jumbotron-fluid">
+				<h1 class="display-4"> {{ similar }} </h1>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+	
+{% endblock %}

@@ -1,77 +1,62 @@
-from random import shuffle
-import math
+from sklearn import linear_model, svm
 import numpy as np
+import data_input, features, metrics
+import dill as pickle
+import os
 
-customers = []
+all_features =  ["use", "year", "customer", "number of tubes", "length", "width", "height", "mass", "number of gas boxes", "peak volume", "lifetime volume", "final price"]
+features_used = ["number of tubes", "length", "width", "height", "mass", "customer", "peak volume", "lifetime volume", "year"]
 
-def split_data(data):
-	shuffle(data)
-	length = math.floor(len(data)*10.0/10.0)
-	return data[:length], data[length+1:]
+def create_model():
+	items = data_input.parse_data("test_data.csv")
+	data = data_input.clean_data(items)
 
-def f1(x):
-	return float(x.num_tubes)
+	train, test = features.split_data(data)
+	train_x, train_y = features.features_labels(train, features_used)
+	test_x, test_y = features.features_labels(test, features_used)
 
-def f2(x):
-	return float(x.length)
+	clf = linear_model.LinearRegression()
+	clf.fit(train_x, train_y)
 
-def f3(x):
-	return float(x.width)
+	return clf
 
-def f4(x):
-	return float(x.height)
+def run_model(clf):
 
-def f5(x):
-	return float(x.mass)
+	while(True):
+		print("\n")
+		boolean = input("Would you like to find the market value of a tube? (y/n): ")
+		
+		if boolean == "n":
+			exit()
 
-def f6(x):
-	return float(x.num_gasbox)
+		if boolean == "y":
+			inputs = [""]*len(all_features)
 
-def f7(x):
-	if x.customer not in customers:
-		customers.append(x.customer)
-	return float(customers.index(x.customer)) 
+			for i, f in enumerate(all_features):
+				if f in features_used:
+					feature = input("Enter the " + f + ": ")
+					inputs[i] = feature
 
-def f8(x):
-	return float(x.peak_volume)
+			cooler = data_input.create_program(inputs)
+			x, y = model.features_labels([cooler], features_used)
+			quote = clf.predict(x)[0]
 
-def f9(x):
-	return float(x.lifetime_volume)
+			print("The market value is $" + str(round(quote,2)))
 
-def f10(x):
-	return float(x.created) - 2014
+def main():
+	save = True
+	run = False
+	clf = create_model()
 
-def generate_features(x, features_used):
-	output = []
+	if save == True:
+		filename = "model_v3.pk"
+		with open('../models/'+filename, 'wb') as file:
+			pickle.dump(clf, file)
 
-	if "number of tubes" in features_used:
-		output.append(f1(x))
-	if "length" in features_used:
-		output.append(f2(x))
-	if "width" in features_used:
-		output.append(f3(x))
-	if "height" in features_used:
-		output.append(f4(x))
-	if "mass" in features_used:
-		output.append(f5(x))
-	if "number of gas boxes" in features_used:
-		output.append(f6(x))
-	if "customer" in features_used:
-		output.append(f7(x))
-	if "peak volume" in features_used:
-		output.append(f8(x))
-	if "lifetime volume" in features_used:
-		output.append(f9(x))
-	if "year" in features_used:
-		output.append(f10(x))
+	if run == True:
+		run_model(clf)
 
-	return output
-
-def features(data, features_used):
-	return np.array([generate_features(x, features_used) for x in data])
-
-def labels(data):
-	return np.array([float(x.final_price) for x in data])
-
-def features_labels(data, features_used):
-	return features(data, features_used), labels(data)
+if __name__ == "__main__":
+	print("Beginning Program")
+	main()
+	print("Ending Program")

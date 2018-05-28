@@ -3,10 +3,10 @@ from flask import Flask, render_template, redirect, request
 import dill as pickle
 from sklearn import linear_model
 import sys
-sys.path.append('C:\\Users\\ulathia\\Documents\\project\\FlaskApp\\model')
-import data_input
-import model as umang
-import main
+import model.data_input as data_input
+import model.features as features
+from flask_wtf import FlaskForm
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
 app = Flask(__name__)
 
@@ -29,13 +29,10 @@ def create():
 
 @app.route("/model")
 def model():
-	return render_template('model.html', **locals())
+	return render_template('initial_search.html', **locals())
 
 @app.route("/predict", methods=['POST'])
-def predict():
-
-
-	
+def predict():	
 	filename = "model_v2.pk"
 	with open("models/"+filename, "rb") as f:
 		clf = pickle.load(f)
@@ -57,10 +54,11 @@ def predict():
 	inputs[10] = request.form.get('lifetime-volume', "")
 
 	cooler = data_input.create_program(inputs)
-	x, y = umang.features_labels([cooler], features_used)
-	quote = clf.predict(x)[0]
+	x, y = features.features_labels([cooler], features_used)
+	quote = round(clf.predict(x)[0], 2)
+	similar_list = [1, 2, 3]
 
-	return str(quote)
+	return render_template('search.html', **locals())
 
 
 if __name__ == "__main__":
