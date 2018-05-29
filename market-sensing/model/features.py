@@ -6,7 +6,7 @@ customers = []
 
 def split_data(data):
 	shuffle(data)
-	length = math.floor(len(data)*10.0/10.0)
+	length = math.floor(len(data)*9.0/10.0)
 	return data[:length], data[length+1:]
 
 def f1(x):

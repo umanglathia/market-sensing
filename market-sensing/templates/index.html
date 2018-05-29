@@ -1,9 +1,24 @@
 {% extends "layout.html" %}
 {% block body %}
-	<fieldset>
-	<form action="/begin" method="post">
-			<button type="submit"> Choose Parameters </button>
-	</form>
-	</fieldset>
+<div class="container text-center justify-content-sm-center">
+	<div class="my-2">
+		<a href= "{{ url_for('model') }}">
+			<button type="button" class="btn btn-primary btn-lg btn-block">Use Model</button>
+		</a>
+	</div>
+	<div class="my-2">
+		<a href="{{ url_for('update') }}">
+			<button type="button" class="btn btn-secondary btn-lg btn-block">Update Model</button>
+		</a>
+	</div>
+
+	{% block accuracy %}{% endblock %}
+	<div class="my-2">
+		<a href= "{{ url_for('clean') }}">
+			<button type="button" class="btn btn-secondary btn-lg btn-block">Delete Old Models</button>
+		</a>
+	</div>
+	
+</div>
 
 {% endblock %}

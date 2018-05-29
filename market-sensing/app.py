@@ -3,29 +3,28 @@ from flask import Flask, render_template, redirect, request
 import dill as pickle
 from sklearn import linear_model
 import sys
-import model.data_input as data_input
-import model.features as features
+import model.machine_learning as machine_learning
 from flask_wtf import FlaskForm
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
 app = Flask(__name__)
+all_features =  ["use", "year", "customer", "number of tubes", "length", "width", "height", "mass", "number of gas boxes", "peak volume", "lifetime volume", "final price"]
+features_used = ["number of tubes", "length", "width", "height", "mass", "customer", "peak volume", "lifetime volume", "year"]
 
 @app.route("/")
 def main():
+	acc = None
 	return render_template('index.html', **locals())
 
-@app.route("/begin", methods=['POST'])
-def begin():
-	return redirect('/parameters')
+@app.route("/clean", methods=['GET'])
+def clean():
+	machine_learning.clean()
+	return redirect('/')
 
-@app.route("/parameters")
-def parameters():
-	return render_template('parameters.html')
-
-@app.route("/create", methods=['POST'])
-def create():
-	
-	return redirect('/model')
+@app.route("/update", methods=['GET'])
+def update():
+	acc = machine_learning.update()
+	return render_template('update.html', **locals())
 
 @app.route("/model")
 def model():
@@ -33,14 +32,6 @@ def model():
 
 @app.route("/predict", methods=['POST'])
 def predict():	
-	filename = "model_v2.pk"
-	with open("models/"+filename, "rb") as f:
-		clf = pickle.load(f)
-
-
-	all_features =  ["use", "year", "customer", "number of tubes", "length", "width", "height", "mass", "number of gas boxes", "peak volume", "lifetime volume", "final price"]
-	features_used = ["number of tubes", "length", "width", "height", "mass", "customer", "peak volume", "lifetime volume", "year"]
-
 	inputs = [""]*len(all_features)
 
 	inputs[1] = request.form.get('year', "")
@@ -53,10 +44,8 @@ def predict():
 	inputs[9] = request.form.get('peak-volume', "")
 	inputs[10] = request.form.get('lifetime-volume', "")
 
-	cooler = data_input.create_program(inputs)
-	x, y = features.features_labels([cooler], features_used)
-	quote = round(clf.predict(x)[0], 2)
-	similar_list = [1, 2, 3]
+	quote = machine_learning.get_quote(inputs, features_used)
+	similar_list = machine_learning.get_similar_list(inputs, features_used)
 
 	return render_template('search.html', **locals())
 

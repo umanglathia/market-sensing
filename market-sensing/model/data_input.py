@@ -1,4 +1,3 @@
-
 def if_empty(value):
 	if value == "":
 		return "0"
