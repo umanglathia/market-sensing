@@ -6,7 +6,7 @@ import model.metrics as metrics
 import dill as pickle
 import os
 
-features_used = ["number of tubes", "length", "width", "height", "mass", "customer", "peak volume", "lifetime volume", "year"]
+features_used = ["num_tubes", "length", "width", "height", "mass", "customer", "peak_volume", "lifetime_volume", "sop_year", "region"]
 
 def load_latest_model():
 	version = 1
@@ -14,16 +14,22 @@ def load_latest_model():
 	while True:
 		version += 1
 		temp_filename = "models/model_v" + str(version) + ".pk"
+		temp_filename2 = "models/data_v" + str(version) + ".pk"
 		if os.path.exists(temp_filename):
 			filename = temp_filename
+			filename2 = temp_filename2
 		else:
 			with open(filename, "rb") as f:
 				clf = pickle.load(f)
-				return clf
+				with open(filename2, "rb") as f2:
+					data = pickle.load(f2)
+					return clf, data
 
-def get_quote(program_dict, features_used):
-	clf = load_latest_model()
-	cooler = data_input.create_program(program_dict)
+
+
+def get_quote(program_dict):
+	clf, data = load_latest_model()
+	cooler = data_input.create_program(program_dict, data)
 	print (cooler.data)
 	x, y = features.features_labels([cooler], features_used)
 	quote = round(clf.predict(x)[0], 2)
@@ -43,15 +49,15 @@ def create_model(input_file):
 	train_x, train_y = features.features_labels(train, features_used)
 	test_x, test_y = features.features_labels(test, features_used)
 
-	clf = linear_model.Lasso(alpha = 0.1)
+	clf = linear_model.Lasso(alpha = 0.2)
 	clf.fit(train_x, train_y)
 
-	y_pred = [float(sum(test_y))/len(test_y)]*len(test_y)
-	acc1 = metrics.get_accuracy(y_pred, test_y)
+	median = [float(sum(test_y))/len(test_y)]*len(test_y)
+	acc1 = metrics.get_accuracy(median, test_y)
 
 	y_pred = clf.predict(test_x)
 	acc2 = metrics.get_accuracy(y_pred, test_y)
-
+	
 	return clf, data, [acc1, acc2]
 
 def clean():
@@ -87,7 +93,6 @@ def update():
 		filename = "models/model_v" + str(version) + ".pk"
 		data_file = "models/data_v" + str(version) + ".pk"
 		if not os.path.exists(filename):
-			print(filename)
 			found = True
 
 		version += 1

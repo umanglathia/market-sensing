@@ -4,5 +4,4 @@ def get_accuracy(y_true, y_pred):
 		sum_diff += abs(y_true[i] - y_pred[i])
 
 	print(sum_diff)
-	print(len(y_true))
 	return sum_diff/len(y_true)

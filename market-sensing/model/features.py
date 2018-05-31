@@ -6,6 +6,7 @@ customers = []
 regions = []
 tube_types = []
 car_types = []
+bypass_valves = []
 
 def split_data(data):
 	shuffle(data)
@@ -14,6 +15,12 @@ def split_data(data):
 
 def num_tubes(x):
 	return float(x.data['num_tubes'])
+
+def tube_type(x):
+	value = x.data['tube_type']
+	if value not in tube_types:
+		tube_types.append(value)
+	return float(tube_types.index(value)) 
 
 def length(x):
 	return float(x.data['length'])
@@ -27,14 +34,18 @@ def height(x):
 def mass(x):
 	return float(x.data['mass'])
 
-def num_gasbox(x):
-	return float(x.data['num_gasbox'])
+def bypass_valve(x):
+	value = x.data['bypass_valve']
+	if value not in bypass_valves:
+		bypass_valves.append(value)
+	return float(bypass_valves.index(value)) 
 
-def customer(x):
-	value = x.data['customer']
-	if value not in tube_types:
-		tube_types.append(value)
-	return float(customers.index(value)) 
+def num_brackets(x):
+	return float(x.data['num_brackets'])
+
+def num_spigots(x):
+	return float(x.data['num_spigots'])
+
 
 def peak_volume(x):
 	return float(x.data['peak_volume'])
@@ -42,39 +53,35 @@ def peak_volume(x):
 def lifetime_volume(x):
 	return float(x.data['lifetime_volume'])
 
-def sop_year(x):
-	return float(x.data['created'])
-
-def region(x):
-	value = x.data['region']
-	if value not in tube_types:
-		tube_types.append(value)
-	return float(customers.index(value)) 
-
-def tube_type(x):
-	value = x.data['tube_type']
-	if value not in tube_types:
-		tube_types.append(value)
+def customer(x):
+	value = x.data['customer']
+	if value not in customers:
+		customers.append(value)
 	return float(customers.index(value)) 
 
 def car_type(x):
 	value = x.data['car_type']
 	if value not in tube_types:
 		tube_types.append(value)
-	return float(customers.index(value)) 
+	return float(car_types.index(value))
 
-def num_spigots(x):
-	return float(x.data['num_spigots'])
+def region(x):
+	value = x.data['region']
+	if value not in tube_types:
+		tube_types.append(value)
+	return float(tube_types.index(value)) 
 
-def num_brackets(x):
-	return float(x.data['num_brackets'])
+def sop_year(x):
+	return float(x.data['sop_year']) - 2014
 
 
 def generate_features(x, features_used):
 	output = []
 
-	if "number of tubes" in features_used:
+	if "num_tubes" in features_used:
 		output.append(num_tubes(x))
+	if "tube_type" in features_used:
+		output.append(tube_type(x))
 	if "length" in features_used:
 		output.append(length(x))
 	if "width" in features_used:
@@ -83,29 +90,24 @@ def generate_features(x, features_used):
 		output.append(height(x))
 	if "mass" in features_used:
 		output.append(mass(x))
-	if "number of gas boxes" in features_used:
-		output.append(num_gasbox(x))
+	if "bypass_valve" in features_used:
+		output.append(bypass_valve(x))	
+	if "num_brackets" in features_used:
+		output.append(num_brackets(x))	
+	if "num_spigots" in features_used:
+		output.append(num_spigots(x))
+	if "peak_volume" in features_used:
+		output.append(peak_volume(x))
+	if "lifetime_volume" in features_used:
+		output.append(lifetime_volume(x))
 	if "customer" in features_used:
 		output.append(customer(x))
-	if "peak volume" in features_used:
-		output.append(peak_volume(x))
-	if "lifetime volume" in features_used:
-		output.append(lifetime_volume(x))
-	if "sop year" in features_used:
+	if "car_type" in features_used:
+		output.append(car_type(x))				
+	if "sop_year" in features_used:
 		output.append(sop_year(x))
 	if "region" in features_used:
 		output.append(region(x))
-	if "tube type" in features_used:
-		output.append(tube_type(x))
-	if "car type" in features_used:
-		output.append(car_type(x))
-	if "bypass valve" in features_used:
-		output.append(bypass_valve(x))
-	if "number of spigots" in featuers_used:
-		output.append(num_spigots(x))
-	if "number of brackets" in features_used:
-		output.append(num_brackets(x))
-
 	return output
 
 def features(data, features_used):
