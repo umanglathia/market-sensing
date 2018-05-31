@@ -23,7 +23,8 @@ def clean():
 
 @app.route("/update", methods=['GET'])
 def update():
-	acc = machine_learning.update()
+	acc1, acc2 = machine_learning.update()
+	print("Accuracy: " + str(acc2))
 	return render_template('update.html', **locals())
 
 @app.route("/model")
@@ -45,7 +46,8 @@ def predict():
 	inputs[10] = request.form.get('lifetime-volume', "")
 
 	quote = machine_learning.get_quote(inputs, features_used)
-	similar_list = machine_learning.get_similar_list(inputs, features_used)
+	similar_list = [1, 2, 3]
+	#machine_learning.get_similar_list(inputs, features_used)
 
 	return render_template('search.html', **locals())
 

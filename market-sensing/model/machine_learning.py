@@ -43,30 +43,38 @@ def create_model(input_file):
 	train_x, train_y = features.features_labels(train, features_used)
 	test_x, test_y = features.features_labels(test, features_used)
 
-	clf = linear_model.LinearRegression()
+	clf = linear_model.Lasso(alpha = 0.1)
 	clf.fit(train_x, train_y)
 
-	y_pred = clf.predict(test_x)
-	acc = metrics.get_accuracy(y_pred, y_test)
+	y_pred = [float(sum(test_y))/len(test_y)]*len(test_y)
+	acc1 = metrics.get_accuracy(y_pred, test_y)
 
-	return clf, data, acc
+	y_pred = clf.predict(test_x)
+	acc2 = metrics.get_accuracy(y_pred, test_y)
+
+	return clf, data, [acc1, acc2]
 
 def clean():
 	filename_to_delete = ""
 	current_filename = "models/model_v1.pk"
+	current_filename2 = "models/data_v1.pk"
 	version = 1
 	complete = False
 	
 	while not complete:
 		version += 1
 		temp_filename = "models/model_v" + str(version) + ".pk"
+		temp_filename2 = "models/data_v" + str(version) + ".pk"
 
 		if os.path.exists(temp_filename):
 			os.remove(current_filename)
+			os.remove(current_filename2)
 			current_filename = temp_filename
+			current_filename2 = temp_filename2
 		
 		else:
 			os.rename(current_filename, "models/model_v1.pk")
+			os.rename(current_filename2, "models/data_v1.pk")
 			complete = True
 
 	return

@@ -6,8 +6,8 @@ customers = []
 
 def split_data(data):
 	shuffle(data)
-	length = math.floor(len(data)*9.0/10.0)
-	return data[:length], data[length+1:]
+	length = math.floor(len(data)*7.0/10.0)
+	return data[:], data[:]
 
 def f1(x):
 	return float(x.num_tubes)

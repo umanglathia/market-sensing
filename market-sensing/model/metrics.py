@@ -1,13 +1,9 @@
-def accuracy(y_true, y_pred, threshold=0.5):
-	numerator = 0
-	denominator = 0
+def get_accuracy(y_true, y_pred):
+	sum_diff = 0.0
 	for i in range(len(y_true)):
-		if y_pred[i] > threshold:
-			pred = 1
-		elif y_pred[i] <= threshold:
-			pred = 0
-		if y_true[i] == pred:
-			numerator += 1
-		denominator += 1
+		sum_diff += abs(y_true[i] - y_pred[i])
 
-	return numerator/denominator
+	print(sum_diff)
+	print(len(y_true))
+	print("ACCURACY: " + str(sum_diff/len(y_true)))
+	return sum_diff/len(y_true)
