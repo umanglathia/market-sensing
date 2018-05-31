@@ -6,7 +6,6 @@ import model.metrics as metrics
 import dill as pickle
 import os
 
-all_features =  ["use", "year", "customer", "number of tubes", "length", "width", "height", "mass", "number of gas boxes", "peak volume", "lifetime volume", "final price"]
 features_used = ["number of tubes", "length", "width", "height", "mass", "customer", "peak volume", "lifetime volume", "year"]
 
 def load_latest_model():
@@ -22,9 +21,10 @@ def load_latest_model():
 				clf = pickle.load(f)
 				return clf
 
-def get_quote(inputs, features_used):
+def get_quote(program_dict, features_used):
 	clf = load_latest_model()
-	cooler = data_input.create_program(inputs)
+	cooler = data_input.create_program(program_dict)
+	print (cooler.data)
 	x, y = features.features_labels([cooler], features_used)
 	quote = round(clf.predict(x)[0], 2)
 
@@ -110,9 +110,9 @@ def run_model(clf):
 			exit()
 
 		if boolean == "y":
-			inputs = [""]*len(all_features)
+			inputs = [""]*len(data_input.parmeters)
 
-			for i, f in enumerate(all_features):
+			for i, f in enumerate(data_input.parameters):
 				if f in features_used:
 					feature = input("Enter the " + f + ": ")
 					inputs[i] = feature

@@ -8,6 +8,13 @@
 			<div class="col">
 				<input id="num_tubes" class="form-control" name="num_tubes" placeholder="Number of Tubes" type="text">
 			</div>
+			<div class="col">
+				<select id="tube_type" class="form-control" name="tube_type">
+					<option> Type of Tube </option>
+					<option> Corrugate </option>
+					<option> Hybrid </option>
+				</select>
+			</div>
 		</div>
 		<div class="form-row form-group" class="form-inline">
 			<div class="col">
@@ -19,13 +26,29 @@
 			<div class="col">
 				<input id="height" class="form-control" name="height" placeholder="Height (mm)" type="text">
 			</div>
+			<div class = "col">
+				<input id="mass" class="form-control" name="mass" placeholder="Mass (g)" type="text">
+			</div>
+			<div class="col">
+				<select id="bypass_valve" class="form-control" name="bypass_valve">
+					<option> Bypass Valve </option>
+					<option> Yes </option>
+					<option> No </option>
+				</select>
+			</div>
+			<div class = "col">
+				<input id="num_brackets" class="form-control" name="num_brackets" placeholder="# of Brackets" type="text">
+			</div>
+			<div class = "col">
+				<input id="num_spigots" class="form-control" name="num_spigots" placeholder="# of Spigots" type="text">
+			</div>
 		</div>
 		<div class="form-row form-group" class="form-inline">
 			<div class="col">
-				<input id="peak-volume" class="form-control" name="peak-volume" placeholder="Peak Volume" type="text">
+				<input id="peak_volume" class="form-control" name="peak_volume" placeholder="Peak Volume" type="text">
 			</div>
 			<div class="col">
-				<input id="lifetime-volume" class="form-control" name="lifetime-volume" placeholder="Lifetime Volume" type="text">
+				<input id="lifetime_volume" class="form-control" name="lifetime_volume" placeholder="Lifetime Volume" type="text">
 			</div>
 		</div>
 		<div class="form-row form-group" class="form-inline">
@@ -37,7 +60,23 @@
 				</select>
 			</div>
 			<div class="col">
-				<input id="year" class="form-control" name="year" placeholder="Current Year" type="text">
+				<select id="car_type" class="form-control" name="car_type">
+					<option> Car Type </option>
+					<option> Passenger </option>
+					<option> Commercial </option>
+				</select>
+			</div>
+			<div class="col">
+				<select id="region" class="form-control" name="region">
+					<option> Region </option>
+					<option> EU </option>
+					<option> North America </option>
+					<option> South America </option>
+					<option> Asia </option>
+				</select>
+			</div>
+			<div class="col">
+				<input id="sop_year" class="form-control" name="year" placeholder="SOP Year" type="text">
 			</div>
 		</div>
 		<button type="submit" class="btn btn-primary"> Predict Market Value </button>

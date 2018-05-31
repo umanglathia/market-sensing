@@ -1,3 +1,6 @@
+parameters = ['use', 'created', 'customer', 'num_tubes', 'length', 'width', 'height', 'mass',
+		'num_gasbox', 'peak_volume', 'lifetime_volume', 'region', 'final_price']
+
 def if_empty(value):
 	if value == "":
 		return "0"
@@ -10,19 +13,11 @@ def clean(value):
 	return value
 
 class Program:
-	def __init__(self, split):
-		self.use = clean(split[0])
-		self.created = clean(split[1])
-		self.customer = clean(split[2])
-		self.num_tubes = clean(split[3])
-		self.length = clean(split[4])
-		self.width = clean(split[5])
-		self.height = clean(split[6])
-		self.mass = clean(split[7])
-		self.num_gasbox = clean(split[8])
-		self.peak_volume = clean(split[9])
-		self.lifetime_volume = clean(split[10])
-		self.final_price = clean(split[11])		
+	def __init__(self, program_dict):
+		self.data = {}
+
+		for x in parameters:
+			self.data[x] = clean(program_dict[x])
 
 def parse_data(input_file):
 	file = open(input_file, encoding="latin1")
@@ -31,7 +26,13 @@ def parse_data(input_file):
 
 	for line in lines[1:]:
 		split = line.split(",")
-		output.append(Program(split))
+		program_dict = {}
+
+		for i in range(len(csv_order)):
+			col = csv_order[i]
+			program_dict[col] = split[i]
+
+		output.append(Program(program_dict))
 
 	return output
 
@@ -39,13 +40,12 @@ def parse_data(input_file):
 def clean_data(items):
 	output = []
 	for x in items:
-		if x.use == "yes":
+		if x.data['use'] == "yes":
 			output.append(x)
-
 	return output
 
-def create_program(split):
-	return Program(split)
+def create_program(program_dict):
+	return Program(program_dict)
 
 if __name__ == "__main__":
 	print("Start")

@@ -5,5 +5,4 @@ def get_accuracy(y_true, y_pred):
 
 	print(sum_diff)
 	print(len(y_true))
-	print("ACCURACY: " + str(sum_diff/len(y_true)))
 	return sum_diff/len(y_true)

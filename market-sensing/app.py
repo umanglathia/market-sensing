@@ -4,12 +4,13 @@ import dill as pickle
 from sklearn import linear_model
 import sys
 import model.machine_learning as machine_learning
+from model.data_input import parameters
 from flask_wtf import FlaskForm
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
 app = Flask(__name__)
-all_features =  ["use", "year", "customer", "number of tubes", "length", "width", "height", "mass", "number of gas boxes", "peak volume", "lifetime volume", "final price"]
-features_used = ["number of tubes", "length", "width", "height", "mass", "customer", "peak volume", "lifetime volume", "year"]
+features_used = ["number of tubes", "length", "width", "height", "mass", "customer", "peak volume", "lifetime volume", "sop year"]
+
 
 @app.route("/")
 def main():
@@ -32,20 +33,15 @@ def model():
 	return render_template('initial_search.html', **locals())
 
 @app.route("/predict", methods=['POST'])
-def predict():	
-	inputs = [""]*len(all_features)
+def predict():
+	form = request.form
+	
+	program_dict = {}
 
-	inputs[1] = request.form.get('year', "")
-	inputs[2] = request.form.get('customer', "")
-	inputs[3] = request.form.get('num_tubes', "")
-	inputs[4] = request.form.get('length', "")
-	inputs[5] = request.form.get('width', "")
-	inputs[6] = request.form.get('height', "")
-	inputs[7] = request.form.get('mass', "")
-	inputs[9] = request.form.get('peak-volume', "")
-	inputs[10] = request.form.get('lifetime-volume', "")
+	for attr in parameters:
+		program_dict[attr] = form.get(attr, "")
 
-	quote = machine_learning.get_quote(inputs, features_used)
+	quote = machine_learning.get_quote(program_dict, features_used)
 	similar_list = [1, 2, 3]
 	#machine_learning.get_similar_list(inputs, features_used)
 
