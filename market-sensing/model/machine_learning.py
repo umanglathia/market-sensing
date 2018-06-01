@@ -11,6 +11,7 @@ features_used = ["num_tubes", "length", "width", "height", "mass", "customer", "
 def load_latest_model():
 	version = 1
 	filename = "models/model_v1.pk"
+	filename2 = "models/data_v1.pk"
 	while True:
 		version += 1
 		temp_filename = "models/model_v" + str(version) + ".pk"
@@ -27,25 +28,27 @@ def load_latest_model():
 
 
 
-def get_quote(program_dict):
-	clf, data = load_latest_model()
+def get_quote(program_dict, clf, data):
 	cooler = data_input.create_program(program_dict, data)
-	print (cooler.data)
 	x, y = features.features_labels([cooler], features_used)
 	quote = round(clf.predict(x)[0], 2)
 
 	return quote
 
-def get_similar_list(inputs, features_used):
-	cooler = data_input.create_program(inputs)
-	scores = get_similarity()
-	return 
+def predict_cooler(program_dict):
+	clf, data = load_latest_model()
+	quote = get_quote(program_dict, clf, data)
+	#scores = get_similarity(program_dict, data)
+	similar_list = [1, 2, 3]
+
+	return quote, similar_list
 
 def create_model(input_file):
 	items = data_input.parse_data(input_file)
 	data = data_input.clean_data(items)
+	normalized = data_input.normalize_data(data)
 
-	train, test = features.split_data(data)
+	train, test = features.split_data(normalized)
 	train_x, train_y = features.features_labels(train, features_used)
 	test_x, test_y = features.features_labels(test, features_used)
 

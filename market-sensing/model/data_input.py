@@ -50,27 +50,33 @@ def get_averages(items):
 
 	return output
 
-def normalize_data(item, averages):
+def normalize_item(item):
 	for attr in parameters:
-		if item.data[attr] == None:
-			item.data[attr] = averages[attr]
+	if item.data[attr] == None:
+		item.data[attr] = averages[attr]
+
 	return item
 
+def normalize_data(items):
+
+	averages = get_averages(items)
+
+	for i in range(len(items)):
+		items[i] = normalize_item(i)
+
+	return items
+
 def clean_data(items):
-	first_pass = []
+	output = []
 	for x in items:
 		if x.data['use'] == "yes":
-			first_pass.append(x)
+			output.append(x)
 
-	second_pass = []
-	averages = get_averages(first_pass)
-	for x in first_pass:
-		second_pass.append(normalize_data(x, averages))
-
-	return second_pass
+	return output
 
 def create_program(program_dict, data):
 	program = Program(program_dict)
+
 	averages = get_averages(data)
 
 	return normalize_data(program, averages)

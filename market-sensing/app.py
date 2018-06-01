@@ -37,9 +37,8 @@ def predict():
 	for attr in parameters:
 		program_dict[attr] = form.get(attr, "")
 
-	quote = machine_learning.get_quote(program_dict)
+	quote = machine_learning.predict_cooler(program_dict)
 	similar_list = [1, 2, 3]
-	#machine_learning.get_similar_list(inputs, features_used)
 
 	return render_template('search.html', **locals())
 
