@@ -46,23 +46,27 @@ def get_averages(items):
 
 	for attr in numerical:
 		numerator = sum(float(item.data[attr]) for item in items if item.data[attr] != None)
-		output[attr] = numerator/len(items)
+		denominator = sum(1 for item in items if item.data[attr] != None)
+		if denominator == 0:
+			denominator = 1
+		output[attr] = numerator/denominator
 
 	return output
 
-def normalize_item(item):
+def normalize_item(item, averages):
 	for attr in parameters:
-	if item.data[attr] == None:
-		item.data[attr] = averages[attr]
+		if item.data[attr] == None:
+			item.data[attr] = averages[attr]
 
 	return item
 
 def normalize_data(items):
 
 	averages = get_averages(items)
+	print (averages)
 
 	for i in range(len(items)):
-		items[i] = normalize_item(i)
+		items[i] = normalize_item(items[i], averages)
 
 	return items
 
@@ -78,8 +82,7 @@ def create_program(program_dict, data):
 	program = Program(program_dict)
 
 	averages = get_averages(data)
-
-	return normalize_data(program, averages)
+	return normalize_item(program, averages)
 
 if __name__ == "__main__":
 	print("Start")
