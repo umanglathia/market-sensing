@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'development key'
 
 class ModelForm(Form):
-	num_tubes = IntegerField("Number of Tubes: ",
+	num_tubes = IntegerField("# of Tubes: ",
 		[validators.optional()])
 	tube_type = SelectField("Type of Tube: ",
 		choices=[(' ', ' '), ('Corrugate', 'Corrugate'), ('Hybrid', 'Hybrid')])
@@ -24,11 +24,11 @@ class ModelForm(Form):
 		[validators.optional()])
 	bypass_valve = SelectField("Bypass Valve: ",
 		choices=[(' ', ' '), ('Yes', 'Yes'), ('No', 'No')])
-	num_brackets = IntegerField("Number of Brackets: ",
+	num_brackets = IntegerField("# of Brackets: ",
 		[validators.optional()])
 	spigot_type = SelectField("Type of Spigot: ",
 		choices=[(' ', ' '), ('Straight', 'Straight'), ('Bend', 'Bend')])
-	num_gasboxes = IntegerField("Number of Gas Boxes: ",
+	num_gasboxes = IntegerField("# of Gas Boxes: ",
 		[validators.optional()])
 	peak_volume = IntegerField("Peak Volume: ",
 		[validators.optional()])
@@ -59,32 +59,8 @@ def update():
 	acc1, acc2 = machine_learning.update()
 	return render_template('update.html', **locals())
 
-def empty_program():
-	program = {}
-
-	for feature in parameters:
-		english = ""
-		if feature.find('_type') != -1:
-			english = "Type of " + feature[:feature.find('_type')].capitalize()
-		elif feature.find('num_') != -1:
-			english = "# of " + feature[4:].capitalize()
-		elif feature.find('_') != -1:
-			english = feature[:feature.find('_')].capitalize() + " " + feature[feature.find('_')+1:].capitalize()
-		else:
-			english = feature.capitalize()
-			if feature in ['length', 'width', 'height']:
-				english += " (mm)" 
-			if feature in ['mass']:
-				english += " (g)"
-
-		program[feature] = english
-
-	program['sop_year'] = "SOP Year"
-	return program
-
 @app.route("/model")
 def model():
-	program = empty_program()
 	form = ModelForm(request.form)
 	return render_template('form.html', **locals())
 
@@ -100,12 +76,7 @@ def predict():
 			program[attr] = input_form.get(attr, "")
 
 		quote, similar_list = machine_learning.predict_cooler(program)
-
-		clean_program = empty_program()
-		for attr in parameters:
-			if program[attr] == "":
-				program[attr] = clean_program[attr]
-
+		
 		return render_template('results.html', **locals())
 
 	return render_template('form.html', **locals())

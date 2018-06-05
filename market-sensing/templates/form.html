@@ -4,71 +4,80 @@
 	<fieldset class="form-group">
 		<h1 class="display-4 my-4"> EGR Cooler Market Value Predictor </h1>
 		<form action="/predict" method="post">
-		<div class="form-row form-group" class= "form-inline">
-			<div class="col form-control">
-				{{ form.num_tubes.label }} {{ form.num_tubes }}
+		<div class="form-row my-0 py-0 form-group text-dark">
+			<div class="col-sm-2">
+				{{ form.num_tubes.label }}
+			</div>
+			<div class="col-sm-4">
+				{{ form.num_tubes(class="form-control") }}
+			</div>
+			<div class="col-sm-2">
+				{{ form.tube_type.label }}
+			</div>
+			<div class="col-sm-4">
+				{{ form.tube_type(class="form-control") }}
+			</div>`
+		</div>
+		<div class="form-row form-group">
+			<div class="col">
+				{{ form.length.label }}
+				{{ form.length(class="form-control") }}
 			</div>
 			<div class="col">
-				{{ form.tube_type.label }}{{ form.tube_type}}
-			</div>
-		</div>
-		<div class="form-row form-group" class="form-inline">
-			<div class="col form-control">
-				{{ form.length.label }} {{ form.length }}
-			</div>
-			<div class="col form-control">
-				{{ form.width.label }} {{ form.width }}
-			</div>
-			<div class="col form-control">
-				{{ form.height.label }} {{ form.height }}
-			</div>
-			<div class = "col form-control">
-				{{ form.mass.label }} {{ form.mass }}
-			</div>
-		</div>
-		<div class="form-row form-group" class="form-inline">
-			<div class="col">
-				{{ form.bypass_valve.label }} {{ form.bypass_valve}}
-			</div>
-			<div class = "col form-control">
-				{{ form.num_brackets.label }} {{ form.num_brackets }}
-			</div>
-			<div class = "col">
-				{{ form.spigot_type.label }} {{ form.spigot_type }}
-			</div>
-			<div class = "col form-control">
-				{{ form.num_gasboxes.label }} {{ form.num_gasboxes }}
-			</div>
-		</div>
-		<div class="form-row form-group" class="form-inline">
-			<div class="col form-control">
-				{{ form.peak_volume.label }} {{ form.peak_volume }}
-			</div>
-			<div class="col form-control">
-				{{ form.lifetime_volume.label }} {{ form.lifetime_volume }}
-			</div>
-		</div>
-		<div class="form-row form-group" class="form-inline">
-			<div class="col">
-				{{ form.customer.label }} {{ form.customer }}
+				{{ form.width.label }}
+				{{ form.width(class="form-control") }}
 			</div>
 			<div class="col">
-				{{ form.car_type.label }} {{ form.car_type }}
+				{{ form.height.label }}
+				{{ form.height(class="form-control") }}
 			</div>
 			<div class="col">
-				{{ form.region.label }} {{ form.region }}
+				{{ form.mass.label }}
+				{{ form.mass(class="form-control") }}
 			</div>
-			<div class="col form-control">
-				{{ form.sop_year.label }} {{ form.sop_year }}
+			<div class="col">
+				{{ form.bypass_valve.label }}
+				{{ form.bypass_valve(class="form-control")}}
+			</div>
+			<div class="col">
+				{{ form.num_brackets.label }}
+				{{ form.num_brackets(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.spigot_type.label }}
+				{{ form.spigot_type(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.num_gasboxes.label }}
+				{{ form.num_gasboxes(class="form-control") }}
 			</div>
 		</div>
-		{% if field.errors %}
-			<ul class=errors>
-				{% for error in field.errors %}
-					<li>{{ error }}</li>
-				{% endfor %}
-			</ul>
-		{% endif %}
+		<div class="form-row form-group">
+			<div class="col">
+				{{ form.peak_volume.label }}
+				{{ form.peak_volume(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.lifetime_volume.label }}
+				{{ form.lifetime_volume(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.customer.label }}
+				{{ form.customer(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.car_type.label }}
+				{{ form.car_type(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.region.label }}
+				{{ form.region(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.sop_year.label }}
+				{{ form.sop_year(class="form-control") }}
+			</div>
+		</div>
 		<button type="submit" class="btn btn-primary"> Predict Market Value </button>
 		</form>
 	</fieldset>
