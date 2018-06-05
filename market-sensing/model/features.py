@@ -7,6 +7,7 @@ regions = []
 tube_types = []
 car_types = []
 bypass_valves = []
+spigot_types = []
 
 def split_data(data):
 	shuffle(data)
@@ -43,9 +44,14 @@ def bypass_valve(x):
 def num_brackets(x):
 	return float(x.data['num_brackets'])
 
-def num_spigots(x):
-	return float(x.data['num_spigots'])
+def spigot_type(x):
+	value = x.data['spigot_type']
+	if value not in spigot_types:
+		spigot_types.append(value)
+	return float(spigot_types.index(value)) 
 
+def num_gasboxes(x):
+	return float(x.data['num_gasboxes'])
 
 def peak_volume(x):
 	return float(x.data['peak_volume'])
@@ -61,8 +67,8 @@ def customer(x):
 
 def car_type(x):
 	value = x.data['car_type']
-	if value not in tube_types:
-		tube_types.append(value)
+	if value not in car_types:
+		car_types.append(value)
 	return float(car_types.index(value))
 
 def region(x):
@@ -78,36 +84,9 @@ def sop_year(x):
 def generate_features(x, features_used):
 	output = []
 
-	if "num_tubes" in features_used:
-		output.append(num_tubes(x))
-	if "tube_type" in features_used:
-		output.append(tube_type(x))
-	if "length" in features_used:
-		output.append(length(x))
-	if "width" in features_used:
-		output.append(width(x))
-	if "height" in features_used:
-		output.append(height(x))
-	if "mass" in features_used:
-		output.append(mass(x))
-	if "bypass_valve" in features_used:
-		output.append(bypass_valve(x))	
-	if "num_brackets" in features_used:
-		output.append(num_brackets(x))	
-	if "num_spigots" in features_used:
-		output.append(num_spigots(x))
-	if "peak_volume" in features_used:
-		output.append(peak_volume(x))
-	if "lifetime_volume" in features_used:
-		output.append(lifetime_volume(x))
-	if "customer" in features_used:
-		output.append(customer(x))
-	if "car_type" in features_used:
-		output.append(car_type(x))				
-	if "sop_year" in features_used:
-		output.append(sop_year(x))
-	if "region" in features_used:
-		output.append(region(x))
+	for feature in features_used:
+		output.append(globals()[feature](x))
+
 	return output
 
 def features(data, features_used):

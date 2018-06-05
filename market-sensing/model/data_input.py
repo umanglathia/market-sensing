@@ -1,5 +1,11 @@
-parameters = ['use', 'sop_year', 'customer', 'num_tubes', 'length', 'width', 'height', 'mass',
-		'num_gasbox', 'peak_volume', 'lifetime_volume', 'region', 'final_price']
+from collections import Counter
+
+parameters = ['program_number', 'use', 'num_tubes', "tube_type", 'length', 'width', 'height', 'mass',
+		'bypass_valve', 'num_brackets', 'spigot_type', 'num_gasboxes', 'peak_volume', 'lifetime_volume',
+		'customer', 'car_type', 'region', 'sop_year', 'bw_quote', 'status', 'final_price']
+
+numerical = ['num_tubes', 'length', 'width', 'height', 'mass', 'num_brackets', 'num_gasboxes',
+		'peak_volume', 'lifetime_volume', 'sop_year']
 
 def if_empty(value):
 	if value == "":
@@ -11,6 +17,16 @@ def clean(value):
 	value = value.lower()
 	value = if_empty(value)
 	return value
+
+def clean_data(items):
+	output = []
+	for x in items:
+		if x.data['use'] == "yes":
+			output.append(x)
+
+	return output
+
+	#return item in items if item.data['use'] == "yes"
 
 class Program:
 	def __init__(self, program_dict):
@@ -25,11 +41,10 @@ def parse_data(input_file):
 	output = []
 
 	for line in lines[1:]:
-		split = line.split(",")
 		program_dict = {}
+		split = line.split(",")
 
-		for i in range(len(parameters)):
-			col = parameters[i]
+		for i, col in enumerate(parameters):
 			program_dict[col] = split[i]
 
 		output.append(Program(program_dict))
@@ -38,20 +53,25 @@ def parse_data(input_file):
 
 def get_averages(items):
 	output = {}
+
 	for attr in parameters:
-		output[attr] = "0"
+		if attr in numerical:
+			numerator = sum(float(item.data[attr]) for item in items if item.data[attr] != None)
+			denominator = sum(1 for item in items if item.data[attr] != None)
+			if denominator == 0:
+				denominator = 1
+			output[attr] = numerator/denominator
 
-	numerical = ['num_tubes', 'sop_year', 'length', 'width', 'height', 'mass', 'num_gasbox',
-	'peak_volume', 'lifetime_volume']
+		else:
+			values = Counter()
+			for item in items:
+				if item.data[attr] != None:
+					values[ item.data[attr] ] += 1
 
-	for attr in numerical:
-		numerator = sum(float(item.data[attr]) for item in items if item.data[attr] != None)
-		denominator = sum(1 for item in items if item.data[attr] != None)
-		if denominator == 0:
-			denominator = 1
-		output[attr] = numerator/denominator
+			output[attr] = values.most_common()[0][0]
 
 	return output
+
 
 def normalize_item(item, averages):
 	for attr in parameters:
@@ -63,28 +83,12 @@ def normalize_item(item, averages):
 def normalize_data(items):
 
 	averages = get_averages(items)
-	print (averages)
-
 	for i in range(len(items)):
 		items[i] = normalize_item(items[i], averages)
 
 	return items
 
-def clean_data(items):
-	output = []
-	for x in items:
-		if x.data['use'] == "yes":
-			output.append(x)
-
-	return output
-
 def create_program(program_dict, data):
 	program = Program(program_dict)
-
 	averages = get_averages(data)
 	return normalize_item(program, averages)
-
-if __name__ == "__main__":
-	print("Start")
-	parse_data("data.csv")
-	print("Finish")

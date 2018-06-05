@@ -1,22 +1,22 @@
-Use,Number of Tubes,Type of Tube,Length,Width,Height,Mass,Bypass Valve,Number of Brackets,Number of Spigots,Peak Volume,Total Volume,Customer,Car Type,Region,SOP Year,Final Price
-Yes,,,,,,,,,,290700,769600,Ford,,North America,2014,20
-Yes,3,,93.67,52,5.2,,,0,,1945800,1945800,Ford,,North America,2014,18.83
-Yes,5,,114,52,5,,,0,,1135000,1135000,Ford,,North America,2014,21.13
-Yes,6,,120,55,5,1029.26,,3,,194000,905000,Ford,,North America,2015,31.28
-Yes,6,,147.33,35,5,1825,,,,2255900,2255900,FCA,,North America,,30.48
-Yes,,,,,,,,,,302912,1532554,VCC,,EU,2016,25.04
-Yes,7,,114,52.15,5,,,,,70357,385480,VCC,,EU,,26.76
-Yes,7,,122,50,60,,,,,291660,891980,Ford,,North America,2017,21
-Yes,7,,122,50,63,1244,,,,435648,1714773,Nissan,,Asia,2017,17.6
-Yes,,,,,,,,,,194481,920816,Nissan,,Asia,,24.42
-Yes,6,,113,60,45,1510,,,,145836,640651,HKMC,,Asia,,25.59
-Yes,7,,89,53,62,1170,,,,221953,986472,HKMC,,Asia,,32.72
-Yes,9,,62.1,,,1300,,,,236744,1247308,HKMC,,Asia,,32.72
-Yes,9,,62.1,60.1,,1300,,,,48947,235339,HKMC,,Asia,,21.43
-No,3,,100,26,62,610,,,,111818,476967,Mitsubishi,,Asia,,
-No,5,,106.6,46.21,,,,,,150000,750000,Maruti,,Asia,2018,
-No,3,,150,32,62,1210,,,,135000,0,HMC,,Asia,,
-Yes,6,,90,47,62,1220,,,,0,0,HMC,,Asia,,38
-Yes,8,,,,,1038,,,,147000,577000,Mitsubishi,,Asia,,31
-Yes,24,,,,,,,,,,,Mitsubishi,,Asia,,33
-No,9,,119,63.12,42,2200,,,,,,GM,,North America,,
+Program Number,Use,Number of Tubes,Type of Tube,Length,Width,Height,Mass,Bypass Valve,Number of Brackets,"Spigots, Straight or Bend?",Number of Gas Boxes,Peak Volume,Total Volume,Customer,Car Type,Region,SOP Year,BW Quote,Status,Final Price
+613,Yes,,,,,,,No,,,,290700,769600,Ford,Passenger,North America,2017,,Lost,20
+,Yes,3,Hybrid,93.67,52,5.2,,,0,Straight,2,1945800,1945800,Ford,,North America,,18.11,Lost,16.95
+,Yes,5,Hybrid,114,52,5,,,0,Straight,1,1135000,1135000,Ford,,North America,,,Lost,18.13
+651,Yes,6,Hybrid,120,55,5,1029.26,,3,Bend,2,194000,905000,Ford,,North America,2018,,Won,31.28
+,Yes,6,Hybrid,147.33,35,5,1825,,1,Straight,2,2255900,2255900,FCA,,North America,,,Cancelled,30.48
+707,Yes,,Hybrid,,,,,,,,,302912,1532554,VCC,,EU,2018,,Won,25.04
+709,Yes,7,Hybrid,114,52.15,5,,,,Bend,1,70357,385480,VCC,,EU,2019,,Won,26.76
+,No,7,Hybrid,122,50,60,,,,,,291660,891980,Ford,,North America,2020,,Won,
+1120,Yes,7,Hybrid,122,50,63,1244,,,,,435648,1714773,Nissan,,Asia,2020,,Lost,21
+1198,Yes,,Hybrid,,,,,,,,,194481,920816,Nissan,,Asia,2019,,Won,17.6
+1337,Yes,6,Hybrid,113,60,45,1510,,,,,145836,640651,HKMC,,Asia,2020,,Won,24.42
+1613,Yes,7,Hybrid,89,53,62,1170,,,,,221953,986472,HKMC,,Asia,2020,,Won,25.59
+1124,Yes,9,Hybrid,62.1,,,1300,,,,,236744,1247308,HKMC,,Asia,2019,,Won,32.72
+1422,Yes,9,Hybrid,62.1,60.1,,1300,,3,Bend,,48947,235339,HKMC,,Asia,2019,,Won,32.72
+10061,Yes,3,Hybrid,100,26,62,610,,,,,111818,476967,Mitsubishi,,Asia,2020,,Lost,21.43
+,No,5,Corrugate,106.6,46.21,,,,,,,150000,750000,Maruti,,Asia,2020,,,
+10070,No,3,Hybrid,150,32,62,1210,,,,,135000,0,HMC,,Asia,,,Won,
+10203,Yes,6,Hybrid,90,47,62,1220,,,,,0,0,HMC,,Asia,,,Won,38
+,Yes,8,Hybrid,,,,1038,,,,,147000,577000,Mitsubishi,,Asia,2012,,Active,31
+,Yes,24,Corrugate,,,,,,,,,,,Mitsubishi,,Asia,,,Active,33
+,No,9,Hybrid,119,63.12,42,2200,,3,,2,,,GM,,North America,,,Active,

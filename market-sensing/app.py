@@ -1,14 +1,48 @@
 from __future__ import print_function
-from flask import Flask, render_template, redirect, request
-import dill as pickle
+from flask import Flask, render_template, redirect, request, session
+from wtforms import Form, TextField, IntegerField, SubmitField, SelectField, validators, FloatField
 from sklearn import linear_model
 import sys
 import model.machine_learning as machine_learning
 from model.data_input import parameters
-from flask_wtf import FlaskForm
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'development key'
+
+class ModelForm(Form):
+	num_tubes = IntegerField("Number of Tubes: ",
+		[validators.optional()])
+	tube_type = SelectField("Type of Tube: ",
+		choices=[(' ', ' '), ('Corrugate', 'Corrugate'), ('Hybrid', 'Hybrid')])
+	length = FloatField("Length (mm): ",
+		[validators.optional()])
+	width = FloatField("Width (mm): ",
+		[validators.optional()])
+	height = FloatField("Height (mm): ",
+		[validators.optional()])
+	mass = FloatField("Mass (g): ",
+		[validators.optional()])
+	bypass_valve = SelectField("Bypass Valve: ",
+		choices=[(' ', ' '), ('Yes', 'Yes'), ('No', 'No')])
+	num_brackets = IntegerField("Number of Brackets: ",
+		[validators.optional()])
+	spigot_type = SelectField("Type of Spigot: ",
+		choices=[(' ', ' '), ('Straight', 'Straight'), ('Bend', 'Bend')])
+	num_gasboxes = IntegerField("Number of Gas Boxes: ",
+		[validators.optional()])
+	peak_volume = IntegerField("Peak Volume: ",
+		[validators.optional()])
+	lifetime_volume = IntegerField("Lifetime Volume: ",
+		[validators.optional()])
+	customer = SelectField("Customer: ",
+		choices=[(' ', ' '), ('Ford', 'Ford'), ('Nissan', 'Nissan')])
+	car_type = SelectField("Car Type: ",
+		choices=[(' ', ' '), ('Passenger', 'Passenger'), ('Commercial', 'Commercial')])
+	region = SelectField("Region: ",
+		choices=[(' ', ' '), ('EU', 'EU'), ('North America', 'North America'),
+		('South America', 'South America'), ('Asia', 'Asia')])
+	sop_year = IntegerField("SOP Year: ",
+		[validators.optional()])
 
 @app.route("/")
 def main():
@@ -18,28 +52,63 @@ def main():
 @app.route("/clean", methods=['GET'])
 def clean():
 	machine_learning.clean()
-	return redirect('/')
+	return redirect(url_for('/'))
 
 @app.route("/update", methods=['GET'])
 def update():
 	acc1, acc2 = machine_learning.update()
 	return render_template('update.html', **locals())
 
+def empty_program():
+	program = {}
+
+	for feature in parameters:
+		english = ""
+		if feature.find('_type') != -1:
+			english = "Type of " + feature[:feature.find('_type')].capitalize()
+		elif feature.find('num_') != -1:
+			english = "# of " + feature[4:].capitalize()
+		elif feature.find('_') != -1:
+			english = feature[:feature.find('_')].capitalize() + " " + feature[feature.find('_')+1:].capitalize()
+		else:
+			english = feature.capitalize()
+			if feature in ['length', 'width', 'height']:
+				english += " (mm)" 
+			if feature in ['mass']:
+				english += " (g)"
+
+		program[feature] = english
+
+	program['sop_year'] = "SOP Year"
+	return program
+
 @app.route("/model")
 def model():
-	return render_template('initial_search.html', **locals())
+	program = empty_program()
+	form = ModelForm(request.form)
+	return render_template('form.html', **locals())
+
 
 @app.route("/predict", methods=['POST'])
 def predict():
-	form = request.form
-	program_dict = {}
+	form = ModelForm(request.form)
+	input_form = request.form
+	if request.method == 'POST' and form.validate():
+		program = {}
 
-	for attr in parameters:
-		program_dict[attr] = form.get(attr, "")
+		for attr in parameters:
+			program[attr] = input_form.get(attr, "")
 
-	quote, similar_list = machine_learning.predict_cooler(program_dict)
+		quote, similar_list = machine_learning.predict_cooler(program)
 
-	return render_template('search.html', **locals())
+		clean_program = empty_program()
+		for attr in parameters:
+			if program[attr] == "":
+				program[attr] = clean_program[attr]
+
+		return render_template('results.html', **locals())
+
+	return render_template('form.html', **locals())
 
 if __name__ == "__main__":
 	app.run()
