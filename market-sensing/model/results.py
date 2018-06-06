@@ -8,9 +8,9 @@ NUM_TO_DISPLAY = 5
 SCORING = "manhattan"
 numerical = data_input.numerical
 dropoff = 0.1
-x_zero = .5
-a = 1/(dropoff - x_zero)
-b = x_zero/(x_zero - dropoff)
+x_zero = 0.5
+a = dropoff*x_zero/(x_zero - dropoff)
+b = dropoff/(dropoff - x_zero)
 
 
 def get_quote(cooler, clf, features_used):
@@ -39,7 +39,7 @@ def penalty(c, x):
 		return 1
 	if abs(c - x) >= x_zero:
 		return 0
-	return a/abs(c - x) - b
+	return a/abs(c - x) + b
 
 def norm_0(cooler, item, features_used, averages):
 	score = 0
@@ -68,8 +68,9 @@ def manhattan(cooler, item, features_used, averages, maxes):
 				if attr in numerical:
 					c = quantize(cooler, attr, maxes, averages)
 					x = quantize(item, attr, maxes, averages)
-					if attr == "lifetime_volume":
-						print(item.data[attr], x)
+
+					if attr == "num_tubes":
+						print(c, x, penalty(c,x))
 					score += penalty(c, x)
 
 			else:
