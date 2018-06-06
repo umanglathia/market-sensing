@@ -10,38 +10,40 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'development key'
 
 class ModelForm(Form):
-	num_tubes = IntegerField("# of Tubes: ",
+	num_tubes = IntegerField("# of Tubes",
 		[validators.optional()])
-	tube_type = SelectField("Type of Tube: ",
+	tube_type = SelectField("Type of Tube",
 		choices=[(' ', ' '), ('Corrugate', 'Corrugate'), ('Hybrid', 'Hybrid')])
-	length = FloatField("Length (mm): ",
+	length = FloatField("Length (mm)",
 		[validators.optional()])
-	width = FloatField("Width (mm): ",
+	width = FloatField("Width (mm)",
 		[validators.optional()])
-	height = FloatField("Height (mm): ",
+	height = FloatField("Height (mm)",
 		[validators.optional()])
-	mass = FloatField("Mass (g): ",
+	mass = FloatField("Mass (g) ",
 		[validators.optional()])
-	bypass_valve = SelectField("Bypass Valve: ",
+	bypass_valve = SelectField("Bypass Valve",
 		choices=[(' ', ' '), ('Yes', 'Yes'), ('No', 'No')])
-	num_brackets = IntegerField("# of Brackets: ",
+	num_brackets = IntegerField("# of Brackets",
 		[validators.optional()])
-	spigot_type = SelectField("Type of Spigot: ",
+	spigot_type = SelectField("Type of Spigot",
 		choices=[(' ', ' '), ('Straight', 'Straight'), ('Bend', 'Bend')])
-	num_gasboxes = IntegerField("# of Gas Boxes: ",
+	num_gasboxes = IntegerField("# of Gas Boxes",
 		[validators.optional()])
-	peak_volume = IntegerField("Peak Volume: ",
+	peak_volume = IntegerField("Peak Volume",
 		[validators.optional()])
-	lifetime_volume = IntegerField("Lifetime Volume: ",
+	lifetime_volume = IntegerField("Lifetime Volume",
 		[validators.optional()])
-	customer = SelectField("Customer: ",
-		choices=[(' ', ' '), ('Ford', 'Ford'), ('Nissan', 'Nissan')])
-	car_type = SelectField("Car Type: ",
+	customer = SelectField("Customer",
+		choices=[(' ', ' '), ('Ford', 'Ford'), ('Nissan', 'Nissan'), ('GM', 'GM'),
+		('HKMC', 'HKMC'), ('FCA', 'FCA'), ('Mitsubishi', 'Mitsubishi'), ('Maruti', 'Maruti'),
+		('VCC', 'VCC')])
+	car_type = SelectField("Car Type",
 		choices=[(' ', ' '), ('Passenger', 'Passenger'), ('Commercial', 'Commercial')])
-	region = SelectField("Region: ",
+	region = SelectField("Region",
 		choices=[(' ', ' '), ('EU', 'EU'), ('North America', 'North America'),
 		('South America', 'South America'), ('Asia', 'Asia')])
-	sop_year = IntegerField("SOP Year: ",
+	sop_year = IntegerField("SOP Year",
 		[validators.optional()])
 
 @app.route("/")
@@ -52,7 +54,7 @@ def main():
 @app.route("/clean", methods=['GET'])
 def clean():
 	machine_learning.clean()
-	return redirect(url_for('/'))
+	return redirect('/')
 
 @app.route("/update", methods=['GET'])
 def update():
@@ -76,7 +78,6 @@ def predict():
 			program[attr] = input_form.get(attr, "")
 
 		quote, similar_list = machine_learning.predict_cooler(program)
-		
 		return render_template('results.html', **locals())
 
 	return render_template('form.html', **locals())

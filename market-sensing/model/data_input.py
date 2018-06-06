@@ -72,6 +72,18 @@ def get_averages(items):
 
 	return output
 
+def get_max(items):
+	output = {}
+
+	for attr in parameters:
+		if attr in numerical:
+			output[attr] = max(float(item.data[attr]) for item in items if item.data[attr] != None)
+
+		else:
+			output[attr] = ""
+
+	return output
+
 
 def normalize_item(item, averages):
 	for attr in parameters:

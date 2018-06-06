@@ -1,24 +1,44 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="container text-center justify-content-sm-center">
+<div class="container px-0 text-center">
 	<fieldset class="form-group">
-		<h1 class="display-4 my-4"> EGR Cooler Market Value Predictor </h1>
+		<h2 class="my-4"><small class="text-muted"> EGR Cooler Market Value Predictor </small> </h2>
 		<form action="/predict" method="post">
 		<div class="form-row my-0 py-0 form-group text-dark">
-			<div class="col-sm-2">
+			<div class="col">
 				{{ form.num_tubes.label }}
-			</div>
-			<div class="col-sm-4">
 				{{ form.num_tubes(class="form-control") }}
 			</div>
-			<div class="col-sm-2">
+			<div class="col">
 				{{ form.tube_type.label }}
-			</div>
-			<div class="col-sm-4">
 				{{ form.tube_type(class="form-control") }}
-			</div>`
+			</div>
+			<div class="col">
+				{{ form.customer.label }}
+				{{ form.customer(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.car_type.label }}
+				{{ form.car_type(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.peak_volume.label }}
+				{{ form.peak_volume(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.lifetime_volume.label }}
+				{{ form.lifetime_volume(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.region.label }}
+				{{ form.region(class="form-control") }}
+			</div>
+			<div class="col">
+				{{ form.sop_year.label }}
+				{{ form.sop_year(class="form-control") }}
+			</div>
 		</div>
-		<div class="form-row form-group">
+		<div class="form-row form-group mt-2">
 			<div class="col">
 				{{ form.length.label }}
 				{{ form.length(class="form-control") }}
@@ -50,32 +70,6 @@
 			<div class="col">
 				{{ form.num_gasboxes.label }}
 				{{ form.num_gasboxes(class="form-control") }}
-			</div>
-		</div>
-		<div class="form-row form-group">
-			<div class="col">
-				{{ form.peak_volume.label }}
-				{{ form.peak_volume(class="form-control") }}
-			</div>
-			<div class="col">
-				{{ form.lifetime_volume.label }}
-				{{ form.lifetime_volume(class="form-control") }}
-			</div>
-			<div class="col">
-				{{ form.customer.label }}
-				{{ form.customer(class="form-control") }}
-			</div>
-			<div class="col">
-				{{ form.car_type.label }}
-				{{ form.car_type(class="form-control") }}
-			</div>
-			<div class="col">
-				{{ form.region.label }}
-				{{ form.region(class="form-control") }}
-			</div>
-			<div class="col">
-				{{ form.sop_year.label }}
-				{{ form.sop_year(class="form-control") }}
 			</div>
 		</div>
 		<button type="submit" class="btn btn-primary"> Predict Market Value </button>
