@@ -1,8 +1,8 @@
 {% extends "form.html" %}
 {% block results %}
 <div class="container text-center">
-	<div class="jumbotron jumbtron-fluid p-2">
-		<h1 class="display-4"> Market Value: ${{ quote }} </h1>
+	<div class="jumbotron jumbtron-fluid p-2 bg-dark text-white">
+		<h1 class="display-4"> Market Value: ${{ "%.2f" | format(quote) }} </h1>
 	</div>
 	<div>
 		{% for similar, score in similar_list %}
@@ -13,7 +13,7 @@
 			</div>
 			<div class="card-body text-left">
 				<div class="row">
-					<div class="col row">
+					<div class="col-lg-3 col-md-4 col-xs-6 row">
 						<div class="col-sm-8">
 							<span class="card-text"> # of Tubes: </span>
 						</div>
@@ -152,7 +152,7 @@
 			<div class="card-footer m-0 p-2">
 				<div class="row">
 					<div class="col">
-						BorgWarner Quote: {{ similar.display['bw_quote'] }}
+						BorgWarner Quote: ${{ "%.2f" | format(similar.display['bw_quote']|float) }}
 					</div>
 					<div class="col
 						{% if similar.display['status'] == 'Won' %} bg-success {% endif %}

@@ -1,4 +1,5 @@
 from collections import Counter
+import math
 
 parameters = ['program_number', 'use', 'num_tubes', "tube_type", 'length', 'width', 'height', 'mass',
 		'bypass_valve', 'num_brackets', 'spigot_type', 'num_gasboxes', 'peak_volume', 'lifetime_volume',
@@ -31,7 +32,7 @@ def clean_data(items):
 class Program:
 	def __init__(self, program_dict):
 		self.data = {}
-
+		self.normalized = []
 		for x in parameters:
 			self.data[x] = clean(program_dict[x])
 
@@ -72,15 +73,31 @@ def get_averages(items):
 
 	return output
 
-def get_max(items):
+def get_stdevs(items, averages):
 	output = {}
 
 	for attr in parameters:
 		if attr in numerical:
-			output[attr] = max(float(item.data[attr]) for item in items if item.data[attr] != None)
+			numerator = sum( (float(item.data[attr]) - averages[attr])**2 for item in items if item.data[attr] != None )
+			denominator = sum(1 for item in items if item.data[attr] != None)
+			if denominator == 0:
+				denominator = 1
+			output[attr] = math.sqrt( numerator / denominator )
 
 		else:
 			output[attr] = ""
+
+	return output
+
+def get_r2(features_used):
+	output = {}
+
+	for attr in features_used:
+		if attr in numerical:
+			output[attr] = 1
+
+		else:
+			output[attr] = .75
 
 	return output
 
@@ -89,6 +106,7 @@ def normalize_item(item, averages):
 	for attr in parameters:
 		if item.data[attr] == None:
 			item.data[attr] = averages[attr]
+			item.normalized.append(attr)
 
 	return item
 

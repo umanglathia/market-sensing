@@ -5,74 +5,94 @@
 		<h2 class="my-4"><small class="text-muted"> EGR Cooler Market Value Predictor </small> </h2>
 		<form action="/predict" method="post">
 		<div class="form-row my-0 py-0 form-group text-dark">
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.num_tubes.label }}
 				{{ form.num_tubes(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.tube_type.label }}
 				{{ form.tube_type(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.customer.label }}
 				{{ form.customer(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.car_type.label }}
 				{{ form.car_type(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.peak_volume.label }}
 				{{ form.peak_volume(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.lifetime_volume.label }}
 				{{ form.lifetime_volume(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.region.label }}
 				{{ form.region(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.sop_year.label }}
 				{{ form.sop_year(class="form-control") }}
 			</div>
 		</div>
 		<div class="form-row form-group mt-2">
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.length.label }}
 				{{ form.length(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.width.label }}
 				{{ form.width(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.height.label }}
 				{{ form.height(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.mass.label }}
 				{{ form.mass(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.bypass_valve.label }}
 				{{ form.bypass_valve(class="form-control")}}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.num_brackets.label }}
 				{{ form.num_brackets(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.spigot_type.label }}
 				{{ form.spigot_type(class="form-control") }}
 			</div>
-			<div class="col">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.num_gasboxes.label }}
 				{{ form.num_gasboxes(class="form-control") }}
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary"> Predict Market Value </button>
+		<div class="form-row form-group mt-2">
+			<div class="col-lg-3 col-sm-6 form-row">
+				<div class="col-lg-4 col-sm-6 pt-2 text-lg-right text-xs-center">
+					{{ form.model.label }}
+				</div>
+				<div class="col-lg-8 col-sm-6">
+					{{ form.model(class="form-control") }}
+				</div>
+			</div>
+			<div class="col-lg-2 col-sm-6 form-row">
+				<div class="col-sm-6 pt-2 text-lg-right text-xs-center">
+					{{ form.num_results.label(class="m-0 align-bottom") }}
+				</div>
+				<div class="col-sm-6">
+					{{ form.num_results(class="form-control")}}
+				</div>
+			</div>
+			<div class="col-lg-2 col-xs-12">
+				<button type="submit" class="btn btn-primary mt-sm-4 mt-lg-0 mt-xs-4"> Predict Market Value </button>
+			</div>
+		</div>
 		</form>
 	</fieldset>
 </div>

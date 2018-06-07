@@ -1,6 +1,6 @@
 from __future__ import print_function
 from flask import Flask, render_template, redirect, request, session
-from wtforms import Form, TextField, IntegerField, SubmitField, SelectField, validators, FloatField
+from wtforms import Form, RadioField, IntegerField, SubmitField, SelectField, validators, FloatField
 from sklearn import linear_model
 import sys
 import model.machine_learning as machine_learning
@@ -45,6 +45,10 @@ class ModelForm(Form):
 		('South America', 'South America'), ('Asia', 'Asia')])
 	sop_year = IntegerField("SOP Year",
 		[validators.optional()])
+	model = SelectField("Model", 
+		choices=[('euclidean','Euclidean'),('manhattan','Manhattan'), ('cosine', 'Cosine')])
+	num_results = SelectField("Results",
+		choices=[('5', '5'),('10', '10')])
 
 @app.route("/")
 def main():
@@ -77,7 +81,10 @@ def predict():
 		for attr in parameters:
 			program[attr] = input_form.get(attr, "")
 
-		quote, similar_list = machine_learning.predict_cooler(program)
+		model = input_form.get('model', "")
+		num_results = int(input_form.get('num_results', ''))
+
+		quote, similar_list = machine_learning.predict_cooler(program, model, num_results)
 		return render_template('results.html', **locals())
 
 	return render_template('form.html', **locals())

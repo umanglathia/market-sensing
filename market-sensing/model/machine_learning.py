@@ -14,12 +14,12 @@ features_used = ['num_tubes', "tube_type", 'length', 'width', 'height', 'mass', 
 def load_latest_model():
 	return save.load_latest_model()
 
-def predict_cooler(program_dict):
+def predict_cooler(program_dict, model, num_results):
 	clf, data = load_latest_model()
 	cooler = data_input.create_program(program_dict, data)
 	quote = results.get_quote(cooler, clf, features_used)
-	scores = results.similarity(cooler, data, features_used)
-	similar_list = results.sort_and_display(data, scores)
+	scores = results.similarity(cooler, data, features_used, model)
+	similar_list = results.sort_and_display(data, scores, num_results)
 
 	return quote, similar_list
 
