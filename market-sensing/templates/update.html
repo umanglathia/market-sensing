@@ -1,4 +1,4 @@
 {% extends "index.html" %}
 {% block accuracy %}
-<h1 class="display-4"> Normal: $ {{ acc1 }} Accuracy: ${{ acc2 }} </h1>
+<h1 class="display-4"> Baseline: $ {{ "%.2f" | format(acc1) }} Accuracy: ${{ "%.2f" | format(acc2) }} </h1>
 {% endblock %}
