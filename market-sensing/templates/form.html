@@ -3,7 +3,7 @@
 <div class="container px-0 text-center">
 	<fieldset class="form-group">
 		<h2 class="my-4"><small class="text-muted"> EGR Cooler Market Value Predictor </small> </h2>
-		<form action="/predict" method="post">
+		<form action="/model" method="post">
 		<div class="form-row my-0 py-0 form-group text-dark">
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.num_tubes.label }}
@@ -18,8 +18,8 @@
 				{{ form.customer(class="form-control") }}
 			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
-				{{ form.car_type.label }}
-				{{ form.car_type(class="form-control") }}
+				{{ form.market_segment.label }}
+				{{ form.market_segment(class="form-control") }}
 			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.peak_volume.label }}
@@ -30,8 +30,8 @@
 				{{ form.lifetime_volume(class="form-control") }}
 			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
-				{{ form.region.label }}
-				{{ form.region(class="form-control") }}
+				{{ form.market.label }}
+				{{ form.market(class="form-control") }}
 			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.sop_year.label }}

@@ -7,18 +7,10 @@
 		</a>
 	</div>
 	<div class="my-2">
-		<a href="{{ url_for('update') }}">
-			<button type="button" class="btn btn-secondary btn-lg btn-block">Update Model</button>
+		<a href="/test/index">
+			<button type="button" class="btn btn-secondary btn-lg btn-block">Test Model</button>
 		</a>
-	</div>
-
-	{% block accuracy %}{% endblock %}
-	<div class="my-2">
-		<a href= "{{ url_for('clean') }}">
-			<button type="button" class="btn btn-secondary btn-lg btn-block">Delete Old Models</button>
-		</a>
-	</div>
-	
+	</div>	
 </div>
 
 {% endblock %}

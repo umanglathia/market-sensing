@@ -1,18 +1,16 @@
-from random import shuffle
 import math
 import numpy as np
 
 customers = []
-regions = []
+markets = []
 tube_types = []
-car_types = []
+market_segments = []
 bypass_valves = []
 spigot_types = []
 
 def split_data(data):
-	shuffle(data)
 	length = math.floor(len(data)*7.0/10.0)
-	return data[:], data[:]
+	return data[:length], data[length+1:]
 
 def num_tubes(x):
 	return float(x.data['num_tubes'])
@@ -65,17 +63,17 @@ def customer(x):
 		customers.append(value)
 	return float(customers.index(value)) 
 
-def car_type(x):
-	value = x.data['car_type']
-	if value not in car_types:
-		car_types.append(value)
-	return float(car_types.index(value))
+def market_segment(x):
+	value = x.data['market_segment']
+	if value not in market_segments:
+		market_segments.append(value)
+	return float(market_segments.index(value))
 
-def region(x):
-	value = x.data['region']
-	if value not in tube_types:
-		tube_types.append(value)
-	return float(tube_types.index(value)) 
+def market(x):
+	value = x.data['market']
+	if value not in markets:
+		markets.append(value)
+	return float(markets.index(value)) 
 
 def sop_year(x):
 	return float(x.data['sop_year']) - 2014

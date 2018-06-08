@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container px-0 text-center">
+	<fieldset class="form-group">
+		<h2 class="my-4"><small class="text-muted"> Testing Interface </small> </h2>
+		{% block create %}{% endblock %}
+		{% if action != "create" %}
+		<form action="/test/create" method="get">
+			<div class="form-row my-2">
+				<div class="col-8 mx-auto">
+					<button type="submit" class="btn btn-primary btn-block"> Create Model </button>
+				</div>
+			</div>
+		</form>
+		{% endif %}
+		{% block created %}{% endblock %}
+		<form action="/test/data" method="get">
+			<div class="form-row my-2">
+				<div class="col-8 mx-auto">
+					<button type="submit" class="btn btn-primary btn-block"> Update Data </button>
+				</div>
+			</div>
+		</form>
+		{% block update_data %}{% endblock %}
+		<form action="/test/run" method="get">
+			<div class="form-row my-2">
+				<div class="col-8 mx-auto">
+					<button type="submit" class="btn btn-primary btn-block"> Run All Models </button>
+				</div>
+			</div>
+		</form>
+		{% block run %}{% endblock %}
+		<form action="/test/clean" method="get">
+			<div class="form-row my-2">
+				<div class="col-8 mx-auto">
+					<button type="submit" class="btn btn-primary btn-block"> Clean Files </button>
+				</div>
+			</div>
+		</form>
+		{% block clean %}{% endblock %}
+	</fieldset>
+</div>
+{% endblock %}

@@ -1,67 +1,51 @@
 import os
 import dill as pickle
-from sklearn import linear_model, svm
+from sklearn import linear_model, svm, neighbors, gaussian_process, tree, ensemble, neural_network
 
-def clean():
-	filename_to_delete = ""
-	current_filename = "models/model_v1.pk"
-	current_filename2 = "models/data_v1.pk"
-	version = 1
-	complete = False
-	
-	while not complete:
-		version += 1
-		temp_filename = "models/model_v" + str(version) + ".pk"
-		temp_filename2 = "models/data_v" + str(version) + ".pk"
+def get_prefix(data_type):
+	if data_type == "model":
+		return "models/model_v"
+	elif data_type == "data":
+		return "models/data_v"
+	else:
+		exit(1)
 
-		if os.path.exists(temp_filename):
-			os.remove(current_filename)
-			os.remove(current_filename2)
-			current_filename = temp_filename
-			current_filename2 = temp_filename2
-		
-		else:
-			os.rename(current_filename, "models/model_v1.pk")
-			os.rename(current_filename2, "models/data_v1.pk")
-			complete = True
-
-	return
-
-
-def update(clf, programs, accuracy):
+def get_version(prefix, delete=False):
 	version = 1
 	found = False
+	filename_to_delete = ""
 	while not found:
-		filename = "models/model_v" + str(version) + ".pk"
-		data_file = "models/data_v" + str(version) + ".pk"
-		if not os.path.exists(filename):
-			found = True
-
-		version += 1
-
-	with open(filename, "wb") as file:
-		pickle.dump(clf, file)
-
-	with open(data_file, "wb") as file:
-		pickle.dump(programs, file)
-
-	return accuracy
-
-
-def load_latest_model():
-	version = 1
-	filename = "models/model_v1.pk"
-	filename2 = "models/data_v1.pk"
-	while True:
-		version += 1
-		temp_filename = "models/model_v" + str(version) + ".pk"
-		temp_filename2 = "models/data_v" + str(version) + ".pk"
-		if os.path.exists(temp_filename):
-			filename = temp_filename
-			filename2 = temp_filename2
+		filename = prefix + str(version) + ".pk"
+		if os.path.exists(filename):
+			if delete and version > 1:
+				os.remove(filename_to_delete)
+			filename_to_delete = filename
 		else:
-			with open(filename, "rb") as f:
-				clf = pickle.load(f)
-				with open(filename2, "rb") as f2:
-					data = pickle.load(f2)
-					return clf, data
+			return version
+
+		version += 1
+
+def update(data_type, data):
+	prefix = get_prefix(data_type)
+	filename = prefix + str(get_version(prefix)) + ".pk"
+	with open(filename, "wb") as file:
+		pickle.dump(data, file)
+	return
+
+def load(data_type, version=-1):
+	prefix = get_prefix(data_type)
+	if version == -1:
+		version = get_version(prefix)-1
+	filename = prefix + str(version) + ".pk"
+	with open(filename, "rb") as file:
+		return pickle.load(file)	
+
+def clean_elem(data_type):
+	prefix = get_prefix(data_type)
+	v = get_version(prefix, True)	
+	os.rename(prefix + str(v-1) + ".pk", prefix + "1.pk")
+
+def clean():
+	clean_elem("model")
+	clean_elem("data")
+
