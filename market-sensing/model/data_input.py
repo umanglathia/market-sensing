@@ -8,6 +8,10 @@ parameters = ['program_number', 'use', 'num_tubes', "tube_type", 'length', 'widt
 numerical = ['num_tubes', 'length', 'width', 'height', 'mass', 'num_brackets', 'num_gasboxes',
 		'peak_volume', 'lifetime_volume', 'sop_year']
 
+features_used = ['num_tubes', "tube_type", 'length', 'width', 'height', 'mass', 'bypass_valve',
+		'num_brackets', 'spigot_type', 'num_gasboxes', 'peak_volume', 'lifetime_volume', 'customer',
+		'market_segment', 'market', 'sop_year']
+
 def if_empty(value):
 	if value == "":
 		return None
@@ -18,16 +22,6 @@ def clean(value):
 	value = value.lower()
 	value = if_empty(value)
 	return value
-
-def clean_data(items):
-	output = []
-	for x in items:
-		if x.data['use'] == "yes":
-			output.append(x)
-
-	return output
-
-	#return item in items if item.data['use'] == "yes"
 
 class Program:
 	def __init__(self, program_dict):
@@ -48,9 +42,25 @@ def parse_data(input_file):
 		for i, col in enumerate(parameters):
 			program_dict[col] = split[i]
 
-		output.append(Program(program_dict))
+		new_program = Program(program_dict)
+		if new_program.data['use'] == "yes":
+			output.append(new_program)
 
 	return output
+
+def encode_parameter(items, parameter):
+	unique = []
+	for i in range(len(items)):
+		value = items[i].data[parameter]
+		if value not in unique:
+			unique.append(value)
+		items[i].data[parameter] = int(unique.index(value))
+
+def int_encode(data):
+	for parameter in features_used:
+		if parameter not in numerical:
+			encode_parameter(data, parameter)
+
 
 def get_averages(items):
 	output = {}

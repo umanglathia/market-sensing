@@ -1,5 +1,7 @@
 import math
 import numpy as np
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OneHotEncoder
 
 customers = []
 markets = []

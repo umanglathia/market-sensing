@@ -21,9 +21,9 @@ def create_model(model_type, parameter):
 	data = save.load("data")
 	normalized = data_input.normalize_data(data)
 
-	train, test = features.split_data(normalized)
-	train_x, train_y = features.features_labels(train, features_used)
-	test_x, test_y = features.features_labels(test, features_used)
+	x, y = features.features_labels(normalized, features_used)
+	train_x, test_x = features.split_data(x)
+	train_y, test_y = features.split_data(y)
 
 	clf = globals()[model_type](parameter)
 	clf.fit(train_x, train_y)
@@ -80,9 +80,10 @@ def run_all():
 	return accuracy, test_y
 
 def create_data(input_file):
-	items = data_input.parse_data(input_file)
-	data = data_input.clean_data(items)
+	data = data_input.parse_data(input_file)
+	data = data_input.int_encode(data)
 	shuffle(data)
+
 	return data
 
 def update_data():
