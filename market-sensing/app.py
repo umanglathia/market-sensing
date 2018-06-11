@@ -1,6 +1,6 @@
 from __future__ import print_function
 from flask import Flask, render_template, redirect, request, session, url_for
-from wtforms import Form, RadioField, IntegerField, SubmitField, SelectField, validators, FloatField
+from wtforms import Form, RadioField, IntegerField, SubmitField, SelectField, validators, FloatField, TextField
 from sklearn import linear_model
 import sys
 import model.machine_learning as machine_learning
@@ -8,6 +8,20 @@ from model.data_input import parameters
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'development key'
+
+trans = {
+	"least_squares": "Least Squares",
+	"ridge": "Ridge",
+	"lasso": "Lasso",
+	"elastic_net": "Elastic Net",
+	"lasso_lars": "Lasso LARS",
+	"perceptron": "Perceptron",
+	"nearest_neighbor": "Nearest Neighbor",
+	"gpr": "Gaussian",
+	"decision_tree": "Decision Tree",
+	"boosting": "Boosting",
+	"mlpregressor": "MLP Regressor"
+}
 
 class ModelForm(Form):
 	num_tubes = IntegerField("# of Tubes",
@@ -52,12 +66,8 @@ class ModelForm(Form):
 
 class TestingForm(Form):
 	model_type = SelectField('Model Type',
-		choices=[('least_squares', 'Least Squares'), ('ridge', 'Ridge'), ('lasso', 'Lasso'),
-		('elastic_net', 'Elastic Net'), ('lasso_lars', 'Lasso LARS'), ('perceptron', 'Perceptron'),
-		('nearest_neighbor', 'Nearest Neighbor'), ('gpr', 'Gaussian'), 
-		('decision_tree', 'Decision Tree'), ('boosting', 'Forest'), ('mlpregressor', 'MLP Regressor')])
-	parameter = FloatField("Parameter",
-		[validators.optional()])
+		choices= [(key, trans[key]) for key in trans.keys()])
+	parameter = TextField("Parameter")
 
 @app.route("/")
 def main():
@@ -85,8 +95,9 @@ def test(action):
 			return render_template('create.html', **locals())	
 
 		if action == "run":
-			accuracy = machine_learning.run_all()
-			print(accuracy)
+			results, test_y = machine_learning.run_all()
+			for i in range(len(results)):
+				results[i][0] = trans[ results[i][0] ]
 			return render_template('run.html', **locals())
 
 		if action == "clean":
@@ -100,6 +111,7 @@ def test(action):
 	if request.method == 'POST' and action == 'create':
 		model_type = form.model_type.data
 		parameter = form.parameter.data
+		print(parameter)
 		acc1, acc2 = machine_learning.update_model(model_type, parameter)
 		return render_template('created.html', **locals())
 

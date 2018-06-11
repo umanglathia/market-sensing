@@ -1,18 +1,18 @@
 {% extends "test.html" %}
 {% block create %}
 <form action="/test/create" method="post">
-	<div class="form-row form-group text-dark col-8 mx-auto">
-		<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+	<div class="form-row form-group text-dark col-10 mx-auto">
+		<div class="col col-xs-12">
 			{{ form.model_type.label }}
 			{{ form.model_type(class="form-control") }}
 		</div>
-		<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+		<div class="col col-xs-12">
 			{{ form.parameter.label }}
 			{{ form.parameter(class="form-control") }}
 		</div>
 	</div>
 	<div class="form-row my-2">
-		<div class="col-8 mx-auto">
+		<div class="col-10 mx-auto">
 			<button type="submit" class="btn btn-primary btn-block"> Create Model </button>
 		</div>
 	</div>

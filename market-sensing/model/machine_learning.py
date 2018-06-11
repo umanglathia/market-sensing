@@ -8,7 +8,7 @@ features_used = ['num_tubes', "tube_type", 'length', 'width', 'height', 'mass', 
 		'market_segment', 'market', 'sop_year']
 
 def predict_cooler(program_dict, model, num_results):
-	clf = save.load("model")
+	clf, model_type, parameter = save.load("model")
 	data = save.load("data")
 	cooler = data_input.create_program(program_dict, data)
 	quote = results.get_quote(cooler, clf, features_used)
@@ -36,6 +36,10 @@ def create_model(model_type, parameter):
 	
 	return clf, [acc1, acc2]
 
+def update_model(model_type, parameter):
+	clf, accuracy = create_model(model_type, parameter)
+	save.update("model", [clf, model_type, parameter])
+	return accuracy
 
 def run_all():
 	prefix = save.get_prefix("model")
@@ -48,18 +52,15 @@ def run_all():
 	accuracy = []
 
 	for v in range(versions-1):
-		clf = save.load("model", v+1)
+		clf, model_type, parameter = save.load("model", v+1)
 		y_pred = clf.predict(test_x)
 		acc = metrics.get_accuracy(y_pred, test_y)
 
-		accuracy.append(acc)
+		diff = y_pred - test_y
 
-	return accuracy
+		accuracy.append([model_type, parameter, acc, diff])
 
-def update_model(model_type, parameter):
-	clf, accuracy = create_model(model_type, parameter)
-	save.update("model",clf)
-	return accuracy
+	return accuracy, test_y
 
 def create_data(input_file):
 	items = data_input.parse_data(input_file)
@@ -102,7 +103,16 @@ def decision_tree(parameter):
 	return tree.DecisionTreeRegressor()
 
 def boosting(parameter):
-	return ensemble.GradientBoostingRegressor()
+	split = parameter.split(',')
+	while len(split) < 3:
+		split.append("")
+	if split[0] == "":
+		split[0] = 'ls'
+	if split[1] == "":
+		split[1] = 0.1
+	if len(split) <= 2 or split[2] == "":
+		split[2] = 100
+	return ensemble.GradientBoostingRegressor(loss=split[0], )
 
 def mlpregressor(parameter):
 	return neural_network.MLPRegressor()

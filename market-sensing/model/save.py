@@ -13,13 +13,11 @@ def get_prefix(data_type):
 def get_version(prefix, delete=False):
 	version = 1
 	found = False
-	filename_to_delete = ""
 	while not found:
 		filename = prefix + str(version) + ".pk"
 		if os.path.exists(filename):
-			if delete and version > 1:
-				os.remove(filename_to_delete)
-			filename_to_delete = filename
+			if delete:
+				os.remove(filename)
 		else:
 			return version
 
@@ -43,7 +41,6 @@ def load(data_type, version=-1):
 def clean_elem(data_type):
 	prefix = get_prefix(data_type)
 	v = get_version(prefix, True)	
-	os.rename(prefix + str(v-1) + ".pk", prefix + "1.pk")
 
 def clean():
 	clean_elem("model")

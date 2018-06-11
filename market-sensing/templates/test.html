@@ -7,7 +7,7 @@
 		{% if action != "create" %}
 		<form action="/test/create" method="get">
 			<div class="form-row my-2">
-				<div class="col-8 mx-auto">
+				<div class="col-10 mx-auto">
 					<button type="submit" class="btn btn-primary btn-block"> Create Model </button>
 				</div>
 			</div>
@@ -16,7 +16,7 @@
 		{% block created %}{% endblock %}
 		<form action="/test/data" method="get">
 			<div class="form-row my-2">
-				<div class="col-8 mx-auto">
+				<div class="col-10 mx-auto">
 					<button type="submit" class="btn btn-primary btn-block"> Update Data </button>
 				</div>
 			</div>
@@ -24,7 +24,7 @@
 		{% block update_data %}{% endblock %}
 		<form action="/test/run" method="get">
 			<div class="form-row my-2">
-				<div class="col-8 mx-auto">
+				<div class="col-10 mx-auto">
 					<button type="submit" class="btn btn-primary btn-block"> Run All Models </button>
 				</div>
 			</div>
@@ -32,7 +32,7 @@
 		{% block run %}{% endblock %}
 		<form action="/test/clean" method="get">
 			<div class="form-row my-2">
-				<div class="col-8 mx-auto">
+				<div class="col-10 mx-auto">
 					<button type="submit" class="btn btn-primary btn-block"> Clean Files </button>
 				</div>
 			</div>
