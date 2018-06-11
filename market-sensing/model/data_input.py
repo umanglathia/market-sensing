@@ -13,7 +13,7 @@ features_used = ['num_tubes', "tube_type", 'length', 'width', 'height', 'mass', 
 		'market_segment', 'market', 'sop_year']
 
 def if_empty(value):
-	if value == "":
+	if value == "" or value == " ":
 		return None
 	else:
 		return value
@@ -49,29 +49,38 @@ def parse_data(input_file):
 	return output
 
 def encode_parameter(items, parameter):
-	unique = []
+	unique = [None]
 	for i in range(len(items)):
 		value = items[i].data[parameter]
 		if value not in unique:
 			unique.append(value)
 		items[i].data[parameter] = int(unique.index(value))
 
+	return items, unique
+
 def int_encode(data):
+	encoders = {}
 	for parameter in features_used:
 		if parameter not in numerical:
-			encode_parameter(data, parameter)
+			data, encoder = encode_parameter(data, parameter)
+			encoders[parameter] = encoder
 
+	return data, encoders
+
+def encode_quote(item, encoders):
+	for attr in features_used:
+		if attr not in numerical:
+			item.data[attr] = encoders[attr].index(item.data[attr])
+
+	return item
 
 def get_averages(items):
-	output = {}
-
+	averages = {}
 	for attr in parameters:
 		if attr in numerical:
 			numerator = sum(float(item.data[attr]) for item in items if item.data[attr] != None)
-			denominator = sum(1 for item in items if item.data[attr] != None)
-			if denominator == 0:
-				denominator = 1
-			output[attr] = numerator/denominator
+			denominator = max(sum(1 for item in items if item.data[attr] != None), 1)
+			averages[attr] = numerator/denominator
 
 		else:
 			values = Counter()
@@ -79,9 +88,9 @@ def get_averages(items):
 				if item.data[attr] != None:
 					values[ item.data[attr] ] += 1
 
-			output[attr] = values.most_common()[0][0]
+			averages[attr] = values.most_common()[0][0]
 
-	return output
+	return averages
 
 def get_stdevs(items, averages):
 	output = {}
@@ -120,15 +129,11 @@ def normalize_item(item, averages):
 
 	return item
 
-def normalize_data(items):
+def normalize_data(items, averages):
+	return [(normalize_item(item, averages)) for item in items]
 
-	averages = get_averages(items)
-	for i in range(len(items)):
-		items[i] = normalize_item(items[i], averages)
-
-	return items
-
-def create_program(program_dict, data):
-	program = Program(program_dict)
-	averages = get_averages(data)
-	return normalize_item(program, averages)
+def create_program(program_dict, encoders, averages):
+	item = Program(program_dict)
+	item = encode_quote(item, encoders)
+	item = normalize_item(item, averages)
+	return item

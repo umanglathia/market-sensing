@@ -12,11 +12,9 @@ x_zero = 0.5
 a = dropoff*x_zero/(x_zero - dropoff)
 b = dropoff/(dropoff - x_zero)
 
-def get_quote(cooler, clf, features_used):
-	x, y = features.features_labels([cooler], features_used)
-	quote = round(clf.predict(x)[0], 2)
-
-	return quote
+def get_quote(cooler, clf, features_used, encoders):
+	x, y = features.features_labels([cooler], encoders, features_used)
+	return clf.predict(x)[0]
 
 def consider(cooler, item, attr, averages):
 	if attr in cooler.normalized:
@@ -114,13 +112,13 @@ def cosine(cooler, item, features_used, averages, stdevs, r2):
 				magB += (math.sqrt(r2[attr]))**2
 				if cooler.data[attr] == item.data[attr]:
 					score += r2[attr]
-				
+			
 	if magA == 0:
-		magA += 1
+		magA = 1
 	if magB == 0:
-		magB += 1
+		magB = 1
 
-	return (float(score)/(math.sqrt(float(magA))*math.sqrt(float(magB)))+1.0)/2
+	return (score/(math.sqrt(magA)*math.sqrt(magB))+1.0)/2
 
 def similarity(cooler, data, features_used, model):
 	scores = [0]*len(data)
@@ -134,34 +132,40 @@ def similarity(cooler, data, features_used, model):
 
 	return scores
 
-def format(item):
+all_caps = ["HKMC", "VCC", "EU", "FCA", "HMC"]
+accr = {
+	"North America": "NA",
+	"South America": "SA"
+}
+
+def format(item, encoders):
 	item.display = {}
 	for attr in data_input.parameters:
+		if attr in encoders:
+			item.data[attr] = encoders[attr][item.data[attr]]
 		if item.data[attr] == None:
-			item.data[attr] = " "
+			item.data[attr] = ""
 		item.display[attr] = item.data[attr].title()
 
-		if item.display[attr] != " ":
+		if item.display[attr] != "":
 			if attr in ['length', 'width', 'height']:
 				item.display[attr] += "mm"
 			if attr in ['mass']:
 				item.display[attr] += "g"
-			if item.display[attr] in ["Hkmc", "Vcc", "Eu", "Fca"]:
+			if item.display[attr].upper() in all_caps:
 				item.display[attr] = item.display[attr].upper()
-			if item.display[attr] == "North America":
-				item.display[attr] = "NA"
-			if item.display[attr] == "South America":
-				item.display[attr] = "SA"
+			if item.display[attr] in accr:
+				item.display[attr] = accr[ item.display[attr] ]
 
 	return item
 
-def sort_and_display(data, scores, num_results):
+def sort_and_display(data, scores, num_results, encoders):
 	idx = np.argsort(scores)
 	ascending = idx[::-1]
 	scores = np.array(scores)[ascending]
 	data = np.array(data)[ascending]
 
 	for i in range(num_results):
-		data[i] = format(data[i])
+		data[i] = format(data[i], encoders)
 
 	return zip(data[:num_results], scores[:num_results])

@@ -9,19 +9,19 @@ features_used = ['num_tubes', "tube_type", 'length', 'width', 'height', 'mass', 
 
 def predict_cooler(program_dict, sim_model, num_results, pred_model):
 	clf, model_type, parameter = save.load("model", pred_model)
-	data = save.load("data")
-	cooler = data_input.create_program(program_dict, data)
-	quote = results.get_quote(cooler, clf, features_used)
+	data, encoders, averages = save.load("data")
+	cooler = data_input.create_program(program_dict, encoders, averages)
+	quote = results.get_quote(cooler, clf, features_used, encoders)
 	scores = results.similarity(cooler, data, features_used, sim_model)
-	similar_list = results.sort_and_display(data, scores, num_results)
+	similar_list = results.sort_and_display(data, scores, num_results, encoders)
 
 	return quote, similar_list
 
 def create_model(model_type, parameter):
-	data = save.load("data")
-	normalized = data_input.normalize_data(data)
+	data, encoders, averages = save.load("data")
+	normalized = data_input.normalize_data(data, averages)
 
-	x, y = features.features_labels(normalized, features_used)
+	x, y = features.features_labels(normalized, encoders, features_used)
 	train_x, test_x = features.split_data(x)
 	train_y, test_y = features.split_data(y)
 
@@ -62,10 +62,10 @@ def run_all():
 	prefix = save.get_prefix("model")
 	versions = save.get_version(prefix)
 
-	data = save.load("data")
-	normalized = data_input.normalize_data(data)
+	data, encoders, averages = save.load("data")
+	normalized = data_input.normalize_data(data, averages)
 	_, test = features.split_data(normalized)
-	test_x, test_y = features.features_labels(test, features_used)
+	test_x, test_y = features.features_labels(test, encoders, features_used)
 	accuracy = []
 
 	for v in range(versions-1):
@@ -81,14 +81,15 @@ def run_all():
 
 def create_data(input_file):
 	data = data_input.parse_data(input_file)
-	data = data_input.int_encode(data)
+	data, encoders = data_input.int_encode(data)
+	averages = data_input.get_averages(data)
 	shuffle(data)
 
-	return data
+	return data, encoders, averages
 
 def update_data():
-	data = create_data("model/test_data.csv")
-	save.update("data", data)
+	data, encoders, averages = create_data("model/test_data.csv")
+	save.update("data", [data, encoders, averages])
 
 def clean():
 	save.clean()

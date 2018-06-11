@@ -121,7 +121,6 @@ def test(action):
 	if request.method == 'POST' and action == 'create':
 		model_type = form.model_type.data
 		parameter = form.parameter.data
-		print(parameter)
 		acc1, acc2 = machine_learning.update_model(model_type, parameter)
 		return render_template('created.html', **locals())
 

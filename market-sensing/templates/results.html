@@ -120,7 +120,7 @@
 							<span class="card-text"> Peak: </span>
 						</div>
 						<div class="text-center col-sm-5"> 
-							<span> {{ similar.display['peak_volume']}} </span>
+							<span> {{ "{:,}".format(similar.display['peak_volume']|int) }} </span>
 						</div>
 					</div>
 					<div class="col row">
@@ -128,7 +128,7 @@
 							<span class="card-text"> Lifetime: </span>
 						</div>
 						<div class="text-center col-sm-5"> 
-							<span> {{similar.display['lifetime_volume']}}</span>
+							<span> {{ "{:,}".format(similar.display['lifetime_volume']|int) }}</span>
 						</div>
 					</div>
 					<div class="col row">
