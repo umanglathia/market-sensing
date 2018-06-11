@@ -7,12 +7,12 @@ features_used = ['num_tubes', "tube_type", 'length', 'width', 'height', 'mass', 
 		'num_brackets', 'spigot_type', 'num_gasboxes', 'peak_volume', 'lifetime_volume', 'customer',
 		'market_segment', 'market', 'sop_year']
 
-def predict_cooler(program_dict, model, num_results):
-	clf, model_type, parameter = save.load("model")
+def predict_cooler(program_dict, sim_model, num_results, pred_model):
+	clf, model_type, parameter = save.load("model", pred_model)
 	data = save.load("data")
 	cooler = data_input.create_program(program_dict, data)
 	quote = results.get_quote(cooler, clf, features_used)
-	scores = results.similarity(cooler, data, features_used, model)
+	scores = results.similarity(cooler, data, features_used, sim_model)
 	similar_list = results.sort_and_display(data, scores, num_results)
 
 	return quote, similar_list
@@ -40,6 +40,23 @@ def update_model(model_type, parameter):
 	clf, accuracy = create_model(model_type, parameter)
 	save.update("model", [clf, model_type, parameter])
 	return accuracy
+
+def get_models():
+	prefix = save.get_prefix("model")
+	versions = save.get_version(prefix)
+	models = []
+
+	for v in range(versions-1):
+		_, model_type, parameter = save.load("model", v+1)
+		new_model = {}
+		new_model['id'] = v+1
+		new_model['name'] = model_type.capitalize()
+		if parameter != "":
+			new_model['name'] += ", " + parameter
+		models.append(new_model)
+
+	return models
+		
 
 def run_all():
 	prefix = save.get_prefix("model")

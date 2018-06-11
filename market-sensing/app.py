@@ -23,6 +23,14 @@ trans = {
 	"mlpregressor": "MLP Regressor"
 }
 
+class NonValidatingSelectField(SelectField):
+    """
+    Attempt to make an open ended select  field that can accept dynamic
+    choices added by the browser.
+    """
+    def pre_validate(self, form):
+        pass
+
 class ModelForm(Form):
 	num_tubes = IntegerField("# of Tubes",
 		[validators.optional()])
@@ -59,10 +67,12 @@ class ModelForm(Form):
 		('South America', 'South America'), ('China', 'China'), ('Korea', 'Korea'), ('Japan', 'Japan')])
 	sop_year = IntegerField("SOP Year",
 		[validators.optional()])
-	model = SelectField("Model", 
+	sim_model = SelectField("Similarity Model", 
 		choices=[('euclidean','Euclidean'),('manhattan','Manhattan'), ('cosine', 'Cosine')])
 	num_results = SelectField("Results",
 		choices=[('5', '5'),('10', '10')])
+	pred_model = SelectField("Prediction Model",
+		choices=[])
 
 class TestingForm(Form):
 	model_type = SelectField('Model Type',
@@ -119,19 +129,24 @@ def test(action):
 @app.route("/model", methods=['GET', 'POST'])
 def model():
 	form = ModelForm(request.form)
+	models = machine_learning.get_models()
+	form.pred_model.choices = [(c['id'], c['name']) for c in models]
+
 	if request.method == 'GET':
 		return render_template('form.html', **locals())
 
-	if request.method == 'POST' and form.validate():
+	if request.method == 'POST': 
 		input_form = request.form
 		program = {}
 
 		for attr in parameters:
-			program[attr] = input_form.get(attr, "")
+			program[attr] = input_form.get(attr, '')
 
-		model = input_form.get('model', "")
-		num_results = int(input_form.get('num_results', ''))
-		quote, similar_list = machine_learning.predict_cooler(program, model, num_results)
+		s = input_form.get('sim_model', '')
+		r = int(input_form.get('num_results', ''))
+		p = input_form.get('pred_model', '')
+
+		quote, similar_list = machine_learning.predict_cooler(program, s, r, p)
 
 		return render_template('results.html', **locals())
 

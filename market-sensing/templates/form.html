@@ -74,19 +74,27 @@
 		</div>
 		<div class="form-row form-group mt-2">
 			<div class="col-lg-3 col-sm-6 form-row">
-				<div class="col-lg-4 col-sm-6 pt-2 text-lg-right text-xs-center">
-					{{ form.model.label }}
+				<div class="col-lg-4 col-sm-6 text-lg-center text-xs-center">
+					{{ form.sim_model.label }}
 				</div>
 				<div class="col-lg-8 col-sm-6">
-					{{ form.model(class="form-control") }}
+					{{ form.sim_model(class="form-control") }}
 				</div>
 			</div>
-			<div class="col-lg-2 col-sm-6 form-row">
-				<div class="col-sm-6 pt-2 text-lg-right text-xs-center">
+			<div class="col-lg-3 col-sm-6 form-row">
+				<div class="col-sm-6 pt-2 text-lg-center text-xs-center">
 					{{ form.num_results.label(class="m-0 align-bottom") }}
 				</div>
 				<div class="col-sm-6">
 					{{ form.num_results(class="form-control")}}
+				</div>
+			</div>
+			<div class="col-lg-3 col-sm-6 form-row">
+				<div class="col-lg-4 col-sm-6 text-lg-center text-xs-center">
+					{{ form.pred_model.label }}
+				</div>
+				<div class="col-lg-8 col-sm-6">
+					{{ form.pred_model(class="form-control") }}
 				</div>
 			</div>
 			<div class="col-lg-2 col-xs-12">
