@@ -141,9 +141,14 @@ def model():
 		for attr in parameters:
 			program[attr] = input_form.get(attr, '')
 
+		'''
 		s = input_form.get('sim_model', '')
 		r = int(input_form.get('num_results', ''))
 		p = input_form.get('pred_model', '')
+		'''
+		s = "cosine"
+		r = 5
+		p = 2
 
 		quote, similar_list = machine_learning.predict_cooler(program, s, r, p)
 
