@@ -17,7 +17,7 @@
 		<form action="/test/data" method="get">
 			<div class="form-row my-2">
 				<div class="col-10 mx-auto">
-					<button type="submit" class="btn btn-primary btn-block"> Update Data </button>
+					<button type="submit" class="btn btn-primary btn-block"> Clean and Update Data </button>
 				</div>
 			</div>
 		</form>
@@ -30,14 +30,6 @@
 			</div>
 		</form>
 		{% block run %}{% endblock %}
-		<form action="/test/clean" method="get">
-			<div class="form-row my-2">
-				<div class="col-10 mx-auto">
-					<button type="submit" class="btn btn-primary btn-block"> Clean Files </button>
-				</div>
-			</div>
-		</form>
-		{% block clean %}{% endblock %}
 	</fieldset>
 </div>
 {% endblock %}

@@ -110,11 +110,8 @@ def test(action):
 				results[i][0] = trans[ results[i][0] ]
 			return render_template('run.html', **locals())
 
-		if action == "clean":
-			machine_learning.clean()
-			return render_template('clean.html', **locals())
-
 		if action == "data":
+			machine_learning.clean()
 			machine_learning.update_data()
 			return render_template('update_data.html', **locals())
 

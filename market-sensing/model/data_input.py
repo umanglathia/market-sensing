@@ -76,7 +76,7 @@ def encode_quote(item, encoders):
 
 def get_averages(items):
 	averages = {}
-	for attr in parameters:
+	for attr in features_used:
 		if attr in numerical:
 			numerator = sum(float(item.data[attr]) for item in items if item.data[attr] != None)
 			denominator = max(sum(1 for item in items if item.data[attr] != None), 1)
@@ -95,7 +95,7 @@ def get_averages(items):
 def get_stdevs(items, averages):
 	output = {}
 
-	for attr in parameters:
+	for attr in features_used:
 		if attr in numerical:
 			numerator = sum( (float(item.data[attr]) - averages[attr])**2 for item in items if item.data[attr] != None )
 			denominator = sum(1 for item in items if item.data[attr] != None)
@@ -122,7 +122,7 @@ def get_r2(features_used):
 
 
 def normalize_item(item, averages):
-	for attr in parameters:
+	for attr in features_used:
 		if item.data[attr] == None:
 			item.data[attr] = averages[attr]
 			item.normalized.append(attr)
