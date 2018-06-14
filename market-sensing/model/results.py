@@ -13,7 +13,7 @@ a = dropoff*x_zero/(x_zero - dropoff)
 b = dropoff/(dropoff - x_zero)
 
 def get_quote(cooler, clf, features_used, encoders):
-	x, y = features.features_labels([cooler], encoders, features_used)
+	x = features.features([cooler], encoders, features_used)
 	return clf.predict(x)[0]
 
 def consider(cooler, item, attr, averages):

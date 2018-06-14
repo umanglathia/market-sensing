@@ -145,7 +145,7 @@ def model():
 		'''
 		s = "cosine"
 		r = 5
-		p = 2
+		p = 1
 
 		quote, similar_list = machine_learning.predict_cooler(program, s, r, p)
 
