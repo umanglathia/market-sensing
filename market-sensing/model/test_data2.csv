@@ -1,22 +1,93 @@
-Use,Created,Customer,Number of Tubes,Length,Width,Height,Mass,Number of Gas Boxes,Peak Volume,Total Volume,Region,Final Price
-Yes,2014,Ford,7.2,107.8,48.9,37.16,1304.688,1.66,290700,769600,North America,20
-Yes,2014,Ford,3,93.67,52,5.2,1304.688,2,1945800,1945800,North America,18.83
-Yes,2014,Ford,5,114,52,5,1304.688,1,1135000,1135000,North America,21.13
-Yes,2015,Ford,6,120,55,5,1029.26,2,194000,905000,North America,31.28
-Yes,2015.625,FCA,6,147.33,35,5,1825,2,2255900,2255900,North America,30.48
-Yes,2016,VCC,7.2,107.8,48.9,37.16,1304.688,1.66,302912,1532554,EU,25.04
-Yes,2015.625,VCC,7,114,52.15,5,1304.688,1,70357,385480,EU,26.76
-Yes,2017,Ford,7,122,50,60,1304.688,1.66,291660,891980,North America,21
-Yes,2017,Nissan,7,122,50,63,1244,1.66,435648,1714773,Asia,17.6
-Yes,2015.625,Nissan,7.2,107.8,48.9,37.16,1304.688,1.66,194481,920816,Asia,24.42
-Yes,2015.625,HKMC,6,113,60,45,1510,1.66,145836,640651,Asia,25.59
-Yes,2015.625,HKMC,7,89,53,62,1170,1.66,221953,986472,Asia,32.72
-Yes,2015.625,HKMC,9,62.1,48.9,37.16,1300,1.66,236744,1247308,Asia,32.72
-Yes,2015.625,HKMC,9,62.1,60.1,37.16,1300,1.66,48947,235339,Asia,21.43
-No,2015.625,Mitsubishi,3,100,26,62,610,1.66,111818,476967,Asia,
-No,2018,Maruti,5,106.6,46.21,37.16,1304.688,1.66,150000,750000,Asia,
-No,2015.625,HMC,3,150,32,62,1210,1.66,135000,0,Asia,
-Yes,2015.625,HMC,6,90,47,62,1220,1.66,0,0,Asia,38
-Yes,2015.625,Mitsubishi,8,107.8,48.9,37.16,1038,1.66,147000,577000,Asia,31
-Yes,2015.625,Mitsubishi,24,107.8,48.9,37.16,1304.688,1.66,437566.1053,914244.2105,Asia,33
-No,2015.625,GM,9,119,63.12,42,2200,1.66,437566.1053,914244.2105,North America,
+Program Number,Use,Number of Tubes,Type of Tube,Length,Width,Height,Mass,Bypass Valve,Number of Brackets,"Spigots, Straight or Bend?",Number of Gas Boxes,Peak Volume,Total Volume,Customer,Market Segment,Market,SOP Year,BW Quote,Status,Final Price
+613,Yes,,,,,,,No,,,,290700,769600,Ford,Passenger,North America,2017,25.11,Lost,20.00
+,Yes,3,Hybrid,93.67,52,5.2,,,0,Straight,2,1945800,1945800,Ford,,North America,,18.11,Lost,16.95
+,Yes,5,Hybrid,114,52,5,,,0,Straight,1,1135000,1135000,Ford,,North America,,,Lost,18.13
+651,Yes,6,Hybrid,120,55,5,1029.26,,3,Bend,2,194000,905000,Ford,,North America,2018,31.28,Won,31.28
+,Yes,6,Hybrid,147.33,35,5,1825,,1,Straight,2,2255900,2255900,FCA,,North America,,,Cancelled,30.48
+707,Yes,,Hybrid,,,,,,,,,302912,1532554,VCC,,EU,2018,25.04,Won,25.04
+709,Yes,7,Hybrid,114,52.15,5,,,,Bend,1,70357,385480,VCC,,EU,2019,26.76,Won,26.76
+,No,7,Hybrid,122,50,60,,,,,,291660,891980,Ford,,North America,2020,,Won,
+1120,Yes,7,Hybrid,122,50,63,1244,,,,,435648,1714773,Nissan,,Asia,2020,,Lost,21.00
+1198,Yes,,Hybrid,,,,,,,,,194481,920816,Nissan,,Asia,2019,17.6,Won,17.60
+1337,Yes,6,Hybrid,113,60,45,1510,,,,,145836,640651,HKMC,,Asia,2020,24.42,Won,24.42
+1613,Yes,7,Hybrid,89,53,62,1170,,,,,221953,986472,HKMC,,Asia,2020,25.59,Won,25.59
+1124,Yes,9,Hybrid,62.1,,,1300,,,,,236744,1247308,HKMC,,Asia,2019,32.72,Won,32.72
+1422,Yes,9,Hybrid,62.1,60.1,,1300,,3,Bend,,48947,235339,HKMC,,Asia,2019,32.72,Won,32.72
+10061,Yes,3,Hybrid,100,26,62,610,,,,,111818,476967,Mitsubishi,,Asia,2020,,Lost,21.43
+,No,5,Corrugate,106.6,46.21,,,,,,,150000,750000,Maruti,,Asia,2020,,,
+10070,No,3,Hybrid,150,32,62,1210,,,,,135000,0,HMC,,Asia,,,Won,
+10203,Yes,6,Hybrid,90,47,62,1220,,,,,0,0,HMC,,Asia,,38,Won,38.00
+,Yes,8,Hybrid,,,,1038,,,,,147000,577000,Mitsubishi,,Asia,2012,31,Active,31.00
+,Yes,24,Corrugate,,,,,,,,,,,Mitsubishi,,Asia,,33,Active,33.00
+,No,9,Hybrid,119,63.12,42,2200,,3,,2,,,GM,,North America,,,Active,
+,Yes,,,,,,,,,,,451722,,,Passenger,Asia,2015,33.26,Lost,32.85
+613,Yes,,Corrugate,,,,,,,,,157341,,,Passenger,North America,2016,25.75,Lost,20.00
+442,Yes,,,,,,,,,,,527850,,,Passenger,EU,2017,40.33,Won,40.33
+367,Yes,,,,,,,,,,,99017,,,Passenger,EU,2019,30.24,Won,30.24
+569,Yes,,,,,,,,,,,127,,,Commercial,Asia,2014,32.4,Won,32.40
+626,Yes,,,,,,,,,,,397842,,,Passenger,North America,2017,40.2,Won,40.20
+625,Yes,,,,,,,,,,,182292,,,Passenger,EU,2016,41.91,Lost,39.60
+922,Yes,,Corrugate,,,,,,,,,17000,,,Passenger,South America,2016,102.39,Active,102.39
+659,Yes,,Hybrid,,,,,,,,,10045,,,Passenger,Asia,2016,110,Won,110.00
+693,Yes,,Corrugate,,,,,,,,,15000,,,Passenger,Asia,2015,58,Won,58.00
+697,Yes,,,,,,,,,,,66396,,,Passenger,EU,2017,38,Won,38.00
+707,Yes,,Hybrid,,,,,,,,,290047,,,Passenger,EU,2019,25.04,Won,25.04
+694,No,,Corrugate,,,,,,,,,171431,,,Commercial,Asia,2017,,Active,
+794,Yes,,Corrugate,,,,,,,,,3789,,,Commercial,Asia,2016,44,Won,44.00
+945,Yes,,,,,,,,,,,48192,,,Passenger,Asia,2017,118.9,Won,118.90
+355,Yes,,Hybrid,,,,,,,,,12218,,,Passenger,EU,2016,233.25,Cancelled,233.25
+651,Yes,,Hybrid,,,,,,,,,239266,,,Passenger,North America,2018,23.55,Won,23.55
+135,Yes,,,,,,,No,,,,60025,,,Passenger,EU,2014,117.5,Won,117.50
+383,Yes,,Corrugate,,,,,,,,,91000,,,Passenger,Asia,2015,13,Won,13.00
+444,Yes,,Hybrid,,,,,,,,,224842,,,Passenger,EU,2018,48.61,Won,48.61
+564,Yes,,,,,,,,,,,21995,,,Passenger,EU,2018,45.19,Won,45.19
+1087,Yes,,,,,,,,,,,131612,,,Passenger,North America,1900,33.48,Lost,32.48
+1082,Yes,,Corrugate,,,,,,,,,52653,,,Passenger,Asia,2017,12.21,Won,12.21
+992,Yes,,Hybrid,,,,,,,,,14304,,,Commercial,Asia,2017,43.28,Won,43.28
+1111,Yes,,Hybrid,,,,,,,,,134335,,,Passenger,Asia,2017,42.65,Won,42.65
+332,Yes,,Corrugate,,,,,,,,,8533,,,Commercial,Asia,2014,24.62,Won,24.62
+1127,Yes,,,,,,,No,,,,96417,,,Passenger,EU,2019,27.4,Lost,23.66
+566,Yes,,,,,,,,,,,94800,,,Passenger,Asia,2017,95.12,Won,95.12
+1124,Yes,,Hybrid,,,,,,,,,222957,,,Passenger,Asia,2019,33.06,Won,33.06
+1108,Yes,,,,,,,,,,,743779,,,Passenger,Asia,2019,27.74,Lost,19.50
+,Yes,,Corrugate,,,,,,,,,219855,,,Passenger,North America,2019,153.16,Won,153.16
+1358,Yes,,Hybrid,,,,,,,,,315000,,,Commercial,Asia,2019,90,Active,90.00
+1374,Yes,,Hybrid,,,,,,,,,96115,,,Passenger,Asia,2019,33.06,Won,33.06
+1447,Yes,,Hybrid,,,,,,,,,239415,,,Passenger,Asia,2019,30.76,Lost,27.00
+1419,Yes,,Hybrid,,,,,,,,,34591,,,Passenger,,2019,,Lost,37.00
+336,Yes,,,,,,,,,,,142208,,,Passenger,EU,2015,64.85,Won,64.85
+451,Yes,,Hybrid,,,,,,,,,76111,,,Passenger,EU,2015,169.17,Lost,12.83
+508,Yes,,,,,,,,,,,7779,,,Passenger,Asia,2014,54.5,Won,54.50
+583,Yes,,,,,,,,,,,30864,,,Passenger,EU,2017,126,Lost,108.00
+646,Yes,,,,,,,No,,,,123188,,,Passenger,EU,2016,38.5,Lost,37.83
+10197,No,,Hybrid,,,,,,,,,14512,,,Passenger,Asia,2015,,Won,
+985,Yes,,Hybrid,,,,,,,,,19027,,,Passenger,Asia,2016,21,Won,21.00
+958,Yes,,Hybrid,,,,,,,,,67810,,,Passenger,Asia,2017,22.31,Won,22.31
+897,Yes,,Hybrid,,,,,,,,,13794,,,Commercial,Asia,2015,26.15,Cancelled,26.15
+525,Yes,,,,,,,,,,,185356,,,Passenger,North America,2016,106.25,Won,106.25
+827,Yes,,,,,,,Yes,,,,225226,,,Passenger,EU,2016,62.03,Won,62.03
+903,Yes,,Corrgate,,,,,,,,,28832,,,Commercial,EU,2018,93.6,Won,93.60
+,Yes,,Hybrid,,,,,,,,,13800,,,Commercial,Asia,2015,27.08,Cancelled,27.08
+858,Yes,,,,,,,,,,,362666,,,Passenger,EU,2017,37.5,Cancelled,37.50
+1149,Yes,,,,,,,Yes,,,,140683,,,Passenger,North America,2018,58.89,Cancelled,58.89
+1148,Yes,,,,,,,No,,,,412803,,,Passenger,EU,2018,47.5,Won,47.50
+313,Yes,,Corrugate,,,,,,,,,69712,,,Passenger,Asia,2015,42.9,Won,42.90
+1010,Yes,,Hybrid,,,,,,,,,19768,,,Commercial,Asia,2019,18.77,Won,18.77
+1022,Yes,,Hybrid,,,,,,,,,110584,,,Passenger,Asia,2016,22.62,Won,22.62
+10121,Yes,,Hybrid,,,,,,,,,978929,,,Passenger,Asia,2018,47.87,Won,47.87
+1079,Yes,,Hybrid,,,,,,,,,222343,,,Passenger,Asia,2018,98.7,Won,98.70
+1112,Yes,,Corrugate,,,,,,,,,18000,,,Commercial,EU,2018,116.88,Won,116.88
+449,Yes,,Hybrid,,,,,,,,,180000,,,Passenger,Asia,2016,24.62,Won,24.62
+1170,Yes,,,,,,,,,,,1602857,,,Passenger,EU,2017,30.83,Cancelled,30.83
+1188,Yes,,,,,,,Yes,,,,387976,,,Passenger,EU,2018,85.25,Won,85.25
+1426,Yes,,Hybrid,,,,,,,,,98494,,,Passenger,Asia,2018,27.38,Won,27.38
+,Yes,,Hybrid,,,,,,,,,15667,,,Passenger,Asia,2018,18.09,Lost,27.69
+1448,Yes,,Corrugate,,,,,,,,,209944,,,Passenger,Asia,2018,38,Won,38.00
+1452,Yes,,,,,,,Yes,,,,253262,,,Passenger,EU,2019,51.73,Lost,45.83
+1500,Yes,,Corrugate,,,,,,,,,520096,,,Passenger,EU,2020,,Lost,34.17
+10402,Yes,,Hybrid,,,,,,,,,62500,,,Commercial,Asia,2020,,Lost,73.44
+10065,Yes,,Hybrid,,,,,,,,,30529,,JAC,Passenger,Asia,2018,,Won,88.74
+1515,Yes,,Hybrid,,,,,,,,,285710,,Ford,Passenger,North America,2020,,Won,93.00
+10236,Yes,,Hybrid,,,,,,,,,29335,,JND,Commercial,Asia,2020,,Won,84.15
+10274,Yes,,Hybrid,,,,,,,,,94042,,JAC,Commercial,Asia,2019,,Lost,72.31
+10280,Yes,,Hybrid,,,,,,,,,42292,,JAC,Commercial,Asia,2020,,Won,71.91

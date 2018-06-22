@@ -5,7 +5,6 @@ import numpy as np
 import random
 import math
 
-SCORING = "euclidean"
 numerical = data_input.numerical
 dropoff = 0.1
 x_zero = 0.5
@@ -16,7 +15,8 @@ def get_quote(cooler, clf, features_used, encoders):
 	x = features.features([cooler], encoders, features_used)
 	return clf.predict(x)[0]
 
-def consider(cooler, item, attr, averages):
+def consider(cooler, item, attr):
+
 	if attr in cooler.normalized:
 		return False
 	if cooler.data[attr] == " ":
@@ -24,6 +24,8 @@ def consider(cooler, item, attr, averages):
 	if attr in item.normalized:
 		return False
 	if item.data[attr] == None:
+		return False
+	if cooler.data[attr] == 0:
 		return False
 
 	return True
@@ -56,7 +58,7 @@ def euclidean(cooler, item, features_used, averages, stdevs, r2):
 	score = 0.0
 	total = 0.0
 	for attr in features_used:
-		if consider(cooler, item, attr, averages):
+		if consider(cooler, item, attr):
 			if attr in numerical:
 				total += (1*r2[attr])**2
 				c = quantize(cooler, attr, stdevs, averages)
@@ -77,7 +79,7 @@ def manhattan(cooler, item, features_used, averages, stdevs, r2):
 	score = 0.0
 	total = 0.0
 	for attr in features_used:
-		if consider(cooler, item, attr, averages):
+		if consider(cooler, item, attr):
 			if attr in numerical:
 				total += 1*r2[attr]
 				c = quantize(cooler, attr, stdevs, averages)
@@ -92,6 +94,7 @@ def manhattan(cooler, item, features_used, averages, stdevs, r2):
 	if total == 0:
 		total = 1
 
+
 	return float(score)/total
 
 def cosine(cooler, item, features_used, averages, stdevs, r2):
@@ -99,7 +102,7 @@ def cosine(cooler, item, features_used, averages, stdevs, r2):
 	magA = 0.0
 	magB = 0.0
 	for attr in features_used:
-		if consider(cooler, item, attr, averages):
+		if consider(cooler, item, attr):
 			if attr in numerical:
 				c = quantize(cooler, attr, stdevs, averages)
 				x = quantize(item, attr, stdevs, averages)

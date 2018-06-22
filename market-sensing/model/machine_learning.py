@@ -3,11 +3,10 @@ import model.data_input as data_input, model.features as features, model.metrics
 from random import shuffle
 import numpy as np
 
-features_used = ['num_tubes', "tube_type", 'length', 'width', 'height', 'mass', 'bypass_valve',
-		'num_brackets', 'spigot_type', 'num_gasboxes', 'peak_volume', 'lifetime_volume', 'customer',
-		'market_segment', 'market', 'sop_year']
+features_used = data_input.features_used
 
-def predict_cooler(program_dict, sim_model, num_results, pred_model):
+def predict_cooler(program_dict, sim_model, num_results):
+	pred_model = save.get_version(save.get_prefix("model")) - 1
 	clf, model_type, parameter = save.load("model", pred_model)
 	data, encoders, averages = save.load("data")
 	cooler = data_input.create_program(program_dict, encoders, averages)
@@ -88,7 +87,7 @@ def create_data(input_file):
 	return data, encoders, averages
 
 def update_data():
-	data, encoders, averages = create_data("model/test_data.csv")
+	data, encoders, averages = create_data("model/test_data2.csv")
 	save.update("data", [data, encoders, averages])
 
 def clean():

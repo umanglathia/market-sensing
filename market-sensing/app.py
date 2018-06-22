@@ -143,11 +143,10 @@ def model():
 		r = int(input_form.get('num_results', ''))
 		p = input_form.get('pred_model', '')
 		'''
-		s = "cosine"
+		s = "euclidean"
 		r = 5
-		p = 1
 
-		quote, similar_list = machine_learning.predict_cooler(program, s, r, p)
+		quote, similar_list = machine_learning.predict_cooler(program, s, r)
 
 		return render_template('results.html', **locals())
 

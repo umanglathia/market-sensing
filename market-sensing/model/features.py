@@ -30,6 +30,9 @@ def features(data, encoders, features_used):
 	return np.array([generate_features(x, encoders, features_used) for x in data])
 
 def labels(data):
+	for x in data:
+		print(x.data['final_price'])
+		print(float(x.data['final_price']))
 	return np.array([float(x.data['final_price']) for x in data])
 
 def features_labels(data, encoders, features_used):
