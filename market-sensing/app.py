@@ -23,6 +23,14 @@ trans = {
 	"mlpregressor": "MLP Regressor"
 }
 
+metrics = {
+	"mean-absolute-error": "Mean Absolute Error",
+	"mean-square-error": "Mean Square Error",
+	"mean-square-log-error": "Mean Square Log Error",
+	"mean-percent-error": "Mean Percent Error",
+	"median-absolute-error": "Median Absolute Error"
+}
+
 class NonValidatingSelectField(SelectField):
     """
     Attempt to make an open ended select  field that can accept dynamic
@@ -105,7 +113,7 @@ def test(action):
 			return render_template('create.html', **locals())	
 
 		if action == "run":
-			results, test_y = machine_learning.run_all()
+			results = machine_learning.run_all()
 			for i in range(len(results)):
 				results[i][0] = trans[ results[i][0] ]
 			return render_template('run.html', **locals())

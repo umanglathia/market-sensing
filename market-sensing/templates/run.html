@@ -5,24 +5,18 @@
 	<thead>
 		<tr>
 			<th scope="col"> Model </th>
-			<th scope="col"> Error </th>
-			{% for price in test_y %}
-			<th scope="col"> ${{ "%.2f" | format(price) }} </th>
+			{% for key in metrics.keys() %}
+			<th scope="col"> {{ metrics[key] }} </th>
 			{% endfor %}
 		</tr>
 	</thead>
 	<tbody>
-		{% for m, p, acc, values in results %}
+		{% for m, p, comps in results %}
 		<tr>
 			<th scope="row"> {{ m }}{% if p != "" %}, {{ p }} {% endif %}
 			</th>
-			<td> ${{ "%.2f" | format(acc) }} </td>
-			{% for value in values %}
-			<td {% if (value | abs) <= 2 %} class="table-success"
-				{% elif (value | abs) >= 5 %} class="table-danger"
-				{% endif %}>
-				{% if value > 0 %}+{% else %}-{% endif %}${{ "%.2f" | format(value|abs) }}
-			</td>
+			{% for key in metrics.keys() %}
+			<td> {{ "%.2f" | format( comps[key] ) }}</td>
 			{% endfor %}
 		</tr>
 		{% endfor %}

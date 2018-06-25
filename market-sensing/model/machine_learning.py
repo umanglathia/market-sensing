@@ -14,7 +14,7 @@ num_iterations = 100
 def predict_cooler(program_dict, sim_model, num_results):
 	# load latest model and data
 	pred_model = save.get_version(save.get_prefix("model")) - 1
-	clfs, model_type, parameter = save.load("model", pred_model)
+	clfs, model_type, parameter, _ = save.load("model", pred_model)
 	data, encoders, averages = save.load("data")
 
 	# create cooler
@@ -79,25 +79,31 @@ def create_model(model_type, parameter):
 		# keep important values for next iteration
 		clfs.append(clf)
 
-	#calculate a baseline
+	# calculate a baseline
 	median = [metrics.median(y)] * n_size
 	base = sk_metrics.mean_absolute_error(y, median)
 
-
+	# calculate as median of predictions
 	y_pred_ensemble = [metrics.median(y)] * n_size
 	for idx in range(n_size):
 		print(y_pred_ensemble)
 		y_pred_ensemble[idx] = metrics.median( y_preds[idx] )
 
-	print(y_pred_ensemble)
-
 	error = sk_metrics.mean_absolute_error(y, y_pred_ensemble)
 
-	return clfs, [base, error]
+	# calculate comparators
+	comparators = {}
+	comparators['mean-absolute-error'] = error
+	comparators['mean-square-error'] = sk_metrics.mean_squared_error(y, y_pred_ensemble)
+	comparators['mean-square-log-error'] = sk_metrics.mean_squared_log_error(y, y_pred_ensemble)
+	comparators['mean-percent-error'] = metrics.mean_percentage_error(y, y_pred_ensemble)
+	comparators['median-absolute-error'] = sk_metrics.median_absolute_error(y, y_pred_ensemble)
+
+	return clfs, comparators, [base, error]
 
 def update_model(model_type, parameter):
-	clfs, accuracy = create_model(model_type, parameter)
-	save.update("model", [clfs, model_type, parameter])
+	clfs, comparators, accuracy = create_model(model_type, parameter)
+	save.update("model", [clfs, model_type, parameter, comps])
 	return accuracy
 
 def get_models():
@@ -120,23 +126,14 @@ def get_models():
 def run_all():
 	prefix = save.get_prefix("model")
 	versions = save.get_version(prefix)
-
-	data, encoders, averages = save.load("data")
-	normalized = data_input.normalize_data(data, averages)
-	_, test = features.split_data(normalized)
-	test_x, test_y = features.features_labels(test, encoders, features_used)
-	accuracy = []
+	
+	display = []
 
 	for v in range(versions-1):
-		clf, model_type, parameter = save.load("model", v+1)
-		y_pred = clf.predict(test_x)
-		acc = metrics.get_accuracy(y_pred, test_y)
+		_, model_type, parameter, comparators = save.load("model", v+1)
+		display.append([model_type, parameter, comparators])
 
-		diff = y_pred - test_y
-
-		accuracy.append([model_type, parameter, acc, diff])
-
-	return accuracy, test_y
+	return display
 
 def create_data(input_file):
 	data = data_input.parse_data(input_file)
