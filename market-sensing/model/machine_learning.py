@@ -9,7 +9,7 @@ from matplotlib import pyplot
 features_used = data_input.features_used
 
 # number of bootstrap models
-num_interations = 100
+num_iterations = 100
 
 def predict_cooler(program_dict, sim_model, num_results):
 	# load latest model and data
@@ -52,9 +52,9 @@ def create_model(model_type, parameter):
 	indices = list(range(len(x)))
 	clfs = []
 	scores = []
-	y_preds = [ [] for i in range(n_size)
+	y_preds = [ [] for i in range(n_size) ]
 
-	for i in range(num_interations):
+	for i in range(num_iterations):
 
 		# make bootstrap samples indices
 		train_indices = resample(indices, n_samples=n_size)
@@ -73,20 +73,23 @@ def create_model(model_type, parameter):
 		# evaluate model
 		y_pred = clf.predict(x_test)
 
-		for idx in range(y_pred):
-			y_preds[test_indices[idx]].append(y_pred[idx])
+		for idx in range(len(y_pred)):
+			y_preds[ test_indices[idx] ].append(y_pred[idx])
 
 		# keep important values for next iteration
 		clfs.append(clf)
 
-
 	#calculate a baseline
-	median = [metrics.median(y)] * len(n_size)
+	median = [metrics.median(y)] * n_size
 	base = sk_metrics.mean_absolute_error(y, median)
 
-	y_pred_ensemble = [] * len(n_size)
+
+	y_pred_ensemble = [metrics.median(y)] * n_size
 	for idx in range(n_size):
+		print(y_pred_ensemble)
 		y_pred_ensemble[idx] = metrics.median( y_preds[idx] )
+
+	print(y_pred_ensemble)
 
 	error = sk_metrics.mean_absolute_error(y, y_pred_ensemble)
 

@@ -12,4 +12,6 @@ def c_interval(values, alpha = 0.95):
 	return max(np.percentile(values, p), 0.0), max(np.percentile(values, 100-p), 0.0)
 
 def median(values):
+	if len(values) == 0:
+		return 0.0
 	return np.percentile(values, 50)
