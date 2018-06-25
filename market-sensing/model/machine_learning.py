@@ -1,5 +1,6 @@
 from sklearn import linear_model, svm, neighbors, gaussian_process, tree, ensemble, neural_network
 from sklearn.utils import resample
+import sklearn.metrics as sk_metrics
 import model.data_input as data_input, model.features as features, model.metrics as metrics, model.results as results, model.save as save
 from random import shuffle
 import numpy as np
@@ -51,6 +52,7 @@ def create_model(model_type, parameter):
 	indices = list(range(len(x)))
 	clfs = []
 	scores = []
+	y_preds = [ [] for i in range(n_size)
 
 	for i in range(num_interations):
 
@@ -68,20 +70,27 @@ def create_model(model_type, parameter):
 		clf = globals()[model_type](parameter)
 		clf.fit(x_train, y_train)
 
-		# calculate a baseline
-		mean = [float(sum(y_test))/len(y_test)]*len(y_test)
-		base = metrics.get_accuracy(mean, y_test)
-
 		# evaluate model
 		y_pred = clf.predict(x_test)
-		score = metrics.get_accuracy(y_pred, y_test)
+
+		for idx in range(y_pred):
+			y_preds[test_indices[idx]].append(y_pred[idx])
 
 		# keep important values for next iteration
 		clfs.append(clf)
-		scores.append(score)
 
-	lower, upper = metrics.c_interval(scores)
-	return clfs, [base, lower, upper]
+
+	#calculate a baseline
+	median = [metrics.median(y)] * len(n_size)
+	base = sk_metrics.mean_absolute_error(y, median)
+
+	y_pred_ensemble = [] * len(n_size)
+	for idx in range(n_size):
+		y_pred_ensemble[idx] = metrics.median( y_preds[idx] )
+
+	error = sk_metrics.mean_absolute_error(y, y_pred_ensemble)
+
+	return clfs, [base, error]
 
 def update_model(model_type, parameter):
 	clfs, accuracy = create_model(model_type, parameter)

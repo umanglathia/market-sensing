@@ -118,7 +118,7 @@ def test(action):
 	if request.method == 'POST' and action == 'create':
 		model_type = form.model_type.data
 		parameter = form.parameter.data
-		base, lower, upper = machine_learning.update_model(model_type, parameter)
+		base, error = machine_learning.update_model(model_type, parameter)
 		return render_template('created.html', **locals())
 
 
