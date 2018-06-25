@@ -1,43 +1,91 @@
 from sklearn import linear_model, svm, neighbors, gaussian_process, tree, ensemble, neural_network
+from sklearn.utils import resample
 import model.data_input as data_input, model.features as features, model.metrics as metrics, model.results as results, model.save as save
 from random import shuffle
 import numpy as np
+from matplotlib import pyplot
 
 features_used = data_input.features_used
 
+# number of bootstrap models
+num_interations = 100
+
 def predict_cooler(program_dict, sim_model, num_results):
+	# load latest model and data
 	pred_model = save.get_version(save.get_prefix("model")) - 1
-	clf, model_type, parameter = save.load("model", pred_model)
+	clfs, model_type, parameter = save.load("model", pred_model)
 	data, encoders, averages = save.load("data")
+
+	# create cooler
 	cooler = data_input.create_program(program_dict, encoders, averages)
-	quote = results.get_quote(cooler, clf, features_used, encoders)
+	print(cooler.data['tube_type'])
+
+	# run on all models
+	quotes = []
+	for clf in clfs:
+		quote = results.get_quote(cooler, clf, features_used, encoders)
+		quotes.append(quote)
+
+	# get 95% confidence interval
+	lower, upper = metrics.c_interval(quotes)
+	quote = metrics.median(quotes)
+
+	# find similar coolers
 	scores = results.similarity(cooler, data, features_used, sim_model)
+
+	# display correctly
 	similar_list = results.sort_and_display(data, scores, num_results, encoders)
 
-	return quote, similar_list
+	return quote, lower, upper, similar_list
 
 def create_model(model_type, parameter):
+	# load latest data
 	data, encoders, averages = save.load("data")
 	normalized = data_input.normalize_data(data, averages)
 
+	# generate features
 	x, y = features.features_labels(normalized, encoders, features_used)
-	train_x, test_x = features.split_data(x)
-	train_y, test_y = features.split_data(y)
 
-	clf = globals()[model_type](parameter)
-	clf.fit(train_x, train_y)
+	# prepare for bootstrapping
+	n_size = len(x)
+	indices = list(range(len(x)))
+	clfs = []
+	scores = []
 
-	mean = [float(sum(test_y))/len(test_y)]*len(test_y)
-	acc1 = metrics.get_accuracy(mean, test_y)
+	for i in range(num_interations):
 
-	y_pred = clf.predict(test_x)
-	acc2 = metrics.get_accuracy(y_pred, test_y)
-	
-	return clf, [acc1, acc2]
+		# make bootstrap samples indices
+		train_indices = resample(indices, n_samples=n_size)
+		test_indices = np.array([x for x in indices if x not in train_indices])
+
+		# prepare train and test sets
+		x_train = x[train_indices]
+		y_train = y[train_indices]
+		x_test = x[test_indices]
+		y_test = y[test_indices]
+
+		# train model
+		clf = globals()[model_type](parameter)
+		clf.fit(x_train, y_train)
+
+		# calculate a baseline
+		mean = [float(sum(y_test))/len(y_test)]*len(y_test)
+		base = metrics.get_accuracy(mean, y_test)
+
+		# evaluate model
+		y_pred = clf.predict(x_test)
+		score = metrics.get_accuracy(y_pred, y_test)
+
+		# keep important values for next iteration
+		clfs.append(clf)
+		scores.append(score)
+
+	lower, upper = metrics.c_interval(scores)
+	return clfs, [base, lower, upper]
 
 def update_model(model_type, parameter):
-	clf, accuracy = create_model(model_type, parameter)
-	save.update("model", [clf, model_type, parameter])
+	clfs, accuracy = create_model(model_type, parameter)
+	save.update("model", [clfs, model_type, parameter])
 	return accuracy
 
 def get_models():

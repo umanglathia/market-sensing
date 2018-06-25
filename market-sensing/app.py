@@ -34,7 +34,7 @@ class NonValidatingSelectField(SelectField):
 class ModelForm(Form):
 	num_tubes = IntegerField("# of Tubes",
 		[validators.optional()])
-	tube_type = SelectField("Type of Tube",
+	tube_type = SelectField("Tube Type",
 		choices=[(' ', ' '), ('Corrugate', 'Corrugate'), ('Hybrid', 'Hybrid')])
 	length = FloatField("Length (mm)",
 		[validators.optional()])
@@ -62,9 +62,9 @@ class ModelForm(Form):
 		('VCC', 'VCC')])
 	market_segment = SelectField("Market Segment",
 		choices=[(' ', ' '), ('Passenger', 'Passenger'), ('Commercial', 'Commercial')])
-	market = SelectField("Market",
+	market = SelectField("Region",
 		choices=[(' ', ' '), ('EU', 'EU'), ('North America', 'North America'),
-		('South America', 'South America'), ('China', 'China'), ('Korea', 'Korea'), ('Japan', 'Japan')])
+		('South America', 'South America'), ('Asia', 'Asia')])
 	sop_year = IntegerField("SOP Year",
 		[validators.optional()])
 	sim_model = SelectField("Similarity Model", 
@@ -118,7 +118,7 @@ def test(action):
 	if request.method == 'POST' and action == 'create':
 		model_type = form.model_type.data
 		parameter = form.parameter.data
-		acc1, acc2 = machine_learning.update_model(model_type, parameter)
+		base, lower, upper = machine_learning.update_model(model_type, parameter)
 		return render_template('created.html', **locals())
 
 
@@ -146,7 +146,7 @@ def model():
 		s = "euclidean"
 		r = 5
 
-		quote, similar_list = machine_learning.predict_cooler(program, s, r)
+		quote, lower, upper, similar_list = machine_learning.predict_cooler(program, s, r)
 
 		return render_template('results.html', **locals())
 

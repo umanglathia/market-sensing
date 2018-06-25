@@ -122,9 +122,13 @@ def get_r2(features_used):
 
 def normalize_item(item, averages):
 	for attr in features_used:
-		if item.data[attr] == None:
+		if attr in numerical and item.data[attr] == None:
 			item.data[attr] = averages[attr]
 			item.normalized.append(attr)
+
+		if attr not in numerical and item.data[attr] == 0:
+			item.data[attr] = averages[attr]
+			item.normalized.append(attr)	
 
 	return item
 
@@ -135,4 +139,5 @@ def create_program(program_dict, encoders, averages):
 	item = Program(program_dict)
 	item = encode_quote(item, encoders)
 	item = normalize_item(item, averages)
+
 	return item

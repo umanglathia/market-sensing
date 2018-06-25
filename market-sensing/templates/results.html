@@ -2,7 +2,8 @@
 {% block results %}
 <div class="container text-center">
 	<div class="jumbotron jumbtron-fluid p-2 bg-dark text-white">
-		<h1 class="display-4"> Market Value: ${{ "%.2f" | format(quote) }} </h1>
+		<h1 class="display-4"> Estimated Market Value: ${{ "%.2f" | format(quote) }} </h1>
+		<h1 class="display-4"> 95% Interval: (${{ "%.2f" | format(lower) }}, ${{ "%.2f" | format(upper) }})
 	</div>
 	<div>
 		{% for similar, score in similar_list %}

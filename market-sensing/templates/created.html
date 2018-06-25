@@ -1,4 +1,5 @@
 {% extends "create.html" %}
 {% block created %}
-<h1 class="display-4"> Baseline: $ {{ "%.2f" | format(acc1) }} Accuracy: ${{ "%.2f" | format(acc2) }} </h1>
+<h1 class="display-4"> Baseline: $ {{ "%.2f" | format(base) }}
+Accuracy: (${{ "%.2f" | format(lower)}}, ${{ "%.2f" | format(upper) }}) </h1>
 {% endblock %}
