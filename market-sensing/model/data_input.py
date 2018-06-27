@@ -8,8 +8,9 @@ parameters = ['program_number', 'use', 'num_tubes', "tube_type", 'length', 'widt
 numerical = ['num_tubes', 'length', 'width', 'height', 'mass', 'num_brackets', 'num_gasboxes',
 		'peak_volume', 'lifetime_volume', 'sop_year']
 
-features_used = ["tube_type", 'mass', 'bypass_valve', 'peak_volume', 'customer', 'market_segment',
-		'market', 'sop_year']
+features_used = ["num_tubes", "tube_type", "length", "width", "height", 'mass', 'bypass_valve',
+		"num_brackets", "spigot_type", "num_gasboxes", 'peak_volume', "lifetime_volume", 
+		'customer', 'market_segment', 'market', 'sop_year']
 
 def if_empty(value):
 	if value == "" or value == " ":

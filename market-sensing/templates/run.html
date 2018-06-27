@@ -6,22 +6,25 @@
 		<tr>
 			<th scope="col"> Model </th>
 			{% for key in metrics.keys() %}
-			<th scope="col"> {{ metrics[key] }} </th>
+				<th scope="col"> {{ metrics[key] }} </th>
 			{% endfor %}
 		</tr>
 	</thead>
+	
 	<tbody>
 		{% for m, p, comps in results %}
 		<tr>
-			<th scope="row"> {{ m }}{% if p != "" %}, {{ p }} {% endif %}
-			</th>
+			<th scope="row"> {{ m }} {% if p != "" %}, {{ p }} {% endif %}</th>
 			{% for key in metrics.keys() %}
-			<td> {{ "%.2f" | format( comps[key] ) }}</td>
+				<td>
+					{% if key == "mean-absolute-error" or key == "median-absolute-error" %}${% endif %}
+					{{ "%.2f" | format( comps[key] ) }}
+					{% if key == "mean-percent-error" %}%{% endif %}
+				</td>
 			{% endfor %}
 		</tr>
 		{% endfor %}
 	</tbody>
 </table>
-</div>
- 
+</div> 
 {% endblock %}

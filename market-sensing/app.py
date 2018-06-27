@@ -15,18 +15,18 @@ trans = {
 	"lasso": "Lasso",
 	"elastic_net": "Elastic Net",
 	"lasso_lars": "Lasso LARS",
-	"perceptron": "Perceptron",
 	"nearest_neighbor": "Nearest Neighbor",
-	"gpr": "Gaussian",
 	"decision_tree": "Decision Tree",
 	"boosting": "Boosting",
-	"mlpregressor": "MLP Regressor"
+	"tsn": "Theil Sen Regressor",
+	"k_ridge": "Kernel Ridge",
+	"support_vector": "Support Vector Machine",
+	"stochastic": "Stochastic Gradient Descent"
 }
 
-metrics = {
+global_metrics = {
 	"mean-absolute-error": "Mean Absolute Error",
-	"mean-square-error": "Mean Square Error",
-	"mean-square-log-error": "Mean Square Log Error",
+	"root-mean-square-error": "Root Mean Square Error",
 	"mean-percent-error": "Mean Percent Error",
 	"median-absolute-error": "Median Absolute Error"
 }
@@ -116,6 +116,8 @@ def test(action):
 			results = machine_learning.run_all()
 			for i in range(len(results)):
 				results[i][0] = trans[ results[i][0] ]
+
+			metrics = global_metrics
 			return render_template('run.html', **locals())
 
 		if action == "data":
@@ -133,7 +135,7 @@ def test(action):
 @app.route("/model", methods=['GET', 'POST'])
 def model():
 	form = ModelForm(request.form)
-	models = machine_learning.get_models()
+	models = machine_learning.get_models(trans)
 	form.pred_model.choices = [(c['id'], c['name']) for c in models]
 
 	if request.method == 'GET':
