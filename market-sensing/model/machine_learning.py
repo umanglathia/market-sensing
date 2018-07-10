@@ -33,13 +33,14 @@ def predict_cooler(program_dict, sim_model, num_results):
 	data, encoders, averages = save.load("data")
 
 	# create cooler
-	sample = data_input.create_program(program_dict, encoders, averages)
+	cooler = data_input.create_program(program_dict, encoders, averages)
+	sample = features.features([cooler], encoders, features_used)
 
 	# get predictions
 	quote, lower, upper = get_quote(sample, clfs, decision_tree)
 
 	# find similar coolers
-	scores = results.similarity(sample, data, features_used, sim_model)
+	scores = results.similarity(cooler, data, features_used, sim_model)
 
 	# display correctly
 	similar_list = results.sort_and_display(data, scores, num_results, encoders)

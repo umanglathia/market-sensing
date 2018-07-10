@@ -11,23 +11,24 @@ numerical = ['num_tubes', 'length', 'width', 'height', 'mass', 'num_brackets', '
 features_used = ["num_tubes", "tube_type", "length", "width", "height", 'mass', 'peak_volume',
 		"lifetime_volume", 'customer', 'market', 'sop_year']
 
-def if_empty(value):
-	if value == "" or value == " ":
-		return None
-	else:
-		return value
-
-def clean(value):
-	value = value.lower()
-	value = if_empty(value)
-	return value
-
+# Program object, used for input
 class Program:
 	def __init__(self, program_dict):
 		self.data = {}
 		self.normalized = []
 		for x in parameters:
 			self.data[x] = clean(program_dict[x])
+
+
+# clean values for comparison
+def clean(value):
+	value = value.lower()
+
+	if value == "" or value == " ":
+		value = None
+
+	return value
+
 
 def parse_data(input_file):
 	file = open(input_file, encoding="latin1")
