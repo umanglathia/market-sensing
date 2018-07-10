@@ -17,9 +17,9 @@
 			<th scope="row"> {{ m }} {% if p != "" %}, {{ p }} {% endif %}</th>
 			{% for key in metrics.keys() %}
 				<td>
-					{% if key == "mean-absolute-error" or key == "median-absolute-error" %}${% endif %}
+					{% if key == "mean-absolute-error" or key == "median-absolute-error" or key == "mean-ci-range" %}${% endif %}
 					{{ "%.2f" | format( comps[key] ) }}
-					{% if key == "mean-percent-error" %}%{% endif %}
+					{% if key == "mean-percent-error" or key == "ci-accuracy" %}%{% endif %}
 				</td>
 			{% endfor %}
 		</tr>

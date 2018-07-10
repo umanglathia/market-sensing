@@ -28,7 +28,9 @@ global_metrics = {
 	"mean-absolute-error": "Mean Absolute Error",
 	"root-mean-square-error": "Root Mean Square Error",
 	"mean-percent-error": "Mean Percent Error",
-	"median-absolute-error": "Median Absolute Error"
+	"median-absolute-error": "Median Absolute Error",
+	"ci-accuracy": "Confidence Interval Accuracy",
+	"mean-ci-range": "Mean Confidence Interval Range"
 }
 
 class NonValidatingSelectField(SelectField):

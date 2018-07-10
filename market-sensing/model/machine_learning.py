@@ -26,9 +26,11 @@ def predict_cooler(program_dict, sim_model, num_results):
 		quote = results.get_quote(cooler, clf, features_used, encoders)
 		quotes.append(quote)
 
+	# calculate the quote as the median prediction
+	quote = np.mean(quotes)
+
 	# get 95% confidence interval
-	lower, upper = metrics.c_interval(quotes)
-	quote = metrics.median(quotes)
+	lower, upper = metrics.c_interval(quotes, median)
 
 	# find similar coolers
 	scores = results.similarity(cooler, data, features_used, sim_model)
@@ -48,11 +50,15 @@ def create_model(model_type, parameter):
 
 	# prepare for bootstrapping
 	n_size = len(x)
-	indices = list(range(len(x)))
+	indices = list(range(n_size))
 	clfs = []
 	scores = []
+
+	# y_preds is an array of the predictions where each element is a list of the predictions
+	# for that cooler in a model that doesn't train on that cooler
 	y_preds = [ [] for i in range(n_size) ]
 
+	# num_iterations is the number of bootstrapped instances to create
 	for i in range(num_iterations):
 
 		# make bootstrap samples indices
@@ -66,8 +72,6 @@ def create_model(model_type, parameter):
 		y_test = y[test_indices]
 
 		# train model
-		print(x_train.shape)
-		print(y_train.shape)
 		clf = globals()[model_type](parameter)
 		clf.fit(x_train, y_train)
 
@@ -85,13 +89,21 @@ def create_model(model_type, parameter):
 	base = sk_metrics.mean_absolute_error(y, median)
 
 	# calculate as median of predictions
-	y_pred_ensemble = [metrics.median(y)] * n_size
+	y_ensemble = np.zeros((3, n_size))
+
 	for idx in range(n_size):
-		y_pred_ensemble[idx] = metrics.median( y_preds[idx] )
+		# get the predicted value (the median) 
+		y_ensemble[0][idx] = np.mean( y_preds[idx] )
+
+		# get the lower and upper limits of the confidence interval
+		lower, upper = metrics.c_interval( y_preds[idx], y_ensemble[0][idx] )
+
+		# save these values
+		y_ensemble[1][idx] = lower
+		y_ensemble[2][idx] = upper
 
 	# calculate comparators
-	comparators = metrics.get_comparators(y, y_pred_ensemble)
-
+	comparators = metrics.get_comparators(y, y_ensemble)
 
 	return clfs, comparators, [base, comparators['mean-absolute-error']]
 
