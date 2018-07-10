@@ -11,34 +11,41 @@ features_used = data_input.features_used
 # number of bootstrap models
 num_iterations = 100
 
+def get_quote(sample, clfs, decision_tree):
+	# run cooler through first level
+	tree_test = np.zeros(len(clfs))
+	for k in range(len(clfs)):
+		tree_test[k] = clfs[k].predict( sample.reshape(1, -1) )
+
+	# run cooler through second level
+	pred = decision_tree.predict( tree_test.reshape(1, -1) )
+
+	# get the lower and upper limits of the confidence interval
+	lower, upper = metrics.c_interval( tree_test, pred )
+
+	return pred, lower, upper
+
 def predict_cooler(program_dict, sim_model, num_results):
+	
 	# load latest model and data
 	pred_model = save.get_version(save.get_prefix("model")) - 1
-	clfs, model_type, parameter, _ = save.load("model", pred_model)
+	clfs, decision_tree, model_type, parameter, _ = save.load("model", pred_model)
 	data, encoders, averages = save.load("data")
 
 	# create cooler
-	cooler = data_input.create_program(program_dict, encoders, averages)
+	sample = data_input.create_program(program_dict, encoders, averages)
 
-	# run on all models
-	quotes = []
-	for clf in clfs:
-		quote = results.get_quote(cooler, clf, features_used, encoders)
-		quotes.append(quote)
-
-	# calculate the quote as the median prediction
-	quote = np.mean(quotes)
-
-	# get 95% confidence interval
-	lower, upper = metrics.c_interval(quotes, median)
+	# get predictions
+	quote, lower, upper = get_quote(sample, clfs, decision_tree)
 
 	# find similar coolers
-	scores = results.similarity(cooler, data, features_used, sim_model)
+	scores = results.similarity(sample, data, features_used, sim_model)
 
 	# display correctly
 	similar_list = results.sort_and_display(data, scores, num_results, encoders)
 
 	return quote, lower, upper, similar_list
+
 
 def create_model(model_type, parameter):
 	# load latest data
@@ -48,69 +55,70 @@ def create_model(model_type, parameter):
 	# generate features
 	x, y = features.features_labels(normalized, encoders, features_used)
 
+	# split into training and testing set
+	x_train, x_test = features.split_data(x)
+	y_train, y_test = features.split_data(y)
+
 	# prepare for bootstrapping
-	n_size = len(x)
+	n_size = len(x_train)
+	test_size = len(x_test)
 	indices = list(range(n_size))
 	clfs = []
 	scores = []
 
-	# y_preds is an array of the predictions where each element is a list of the predictions
-	# for that cooler in a model that doesn't train on that cooler
-	y_preds = [ [] for i in range(n_size) ]
+	# second level model 
+	second_level = tree.DecisionTreeRegressor()
+	tree_train = np.zeros( (num_iterations, n_size) )
 
 	# num_iterations is the number of bootstrapped instances to create
-	for i in range(num_iterations):
+	for instance in range(num_iterations):
 
 		# make bootstrap samples indices
 		train_indices = resample(indices, n_samples=n_size)
-		test_indices = np.array([x for x in indices if x not in train_indices])
 
 		# prepare train and test sets
-		x_train = x[train_indices]
-		y_train = y[train_indices].reshape(-1,1)
-		x_test = x[test_indices]
-		y_test = y[test_indices]
+		x_bs = x[train_indices]
+		y_bs = y[train_indices].reshape(-1,1)
 
 		# train model
 		clf = globals()[model_type](parameter)
-		clf.fit(x_train, y_train)
+		clf.fit(x_bs, y_bs)
 
-		# evaluate model
-		y_pred = clf.predict(x_test)
-
-		for idx in range(len(y_pred)):
-			y_preds[ test_indices[idx] ].append(y_pred[idx])
+		# training data for second level model
+		tree_train[instance] = clf.predict(x_train).reshape(n_size)
 
 		# keep important values for next iteration
 		clfs.append(clf)
 
+	# training second level model
+	tree_train = np.transpose(tree_train)
+	second_level.fit( tree_train, y_train )
+
 	# calculate a baseline
-	median = [metrics.median(y)] * n_size
-	base = sk_metrics.mean_absolute_error(y, median)
+	median = [metrics.median(y_train)] * test_size
+	base = sk_metrics.mean_absolute_error(y_test, median)
 
-	# calculate as median of predictions
-	y_ensemble = np.zeros((3, n_size))
+	# calculate the metrics
+	y_ensemble = np.zeros( (3, test_size ) )
 
-	for idx in range(n_size):
-		# get the predicted value (the median) 
-		y_ensemble[0][idx] = np.mean( y_preds[idx] )
-
-		# get the lower and upper limits of the confidence interval
-		lower, upper = metrics.c_interval( y_preds[idx], y_ensemble[0][idx] )
+	# for each cooler in the test set
+	for idx in range(test_size):
+		pred, lower, upper = get_quote(x_test[idx], clfs, second_level)
 
 		# save these values
+		y_ensemble[0][idx] = pred
 		y_ensemble[1][idx] = lower
 		y_ensemble[2][idx] = upper
 
+
 	# calculate comparators
-	comparators = metrics.get_comparators(y, y_ensemble)
+	comparators = metrics.get_comparators(y_test, y_ensemble)
 
-	return clfs, comparators, [base, comparators['mean-absolute-error']]
+	# save models to predict coolers
+	save.update("model", [clfs, second_level, model_type, parameter, comparators])
 
-def update_model(model_type, parameter):
-	clfs, comparators, accuracy = create_model(model_type, parameter)
-	save.update("model", [clfs, model_type, parameter, comparators])
-	return accuracy
+	return base, comparators['mean-absolute-error']
+
 
 def get_models(trans):
 	prefix = save.get_prefix("model")
@@ -118,7 +126,7 @@ def get_models(trans):
 	models = []
 
 	for v in range(versions-1):
-		_, model_type, parameter, _ = save.load("model", v+1)
+		_, _, model_type, parameter, _ = save.load("model", v+1)
 		new_model = {}
 		new_model['id'] = v+1
 		new_model['name'] = trans[model_type]
@@ -136,7 +144,7 @@ def run_all():
 	display = []
 
 	for v in range(versions-1):
-		_, model_type, parameter, comparators = save.load("model", v+1)
+		_, _, model_type, parameter, comparators = save.load("model", v+1)
 		display.append([model_type, parameter, comparators])
 
 	return display
