@@ -138,7 +138,7 @@ def create_data(input_file):
 	return data, encoders, averages
 
 def update_data():
-	data, encoders, averages = create_data("model/test_data2.csv")
+	data, encoders, averages = create_data("model/test_data.csv")
 	save.update("data", [data, encoders, averages])
 
 def clean():
