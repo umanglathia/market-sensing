@@ -1,5 +1,6 @@
 import model.features as features
 import model.data_input as data_input
+from model.config import *
 from sklearn import linear_model, svm
 import numpy as np
 import random
@@ -7,13 +8,23 @@ import math
 
 numerical = data_input.numerical
 dropoff = 0.1
-x_zero = 0.5
+x_zero = 1.0
 a = dropoff*x_zero/(x_zero - dropoff)
 b = dropoff/(dropoff - x_zero)
 
-def get_quote(cooler, clf, features_used, encoders):
-	x = features.features([cooler], encoders, features_used)
-	return clf.predict(x)[0]
+def get_quote(sample, clfs, decision_tree):
+	# run cooler through first level
+	tree_test = np.zeros(len(clfs))
+	for k in range(len(clfs)):
+		tree_test[k] = clfs[k].predict( sample.reshape(1, -1) )
+
+	# run cooler through second level
+	pred = decision_tree.predict( tree_test.reshape(1, -1) )
+
+	# get the lower and upper limits of the confidence interval
+	lower, upper = metrics.c_interval( tree_test, pred )
+
+	return pred, lower, upper
 
 def consider(cooler, item, attr):
 
@@ -40,7 +51,7 @@ def penalty(c, x):
 		return 0
 	return a/abs(c - x) + b
 
-def norm_0(cooler, item, features_used, averages, stdevs, r2):
+def norm_0(cooler, item, averages, stdevs, r2):
 	score = 0
 	total = 0
 	for attr in features_used:
@@ -54,7 +65,7 @@ def norm_0(cooler, item, features_used, averages, stdevs, r2):
 
 	return float(score)/total
 
-def euclidean(cooler, item, features_used, averages, stdevs, r2):
+def euclidean(cooler, item, averages, stdevs, r2):
 	score = 0.0
 	total = 0.0
 	for attr in features_used:
@@ -75,7 +86,7 @@ def euclidean(cooler, item, features_used, averages, stdevs, r2):
 
 	return float(math.sqrt(score))/math.sqrt(total)
 
-def manhattan(cooler, item, features_used, averages, stdevs, r2):
+def manhattan(cooler, item, averages, stdevs, r2):
 	score = 0.0
 	total = 0.0
 	for attr in features_used:
@@ -97,7 +108,7 @@ def manhattan(cooler, item, features_used, averages, stdevs, r2):
 
 	return float(score)/total
 
-def cosine(cooler, item, features_used, averages, stdevs, r2):
+def cosine(cooler, item, averages, stdevs, r2):
 	score = 0.0
 	magA = 0.0
 	magB = 0.0
@@ -123,15 +134,15 @@ def cosine(cooler, item, features_used, averages, stdevs, r2):
 
 	return (score/(math.sqrt(magA)*math.sqrt(magB))+1.0)/2
 
-def similarity(cooler, data, features_used, model):
+def similarity(cooler, data, model):
 	scores = [0]*len(data)
 
 	averages = data_input.get_averages(data)
 	stdevs = data_input.get_stdevs(data, averages)
-	r2 = data_input.get_r2(features_used)
+	r2 = get_r2()
 
 	for i, item in enumerate(data):
-		scores[i] = globals()[model](cooler, item, features_used, averages, stdevs, r2)
+		scores[i] = globals()[model](cooler, item, averages, stdevs, r2)
 
 	return scores
 

@@ -115,7 +115,7 @@ def test(action):
 			return render_template('create.html', **locals())	
 
 		if action == "run":
-			results = machine_learning.run_all()
+			results = machine_learning.run()
 			for i in range(len(results)):
 				results[i][0] = trans[ results[i][0] ]
 
@@ -124,13 +124,13 @@ def test(action):
 
 		if action == "data":
 			machine_learning.clean()
-			machine_learning.update_data()
+			machine_learning.data()
 			return render_template('update_data.html', **locals())
 
 	if request.method == 'POST' and action == 'create':
 		model_type = form.model_type.data
 		parameter = form.parameter.data
-		base, error = machine_learning.create_model(model_type, parameter)
+		base, error = machine_learning.create(model_type, parameter)
 		return render_template('created.html', **locals())
 
 
@@ -158,7 +158,7 @@ def model():
 		s = "euclidean"
 		r = 5
 
-		quote, lower, upper, similar_list = machine_learning.predict_cooler(program, s, r)
+		quote, lower, upper, similar_list = machine_learning.predict(program, s, r)
 
 		return render_template('results.html', **locals())
 

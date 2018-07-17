@@ -2,6 +2,7 @@ import math
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
+from model.config import *
 
 def split_data(data):
 	length = math.floor(len(data)*7.0/10.0)
@@ -15,7 +16,7 @@ def non_numerical(x, attr, length):
 	output[ x.data[attr] ] = 1
 	return output
 
-def generate_features(x, encoders, features_used):
+def generate_features(x, encoders):
 	output = []
 
 	for feature in features_used:
@@ -26,11 +27,11 @@ def generate_features(x, encoders, features_used):
 
 	return output
 
-def features(data, encoders, features_used):
-	return np.array([generate_features(x, encoders, features_used) for x in data])
+def features(data, encoders):
+	return np.array([generate_features(x, encoders) for x in data])
 
 def labels(data):
 	return np.array([float(x.data['final_price']) for x in data])
 
-def features_labels(data, encoders, features_used):
-	return features(data, encoders, features_used), labels(data)
+def features_labels(data, encoders):
+	return features(data, encoders), labels(data)

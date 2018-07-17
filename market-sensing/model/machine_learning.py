@@ -1,30 +1,16 @@
 from sklearn.utils import resample
 import sklearn.metrics as sk_metrics
-import model.data_input as data_input, model.features as features, model.metrics as metrics, model.results as results, model.save as save
+import model.data_input as data_input, model.features as features, model.metrics as metrics
+import model.results as results, model.save as save, model.similarity as similarity
 from random import shuffle
 import numpy as np
 from model.ml_models import *
-
-features_used = data_input.features_used
+from model.config import *
 
 # number of bootstrap models
 num_iterations = 100
 
-def get_quote(sample, clfs, decision_tree):
-	# run cooler through first level
-	tree_test = np.zeros(len(clfs))
-	for k in range(len(clfs)):
-		tree_test[k] = clfs[k].predict( sample.reshape(1, -1) )
-
-	# run cooler through second level
-	pred = decision_tree.predict( tree_test.reshape(1, -1) )
-
-	# get the lower and upper limits of the confidence interval
-	lower, upper = metrics.c_interval( tree_test, pred )
-
-	return pred, lower, upper
-
-def predict_cooler(program_dict, sim_model, num_results):
+def predict(program_dict, sim_model, num_results):
 	
 	# load latest model and data
 	pred_model = save.get_version(save.get_prefix("model")) - 1
@@ -33,13 +19,13 @@ def predict_cooler(program_dict, sim_model, num_results):
 
 	# create cooler
 	cooler = data_input.create_program(program_dict, encoders, averages)
-	sample = features.features([cooler], encoders, features_used)
+	sample = features.features([cooler], encoders)
 
 	# get predictions
-	quote, lower, upper = get_quote(sample, clfs, decision_tree)
+	quote, lower, upper = results.get_quote(sample, clfs, decision_tree)
 
 	# find similar coolers
-	scores = results.similarity(cooler, data, features_used, sim_model)
+	scores = results.similarity(cooler, data, sim_model)
 
 	# display correctly
 	similar_list = results.sort_and_display(data, scores, num_results, encoders)
@@ -47,13 +33,13 @@ def predict_cooler(program_dict, sim_model, num_results):
 	return quote, lower, upper, similar_list
 
 
-def create_model(model_type, parameter):
+def create(model_type, parameter):
 	# load latest data
 	data, encoders, averages = save.load("data")
-	normalized = data_input.normalize_data(data, averages)
+	normalized = [(data_input.replace_blanks(item, averages)) for item in data]
 
 	# generate features
-	x, y = features.features_labels(normalized, encoders, features_used)
+	x, y = features.features_labels(normalized, encoders)
 
 	# split into training and testing set
 	x_train, x_test = features.split_data(x)
@@ -121,23 +107,33 @@ def create_model(model_type, parameter):
 
 
 def get_models(trans):
+	# get prefix of model files
 	prefix = save.get_prefix("model")
-	versions = save.get_version(prefix)
-	models = []
 
+	#get number of versions with this prefix
+	versions = save.get_version(prefix)
+
+	# return name, version number, and parameter of each model
+	models = []
 	for v in range(versions-1):
 		_, _, model_type, parameter, _ = save.load("model", v+1)
-		new_model = {}
-		new_model['id'] = v+1
-		new_model['name'] = trans[model_type]
+
+		new_model = {
+			'id': v+1,
+			'name' = trans[model_type]
+		}
+
+		# add parameter if it exists
 		if parameter != "":
 			new_model['name'] += ", " + parameter
+
+		# append this model to the output
 		models.append(new_model)
 
 	return models
 		
 
-def run_all():
+def run():
 	prefix = save.get_prefix("model")
 	versions = save.get_version(prefix)
 	
@@ -149,16 +145,14 @@ def run_all():
 
 	return display
 
-def create_data(input_file):
+def data():
+	input_file = "model/test_data.csv"
+
 	data = data_input.parse_data(input_file)
-	data, encoders = data_input.int_encode(data)
-	averages = data_input.get_averages(data)
+	data, encoders = similarity.int_encode(data)
+	averages = similarity.get_averages(data)
 	shuffle(data)
 
-	return data, encoders, averages
-
-def update_data():
-	data, encoders, averages = create_data("model/test_data.csv")
 	save.update("data", [data, encoders, averages])
 
 def clean():

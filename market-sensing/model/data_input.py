@@ -1,15 +1,6 @@
 from collections import Counter
 import math
-
-parameters = ['program_number', 'use', 'num_tubes', "tube_type", 'length', 'width', 'height', 'mass',
-		'bypass_valve', 'num_brackets', 'spigot_type', 'num_gasboxes', 'peak_volume', 'lifetime_volume',
-		'customer', 'market_segment', 'market', 'sop_year', 'bw_quote', 'status', 'final_price']
-
-numerical = ['num_tubes', 'length', 'width', 'height', 'mass', 'num_brackets', 'num_gasboxes',
-		'peak_volume', 'lifetime_volume', 'sop_year']
-
-features_used = ["num_tubes", "tube_type", "length", "width", "height", 'mass', 'peak_volume',
-		"lifetime_volume", 'customer', 'market', 'sop_year']
+from model.config import *
 
 # Program object, used for input
 class Program:
@@ -31,22 +22,30 @@ def clean(value):
 
 
 def parse_data(input_file):
+	# read in csv file
 	file = open(input_file, encoding="latin1")
 	lines = file.readlines()
-	output = []
+	data = []
 
+	# for each cooler in the file
 	for line in lines[1:]:
-		program_dict = {}
+
+		# create a Program object for it
+		item_dict = {}
 		split = line.split(",")
 
+		# turn list into dictionary
 		for i, col in enumerate(parameters):
-			program_dict[col] = split[i]
+			item_dict[col] = split[i]
 
-		new_program = Program(program_dict)
-		if new_program.data['use'] == "yes":
-			output.append(new_program)
+		# turn dictionary into object
+		program = Program(item_dict)
 
-	return output
+		# only use it if 'use' is 'yes'
+		if program.data['use'] == "yes":
+			data.append(program)
+
+	return data
 
 def encode_parameter(items, parameter):
 	unique = [None]
@@ -74,71 +73,31 @@ def encode_quote(item, encoders):
 
 	return item
 
-def get_averages(items):
-	averages = {}
+
+def replace_blanks(item, averages):
+	# replace all blank values
 	for attr in features_used:
-		if attr in numerical:
-			numerator = sum(float(item.data[attr]) for item in items if item.data[attr] != None)
-			denominator = max(sum(1 for item in items if item.data[attr] != None), 1)
-			averages[attr] = numerator/denominator
-
-		else:
-			values = Counter()
-			for item in items:
-				if item.data[attr] != None:
-					values[ item.data[attr] ] += 1
-
-			averages[attr] = values.most_common()[0][0]
-
-	return averages
-
-def get_stdevs(items, averages):
-	output = {}
-
-	for attr in features_used:
-		if attr in numerical:
-			numerator = sum( (float(item.data[attr]) - averages[attr])**2 for item in items if item.data[attr] != None )
-			denominator = sum(1 for item in items if item.data[attr] != None)
-			if denominator == 0:
-				denominator = 1
-			output[attr] = math.sqrt( numerator / denominator )
-
-		else:
-			output[attr] = ""
-
-	return output
-
-def get_r2(features_used):
-	output = {}
-
-	for attr in features_used:
-		if attr in numerical:
-			output[attr] = 1
-
-		else:
-			output[attr] = .75
-
-	return output
-
-
-def normalize_item(item, averages):
-	for attr in features_used:
+		# if the attribute is numerical, the null value is None
 		if attr in numerical and item.data[attr] == None:
 			item.data[attr] = averages[attr]
 			item.normalized.append(attr)
 
+		# if the attribute is not numerical, the null value is 0
 		if attr not in numerical and item.data[attr] == 0:
 			item.data[attr] = averages[attr]
 			item.normalized.append(attr)	
 
 	return item
 
-def normalize_data(items, averages):
-	return [(normalize_item(item, averages)) for item in items]
 
-def create_program(program_dict, encoders, averages):
-	item = Program(program_dict)
+def create_program(item_dict, encoders, averages):
+	# create program object
+	program = Program(item_dict)
+
+	# turn strings into integers
 	item = encode_quote(item, encoders)
-	item = normalize_item(item, averages)
+
+	# replace values that are empty with the majority
+	item = replace_blanks(item, averages)
 
 	return item
