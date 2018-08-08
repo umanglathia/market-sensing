@@ -142,3 +142,15 @@ def create_program(program_dict, encoders, averages):
 	item = normalize_item(item, averages)
 
 	return item
+
+def create_csv_item(program_dict):
+	output = []
+	for attr in parameters:
+		output.append(program_dict[attr])
+
+	return (',').join(output)
+
+def add_to_csv(file, csv_line):
+	f = open(file, "a", encoding="latin1")
+	f.write(csv_line + "\n")
+	f.close
