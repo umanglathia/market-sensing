@@ -7,6 +7,9 @@ import numpy as np
 from model.ml_models import *
 from model.config import *
 
+features_used = data_input.features_used
+INPUT_FILE = "model/test_data.csv"
+
 # number of bootstrap models
 num_iterations = 100
 
@@ -153,7 +156,23 @@ def data():
 	averages = similarity.get_averages(data)
 	shuffle(data)
 
+	return data, encoders, averages
+
+def update_data():
+	data, encoders, averages = create_data(INPUT_FILE)
 	save.update("data", [data, encoders, averages])
+
+def add_cooler(program):
+	# TURN PROGRAM INTO CSV LINE ITEM
+	csv_line = data_input.create_csv_item(program)
+
+	# ADD COOLER TO EXCEL
+	data_input.add_to_csv(INPUT_FILE, csv_line)
+
+	# UPDATE DATA
+	update_data()
+
+	return "SUCCESS"
 
 def clean():
 	save.clean()

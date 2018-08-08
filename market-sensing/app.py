@@ -133,6 +133,24 @@ def test(action):
 		base, error = machine_learning.create(model_type, parameter)
 		return render_template('created.html', **locals())
 
+@app.route("/add", methods=['GET', 'POST'])
+def add():
+	form = ModelForm(request.form)
+	
+	if request.method == 'GET':
+		return render_template('add.html', **locals())
+
+	if request.method == 'POST':
+		input_form = request.form
+		program = {}
+
+		for attr in parameters:
+			program[attr] = input_form.get(attr, '')
+
+		success = machine_learning.add_cooler(program)
+
+		if success == "SUCCESS":
+			return render_template('added.html', **locals())
 
 @app.route("/model", methods=['GET', 'POST'])
 def model():
