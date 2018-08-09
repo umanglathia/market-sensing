@@ -42,10 +42,28 @@ class NonValidatingSelectField(SelectField):
         pass
 
 class ModelForm(Form):
+	program_number = IntegerField('Program Number',
+		[validators.optional()])
+	customer = SelectField("Customer",
+		choices=[(' ', ' '), ('BAIC', 'BAIC'), ('BMW', 'BMW'), ('CNH Global', 'CHN Global'), ('DAE', 'DAE'),
+		('Daimler Truck', 'Daimler Truck'), ('Deutz', 'Deutz'), ('DFL', 'DFL'), ('FCA', 'FCA'),
+		('Ford', 'Ford'), ('Foton', 'Foton'), ('GAC', 'GAC'), ('GM', 'GM'), ('HKMC', 'HKMC'),
+		('HMC', 'HMC'), ('JAC', 'JAC'), ('JLR', 'JLR'),	('JMC', 'JMC'), ('Liebherr', 'Liebherr'),
+		('MAN', 'MAN'), ('Maruti', 'Maruti'), ('Mitsubishi', 'Mitsubishi'),
+		('NAVECO', 'NAVECO'), ('Nissan', 'Nissan'),	('Renault', 'Renault'), ('Subaru', 'Subaru'),
+		('VCC', 'VCC'), ('Volvo', 'Volvo'), ('Yuchai', 'Yuchai')])
+	engine = TextField("Engine")
+	market_segment = SelectField("Market Segment",
+		choices=[(' ', ' '), ('Passenger', 'Passenger'), ('Commercial', 'Commercial')])
+	market = SelectField("Region",
+		choices=[(' ', ' '), ('EU', 'EU'), ('North America', 'North America'),
+		('South America', 'South America'), ('Asia', 'Asia')])
+	module = SelectField("Module", 
+		choices=[(' ', ' '), ('Yes', 'Yes'), ('No', 'No')])
+	tube_type = SelectField("Tube Type",
+		choices=[(' ', ' '), ('Corrugate', 'Corrugate'), ('Hybrid', 'Hybrid')])	
 	num_tubes = IntegerField("# of Tubes",
 		[validators.optional()])
-	tube_type = SelectField("Tube Type",
-		choices=[(' ', ' '), ('Corrugate', 'Corrugate'), ('Hybrid', 'Hybrid')])
 	length = FloatField("Length (mm)",
 		[validators.optional()])
 	width = FloatField("Width (mm)",
@@ -59,35 +77,24 @@ class ModelForm(Form):
 	num_brackets = IntegerField("# of Brackets",
 		[validators.optional()])
 	spigot_type = SelectField("Type of Spigot",
-		choices=[(' ', ' '), ('Straight', 'Straight'), ('Bend', 'Bend')])
+		choices=[(' ', ' '), ('Straight', 'Straight'), ('Bent', 'Bent')])
+	casted_flange = SelectField("Casted Flange",
+		choices=[(' ', ' '), ('Yes', 'Yes'), ('No', 'No')])
 	num_gasboxes = IntegerField("# of Gas Boxes",
 		[validators.optional()])
 	peak_volume = IntegerField("Peak Volume",
 		[validators.optional()])
 	lifetime_volume = IntegerField("Lifetime Volume",
 		[validators.optional()])
-	customer = SelectField("Customer",
-		choices=[(' ', ' '), ('BAIC', 'BAIC'), ('BMW', 'BMW'), ('CNH Global', 'CHN Global'), ('DAE', 'DAE'),
-		('Daimler Truck', 'Daimler Truck'), ('Deutz', 'Deutz'), ('DFL', 'DFL'), ('FCA', 'FCA'),
-		('Ford', 'Ford'), ('Foton', 'Foton'), ('GAC', 'GAC'), ('GM', 'GM'), ('HKMC', 'HKMC'),
-		('HMC', 'HMC'), ('JAC', 'JAC'), ('JLR', 'JLR'),	('JMC', 'JMC'), ('Liebherr', 'Liebherr'),
-		('MAN', 'MAN'), ('Maruti', 'Maruti'), ('Mitsubishi', 'Mitsubishi'),
-		('NAVECO', 'NAVECO'), ('Nissan', 'Nissan'),	('Renault', 'Renault'), ('Subaru', 'Subaru'),
-		('VCC', 'VCC'), ('Volvo', 'Volvo'), ('Yuchai', 'Yuchai')])
-	market_segment = SelectField("Market Segment",
-		choices=[(' ', ' '), ('Passenger', 'Passenger'), ('Commercial', 'Commercial')])
-	market = SelectField("Region",
-		choices=[(' ', ' '), ('EU', 'EU'), ('North America', 'North America'),
-		('South America', 'South America'), ('Asia', 'Asia')])
 	sop_year = IntegerField("SOP Year",
 		[validators.optional()])
-	sim_model = SelectField("Similarity Model", 
-		choices=[('euclidean','Euclidean'),('manhattan','Manhattan'), ('cosine', 'Cosine')])
-	num_results = SelectField("Results",
-		choices=[('5', '5'),('10', '10')])
-	pred_model = SelectField("Prediction Model",
-		choices=[])
-
+	bw_quote = FloatField("BW Quote ($)",
+		[validators.optional()])
+	status = SelectField("Status",
+		choices=[(' ', ' '), ('Won', 'Won'), ('Lost', 'Lost'),
+		('Cancelled', 'Cancelled'), ('On Hold', 'On Hold'), ('Active', 'Active')])
+	final_price = FloatField("Winning Price ($)",
+		[validators.optional()])
 
 class TestingForm(Form):
 	model_type = SelectField('Model Type',
@@ -170,7 +177,6 @@ def remove():
 def model():
 	form = ModelForm(request.form)
 	models = machine_learning.get_models(trans)
-	form.pred_model.choices = [(c['id'], c['name']) for c in models]
 
 	if request.method == 'GET':
 		return render_template('form.html', **locals())

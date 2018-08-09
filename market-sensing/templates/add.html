@@ -6,20 +6,28 @@
 		<form action="/add" method="post">
 		<div class="form-row my-0 py-0 form-group text-dark">
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
-				{{ form.num_tubes.label }}
-				{{ form.num_tubes(class="form-control") }}
-			</div>
-			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
-				{{ form.tube_type.label }}
-				{{ form.tube_type(class="form-control") }}
+				{{ form.program_number.label }}
+				{{ form.program_number(class="form-control") }}
 			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.customer.label }}
 				{{ form.customer(class="form-control") }}
 			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.engine.label }}
+				{{ form.engine(class="form-control") }}
+			</div>
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.market_segment.label }}
 				{{ form.market_segment(class="form-control") }}
+			</div>
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.market.label }}
+				{{ form.market(class="form-control") }}
+			</div>
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.module.label }}
+				{{ form.module(class="form-control") }}
 			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.peak_volume.label }}
@@ -29,16 +37,16 @@
 				{{ form.lifetime_volume.label }}
 				{{ form.lifetime_volume(class="form-control") }}
 			</div>
-			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
-				{{ form.market.label }}
-				{{ form.market(class="form-control") }}
-			</div>
-			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
-				{{ form.sop_year.label }}
-				{{ form.sop_year(class="form-control") }}
-			</div>
-		</div>
+		</div>	
 		<div class="form-row form-group mt-2">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.tube_type.label }}
+				{{ form.tube_type(class="form-control") }}
+			</div>
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.num_tubes.label }}
+				{{ form.num_tubes(class="form-control") }}
+			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.length.label }}
 				{{ form.length(class="form-control") }}
@@ -57,22 +65,43 @@
 			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.bypass_valve.label }}
-				{{ form.bypass_valve(class="form-control")}}
-			</div>
-			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
-				{{ form.num_brackets.label }}
-				{{ form.num_brackets(class="form-control") }}
+				{{ form.bypass_valve(class="form-control") }}
 			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.spigot_type.label }}
 				{{ form.spigot_type(class="form-control") }}
 			</div>
+		</div>
+		<div class="form-row form-group mt-2">
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.num_brackets.label }}
+				{{ form.num_brackets(class="form-control") }}
+			</div>
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.casted_flange.label }}
+				{{ form.casted_flange(class="form-control") }}
+			</div>
 			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
 				{{ form.num_gasboxes.label }}
 				{{ form.num_gasboxes(class="form-control") }}
 			</div>
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.sop_year.label }}
+				{{ form.sop_year(class="form-control") }}
+			</div>
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.bw_quote.label }}
+				{{ form.bw_quote(class="form-control") }}
+			</div>
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.status.label }}
+				{{ form.status(class="form-control") }}
+			</div>
+			<div class="col-xl col-md-3 col-sm-6 col-xs-12">
+				{{ form.final_price.label }}
+				{{ form.final_price(class="form-control") }}
+			</div>
 		</div>
-		
 		<div class="form-row form-group mt-2">
 			<div class="col-lg-2 mx-auto col-xs-12">
 				<button type="submit" class="btn btn-primary mt-sm-4 mt-lg-0 mt-xs-4"> Add Cooler </button>
