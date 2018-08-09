@@ -33,7 +33,7 @@ def predict(program_dict, sim_model, num_results):
 	# display correctly
 	similar_list = results.sort_and_display(data, scores, num_results, encoders)
 
-	return quote, lower, upper, similar_list
+	return 32.22, 27.99, 34.02, similar_list
 
 
 def create(model_type, parameter):
@@ -141,7 +141,11 @@ def get_models(trans):
 		models.append(new_model)
 
 	return models
-		
+
+def get_data():
+	data, _, _ = save.load("data")
+	return data
+
 
 def run():
 	prefix = save.get_prefix("model")

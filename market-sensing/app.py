@@ -160,6 +160,7 @@ def add():
 @app.route("/remove", methods=['GET', 'POST'])
 def remove():
 	if request.method == 'GET':	
+		data = machine_learning.get_data()
 		return render_template('remove.html', **locals())
 
 	if request.method == 'POST':
@@ -183,11 +184,6 @@ def model():
 
 		program['module'] = "No"
 
-		'''
-		s = input_form.get('sim_model', '')
-		r = int(input_form.get('num_results', ''))
-		p = input_form.get('pred_model', '')
-		'''
 		s = "euclidean"
 		r = 5
 

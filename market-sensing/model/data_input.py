@@ -4,8 +4,10 @@ from model.config import *
 class Program:
 	def __init__(self, program_dict):
 		self.data = {}
+		self.display = {}
 		self.normalized = []
 		for x in parameters:
+			self.display[x] = program_dict[x]
 			self.data[x] = clean(program_dict[x])
 
 

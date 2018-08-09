@@ -20,12 +20,6 @@ def get_quote(sample, clfs, decision_tree):
 
 	return pred, lower, upper
 
-all_caps = ["HKMC", "VCC", "EU", "FCA", "HMC"]
-accr = {
-	"North America": "NA",
-	"South America": "SA"
-}
-
 def format(item, encoders):
 	item.display = {}
 	for attr in data_input.parameters:
@@ -33,17 +27,12 @@ def format(item, encoders):
 			item.data[attr] = encoders[attr][item.data[attr]]
 		if item.data[attr] == None:
 			item.data[attr] = ""
-		item.display[attr] = item.data[attr].title()
 
 		if item.display[attr] != "":
 			if attr in ['length', 'width', 'height']:
 				item.display[attr] += "mm"
 			if attr in ['mass']:
 				item.display[attr] += "g"
-			if item.display[attr].upper() in all_caps:
-				item.display[attr] = item.display[attr].upper()
-			if item.display[attr] in accr:
-				item.display[attr] = accr[ item.display[attr] ]
 
 	return item
 
