@@ -124,7 +124,7 @@ def test(action):
 
 		if action == "data":
 			machine_learning.clean()
-			machine_learning.data()
+			machine_learning.update_data()
 			return render_template('update_data.html', **locals())
 
 	if request.method == 'POST' and action == 'create':

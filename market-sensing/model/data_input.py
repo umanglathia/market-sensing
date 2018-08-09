@@ -1,5 +1,3 @@
-from collections import Counter
-import math
 from model.config import *
 
 # Program object, used for input
@@ -92,7 +90,7 @@ def replace_blanks(item, averages):
 
 def create_program(item_dict, encoders, averages):
 	# create program object
-	program = Program(item_dict)
+	item = Program(item_dict)
 
 	# turn strings into integers
 	item = encode_quote(item, encoders)

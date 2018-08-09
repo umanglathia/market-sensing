@@ -28,7 +28,7 @@ def predict(program_dict, sim_model, num_results):
 	quote, lower, upper = results.get_quote(sample, clfs, decision_tree)
 
 	# find similar coolers
-	scores = results.similarity(cooler, data, sim_model)
+	scores = similarity.get_scores(cooler, data, sim_model)
 
 	# display correctly
 	similar_list = results.sort_and_display(data, scores, num_results, encoders)
@@ -92,7 +92,7 @@ def create(model_type, parameter):
 
 	# for each cooler in the test set
 	for idx in range(test_size):
-		pred, lower, upper = get_quote(x_test[idx], clfs, second_level)
+		pred, lower, upper = results.get_quote(x_test[idx], clfs, second_level)
 
 		# save these values
 		y_ensemble[0][idx] = pred
@@ -122,8 +122,8 @@ def get_models(trans):
 		_, _, model_type, parameter, _ = save.load("model", v+1)
 
 		new_model = {
-			'id': v+1,
-			'name' = trans[model_type]
+			"id": v+1,
+			"name": trans[model_type]
 		}
 
 		# add parameter if it exists
@@ -148,18 +148,16 @@ def run():
 
 	return display
 
-def data():
-	input_file = "model/test_data.csv"
-
+def create_data():
 	data = data_input.parse_data(input_file)
-	data, encoders = similarity.int_encode(data)
+	data, encoders = data_input.int_encode(data)
 	averages = similarity.get_averages(data)
 	shuffle(data)
 
 	return data, encoders, averages
 
 def update_data():
-	data, encoders, averages = create_data(INPUT_FILE)
+	data, encoders, averages = create_data()
 	save.update("data", [data, encoders, averages])
 
 def add_cooler(program):
