@@ -67,9 +67,13 @@ class ModelForm(Form):
 	lifetime_volume = IntegerField("Lifetime Volume",
 		[validators.optional()])
 	customer = SelectField("Customer",
-		choices=[(' ', ' '), ('Ford', 'Ford'), ('Nissan', 'Nissan'), ('GM', 'GM'),
-		('HKMC', 'HKMC'), ('FCA', 'FCA'), ('Mitsubishi', 'Mitsubishi'), ('Maruti', 'Maruti'),
-		('VCC', 'VCC')])
+		choices=[(' ', ' '), ('BAIC', 'BAIC'), ('BMW', 'BMW'), ('CNH Global', 'CHN Global'), ('DAE', 'DAE'),
+		('Daimler Truck', 'Daimler Truck'), ('Deutz', 'Deutz'), ('DFL', 'DFL'), ('FCA', 'FCA'),
+		('Ford', 'Ford'), ('Foton', 'Foton'), ('GAC', 'GAC'), ('GM', 'GM'), ('HKMC', 'HKMC'),
+		('HMC', 'HMC'), ('JAC', 'JAC'), ('JLR', 'JLR'),	('JMC', 'JMC'), ('Liebherr', 'Liebherr'),
+		('MAN', 'MAN'), ('Maruti', 'Maruti'), ('Mitsubishi', 'Mitsubishi'),
+		('NAVECO', 'NAVECO'), ('Nissan', 'Nissan'),	('Renault', 'Renault'), ('Subaru', 'Subaru'),
+		('VCC', 'VCC'), ('Volvo', 'Volvo'), ('Yuchai', 'Yuchai')])
 	market_segment = SelectField("Market Segment",
 		choices=[(' ', ' '), ('Passenger', 'Passenger'), ('Commercial', 'Commercial')])
 	market = SelectField("Region",
@@ -83,6 +87,7 @@ class ModelForm(Form):
 		choices=[('5', '5'),('10', '10')])
 	pred_model = SelectField("Prediction Model",
 		choices=[])
+
 
 class TestingForm(Form):
 	model_type = SelectField('Model Type',
@@ -152,6 +157,14 @@ def add():
 		if success == "SUCCESS":
 			return render_template('added.html', **locals())
 
+@app.route("/remove", methods=['GET', 'POST'])
+def remove():
+	if request.method == 'GET':	
+		return render_template('remove.html', **locals())
+
+	if request.method == 'POST':
+		return render_template('removed.html', **locals())
+
 @app.route("/model", methods=['GET', 'POST'])
 def model():
 	form = ModelForm(request.form)
@@ -167,6 +180,8 @@ def model():
 
 		for attr in parameters:
 			program[attr] = input_form.get(attr, '')
+
+		program['module'] = "No"
 
 		'''
 		s = input_form.get('sim_model', '')

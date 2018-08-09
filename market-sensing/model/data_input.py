@@ -12,6 +12,7 @@ class Program:
 # clean values for comparison
 def clean(value):
 	value = value.lower()
+	value = value.rstrip()
 
 	if value == "" or value == " ":
 		value = None
@@ -38,10 +39,9 @@ def parse_data(input_file):
 
 		# turn dictionary into object
 		program = Program(item_dict)
-
-		# only use it if 'use' is 'yes'
-		if program.data['use'] == "yes":
-			data.append(program)
+		
+		# add data to data to use
+		data.append(program)
 
 	return data
 
@@ -65,6 +65,7 @@ def int_encode(data):
 	return data, encoders
 
 def encode_quote(item, encoders):
+	print(encoders['customer'])
 	for attr in features_used:
 		if attr not in numerical:
 			item.data[attr] = encoders[attr].index(item.data[attr])

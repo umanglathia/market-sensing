@@ -38,7 +38,7 @@ def get_comparators(y, y_ensemble):
 
 	return comparators
 
-def c_interval(values, mean, alpha = 0.95):
+def c_interval(values, mean, alpha = 0.80):
 	p = (1.0 - alpha)/2.0
 	z = st.norm.ppf(1 - p)
 	sigma = np.std(values)
