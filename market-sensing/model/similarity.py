@@ -6,22 +6,35 @@ import model.config as config
 input_file = config.INPUT_FILE
 parameters = config.PARAMETERS
 numerical = config.NUMERICAL
-features_used = config.FEATURES_USED
+features_used = config.SIMILARITY_FEATURES
 
-dropoff = 0.1
-x_zero = 1.0
+dropoff = 0.2
+x_zero = 2.0
 a = dropoff*x_zero/(x_zero - dropoff)
 b = dropoff/(dropoff - x_zero)
+
+SIMILARITY_FEATURES = ['customer', 'market_segment', 'market', 'tube_type', 'num_tubes', '',
+		'', '', '', '', '', '', '', 
+		'', '']
 
 def get_r2():
 	output = {}
 
-	for attr in features_used:
-		if attr in numerical:
-			output[attr] = 1
-
-		else:
-			output[attr] = .75
+	output['customer'] = 0.5
+	output['market_segment'] = 1
+	output['market'] = 0.25
+	output['tube_type'] = 1
+	output['num_tubes'] = 1
+	output['length'] = 1
+	output['width'] = 0.25
+	output['height'] = 0.25
+	output['mass'] = 1
+	output['bypass_valve'] = 0.25
+	output['num_brackets'] = 0.25
+	output['spigot_type'] = 0.25
+	output['num_gasboxes'] = 0.25
+	output['peak_volume'] = 1
+	output['sop_year'] = 0.25
 
 	return output
 

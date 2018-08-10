@@ -179,12 +179,32 @@ def add():
 
 @app.route("/remove", methods=['GET', 'POST'])
 def remove():
-	data = machine_learning.get_data()
-
 	if request.method == 'GET':	
+		data = machine_learning.get_data()
 		return render_template('remove.html', **locals())
 
 	if request.method == 'POST':
+		old_data = machine_learning.get_data()
+	
+		form = request.form
+		includes = ["Yes"]*len(old_data)
+
+		for i in range(len(old_data)):
+			if i != 0:
+				value = form.get(str(i), "off")
+				if value == "on":	
+					includes[i] = "Yes"
+				else:
+					includes[i] = "No"
+
+		machine_learning.update_use(includes)
+		machine_learning.clean()
+		machine_learning.update_data()
+		model_type = 'least_squares'
+		parameter = ''
+		base, error = machine_learning.create(model_type, parameter)	
+		data = machine_learning.get_data()
+		
 		return render_template('removed.html', **locals())
 
 @app.route("/model", methods=['GET', 'POST'])
@@ -203,11 +223,7 @@ def model():
 			program[attr] = input_form.get(attr, '')
 
 		program['module'] = "No"
-
-		s = "euclidean"
-		r = 5
-
-		quote, lower, upper, similar_list = machine_learning.predict(program, s, r)
+		quote, lower, upper, similar_list = machine_learning.predict(program, "euclidean", 10)
 
 		return render_template('results.html', **locals())
 

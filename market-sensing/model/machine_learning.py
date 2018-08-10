@@ -35,7 +35,7 @@ def predict(program_dict, sim_model, num_results):
 	# display correctly
 	similar_list = results.sort_and_display(data, scores, num_results, encoders)
 
-	return 32.22, 27.99, 34.02, similar_list
+	return quote, lower, upper, similar_list
 
 
 def create(model_type, parameter):
@@ -189,6 +189,23 @@ def add_cooler(program):
 	base, error = create(model_type, parameter)
 
 	return "SUCCESS"
+
+def update_use(includes):
+	file = open(input_file, encoding="latin1")
+	lines = file.readlines()
+	data = []
+	data.append(lines[0])
+
+	for idx, line in enumerate(lines[1:]):
+		split = line.split(",")
+		split[1] = includes[idx]
+		s = ","
+		data.append(s.join(split))
+
+	file = open(input_file, 'w')
+	for line in data:
+		file.write(line)
+	file.close()
 
 def clean():
 	save.clean()

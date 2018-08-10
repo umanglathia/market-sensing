@@ -18,3 +18,7 @@ NUMERICAL = ['num_tubes', 'length', 'width', 'height', 'mass', 'num_brackets', '
 FEATURES_USED = ['customer', 'market_segment', 'market', 'module', 'tube_type', 'num_tubes', 'length',
 		'width', 'height', 'mass', 'bypass_valve', 'num_brackets', 'spigot_type', 'num_gasboxes', 
 		'peak_volume', 'sop_year']
+
+SIMILARITY_FEATURES = ['customer', 'market_segment', 'market', 'tube_type', 'num_tubes', 'length',
+		'width', 'height', 'mass', 'bypass_valve', 'num_brackets', 'spigot_type', 'num_gasboxes', 
+		'peak_volume', 'sop_year']

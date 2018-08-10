@@ -1,7 +1,7 @@
 Program Number,Use,Customer,Engine,Market Segment,Market,Module?,Tube Type,Number of Tubes,Tube Length,Tube Width,Tube Height,Mass,Bypass Tube,Number of Brackets,Spigots (Straight or Bent)?,Casted Flange?,Number of Gas Boxes,Peak Annual Volume,Total Volume,SOP Year,BW Quote,Status,Final Price
 566,Yes,BAIC,B20 B23,Passenger,China,No,,9,214,30.8,,1842,No,2,Bent,No,2,6000,20000,2017,95.12,Won,95.12
 10055,Yes,BMW,,Passenger,,No,Hybrid,10,97,36.13,5.2,1387,,5,Bent,No,2,77000,,2022,,On hold,
-1419,Yes,BMW,B57 TÜ2 T1 S1 LP,Passenger,,No,Hybrid,10,97,36.13,5.2,1244,,3,Bent,No,2,35000,,2019,,Lost,37
+1419,Yes,BMW,B57 Tï¿½2 T1 S1 LP,Passenger,,No,Hybrid,10,97,36.13,5.2,1244,,3,Bent,No,2,35000,,2019,,Lost,37
 1543,Yes,CNH Global,F1A Euro 6d,Passenger,,No,Corrugate,45,202,5,5,1260,No,3,Both,No,2,280000,,2019,,Won,
 10027,Yes,CNH Global,,,,No,Corrugate,45,202,5,5,2470,No,0,Bent,Yes,2,35000,,2017,,Won,
 1544,Yes,CNH Global,F1C,Passenger,Europe,Yes,Hybrid,7,245,6.4,35.3,5090,Yes,4,,No,2,9000,41000,2018,302.73,Won,302.73
@@ -41,7 +41,7 @@ Program Number,Use,Customer,Engine,Market Segment,Market,Module?,Tube Type,Numbe
 1613,Yes,HKMC,,Passenger,,No,Hybrid,7,83.3,,35,,No,4,Bent,No,1,230000,,2019,,Won,
 1337,Yes,HKMC,,Passenger,Asia,No,Hybrid,6,113,60,45,1510,,,,,,145836,640651,2020,24.42,Won,24.42
 1613,Yes,HKMC,,Passenger,Asia,No,Hybrid,7,89,53,62,1170,,,,,,221953,986472,2020,25.59,Won,25.59
-1124,Yes,HKMC,,Passenger,Asia,No,Hybrid,9,62.1,,,1300,,,,,,236744,1247308,2019,32.72,Won,32.72
+1124,No,HKMC,,Passenger,Asia,No,Hybrid,9,62.1,,,1300,,,,,,236744,1247308,2019,32.72,Won,32.72
 1422,Yes,HKMC,,Passenger,Asia,No,Hybrid,9,62.1,60.1,,1300,,3,Bent,,,48947,235339,2019,32.72,Won,32.72
 10070,Yes,HKMC,,Passenger,Asia,No,Hybrid,3,150,32,62,1210,,,,,,135000,,,,Won,
 10203,Yes,HKMC,,Passenger,Asia,No,Hybrid,6,90,47,62,1220,,,,,,,,,38,Won,38
@@ -52,11 +52,11 @@ Program Number,Use,Customer,Engine,Market Segment,Market,Module?,Tube Type,Numbe
 ,Yes,JMC,Puma 2.2-MCA ,Passenger,,No,Corrugate,55,221,5,,1292.48,No,0,both,No,1,1800,,2017,,Cancelled,
 256,Yes,Liebherr,Pegasus D964 and D966,Commercial,Low Regulated Emissions Contries,No,Hybrid,8,334,44.73,6.4,8200,No,0,,No,1,233,1152,,,,
 10005,Yes,MAN,D08,Commercial,Latin America,No,Corrugate,25,737,10,0.4,10500,No,0,,No,1,8500,43000,2018,,Won,
-,Yes,MAN,,Commercial,Europe and Latin America,No,Corrugated,25,737,10,0.4,10500,No,0,,No,1,,,2020,,Cancelled,
+,No,MAN,,Commercial,Europe and Latin America,No,Corrugated,25,737,10,0.4,10500,No,0,,No,1,,,2020,,Cancelled,
 ,Yes,Maruti,,Passenger,Asia,No,Corrugate,5,106.6,46.21,,,,,,,,150000,750000,2020,,,
 10061,Yes,Mitsubishi,,Passenger,Asia,No,Hybrid,3,100,26,62,610,,,,,,111818,476967,2020,,Lost,21.43
 ,Yes,Mitsubishi,,Passenger,Asia,No,Hybrid,8,,,,1038,,,,,,147000,577000,2012,31,Active,31
-,Yes,Mitsubishi,,Passenger,Asia,No,Corrugate,24,,,,,,,,,,,,,33,Active,33
+,No,Mitsubishi,,Passenger,Asia,No,Corrugate,24,,,,,,,,,,,,,33,Active,33
 1022,Yes,NAVECO,F1C,Passenger,,Yes,Shaped,36,227.15,,,3984.36,No,1,Bent,No,2,110000,,2016,147,Won,147
 1198,Yes,Nissan,BR06,Passenger,,No,Hybrid,5,74,3.8,52.49,,No,2,Bent,No,2,1600,,2018,,Won,
 626,Yes,Nissan,TR2K3,Passenger,,No,Hybrid,9,140.66,46.16,3.8,1483,No,2,Bent,No,2,400000,,2017,40.2,Won,40.2
