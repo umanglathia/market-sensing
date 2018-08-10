@@ -4,24 +4,25 @@
 	<div class="jumbotron jumbtron-fluid p-2 bg-dark text-white">
 		<h1 class="display-4"> Estimated Market Value: ${{ "%.2f" | format(quote) }} </h1>
 		<h1 class="display-4"> 80% Interval: (${{ "%.2f" | format(lower) }}, ${{ "%.2f" | format(upper) }})
+
 	</div>
 	<div>
 		{% for similar, score in similar_list %}
 		<div class="card mb-4">
 			<div class="card-header">
-				<h4 class="card-title"> Program Number: {{ similar.display['program_number'] }} </h4>
+				<h4 class="card-title"> {{similar.display['customer']}} {{similar.display['engine']}} (Program #{{ "%05d"| format(similar.display['program_number']|int) }})</h4>
 				Similarity Score: {{ "%.2f" | format(score) }}
 			</div>
 			<div class="card-body text-left">
 				<div class="row">
 					<div class="col row">
 						<div class="col-sm-7">
-							<span class="card-text"> # of Tubes: </span>
+							<span class="card-text"> Market Segment: </span>
 						</div>
-						<div class="text-center col-sm-5">
-							<span class=""> {{ similar.display['num_tubes'] }} </span>
-						</div>
-					</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{similar.display['market_segment']}}</span>
+						</div>	
+					</div>	
 					<div class="col row">
 						<div class="col-sm-7">
 							<span class="card-text"> Type of Tubes: </span>
@@ -32,6 +33,24 @@
 					</div>
 					<div class="col row">
 						<div class="col-sm-7">
+							<span class="card-text"> # of Tubes: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ similar.display['num_tubes']}} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Bypass Valve: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ similar.display['bypass_valve'] }} </span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col row">
+						<div class="col-sm-7">
 							<span class="card-text"> Market: </span>
 						</div>
 						<div class="text-center col-sm-5"> 
@@ -40,14 +59,12 @@
 					</div>
 					<div class="col row">
 						<div class="col-sm-7">
-							<span class="card-text"> SOP Year: </span>
+							<span class="card-text"> Mass: </span>
 						</div>
 						<div class="text-center col-sm-5"> 
-							<span> {{ similar.display['sop_year'] }} </span>
+							<span> {{ similar.display['mass'] }} </span>
 						</div>
-					</div>
-				</div>
-				<div class="row">
+					</div>		
 					<div class="col row">
 						<div class="col-sm-7">
 							<span class="card-text"> Length: </span>
@@ -58,10 +75,62 @@
 					</div>
 					<div class="col row">
 						<div class="col-sm-7">
+							<span class="card-text"> # of Brackets: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ similar.display['brackets'] }} </span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Module: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ similar.display['module'] }} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Peak: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ "{:,}".format(similar.display['peak_volume']|int) }} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
 							<span class="card-text"> Width: </span>
 						</div>
 						<div class="text-center col-sm-5"> 
 							<span> {{ similar.display['width'] }} </span>
+						</div>
+					</div>		
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Spigots: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ similar.display['spigots']}} </span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> SOP Year: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ similar.display['sop_year'] }} </span>
+						</div>
+					</div>		
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Lifetime: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ "{:,}".format(similar.display['lifetime_volume']|int) }}</span>
 						</div>
 					</div>
 					<div class="col row">
@@ -74,96 +143,32 @@
 					</div>
 					<div class="col row">
 						<div class="col-sm-7">
-							<span class="card-text"> Mass: </span>
+							<span class="card-text"> Casted Flange: </span>
 						</div>
 						<div class="text-center col-sm-5"> 
-							<span> {{ similar.display['mass'] }} </span>
+							<span> {{ similar.display['casted_flange']}} </span>
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col row">
-						<div class="col-sm-7">
-							<span class="card-text"> Bypass Valve: </span>
-						</div>
-						<div class="text-center col-sm-5"> 
-							<span> {{ similar.display['bypass_valve'] }} </span>
-						</div>
-					</div>
-					<div class="col row">
-						<div class="col-sm-7">
-							<span class="card-text"> # of Brackets: </span>
-						</div>
-						<div class="text-center col-sm-5"> 
-							<span> {{ similar.display['brackets'] }} </span>
-						</div>
-					</div>
-					<div class="col row">
-						<div class="col-sm-7">
-							<span class="card-text"> Spigots: </span>
-						</div>
-						<div class="text-center col-sm-5"> 
-							<span> {{ similar.display['spigots']}} </span>
-						</div>
-					</div>
-					<div class="col row">
-						<div class="col-sm-7">
-							<span class="card-text"> # of Gas Boxes: </span>
-						</div>
-						<div class="text-center col-sm-5"> 
-							<span> {{similar.display['num_gasboxes']}}</span>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col row">
-						<div class="col-sm-7">
-							<span class="card-text"> Peak: </span>
-						</div>
-						<div class="text-center col-sm-5"> 
-							<span> {{ "{:,}".format(similar.display['peak_volume']|int) }} </span>
-						</div>
-					</div>
-					<div class="col row">
-						<div class="col-sm-7">
-							<span class="card-text"> Lifetime: </span>
-						</div>
-						<div class="text-center col-sm-5"> 
-							<span> {{ "{:,}".format(similar.display['lifetime_volume']|int) }}</span>
-						</div>
-					</div>
-					<div class="col row">
-						<div class="col-sm-7">
-							<span class="card-text"> Customer: </span>
-						</div>
-						<div class="text-center col-sm-5"> 
-							<span> {{ similar.display['customer']}} </span>
-						</div>
-					</div>
-					<div class="col row">
-						<div class="col-sm-7">
-							<span class="card-text"> Market Segment: </span>
-						</div>
-						<div class="text-center col-sm-5"> 
-							<span> {{similar.display['market_segment']}}</span>
-						</div>	
-					</div>				
+					</div>			
 				</div>
 			</div>
 			<div class="card-footer m-0 p-2">
 				<div class="row">
 					<div class="col">
+						<b>
 						BorgWarner Quote: ${{ "%.2f" | format(similar.display['bw_quote']|float) }}
+						</b>
 					</div>
 					<div class="col
 						{% if similar.display['status'] == 'Won' %} bg-success {% endif %}
 						{% if similar.display['status'] == 'Lost' %} bg-danger {% endif %}
 						{% if similar.display['status'] == 'Cancelled' %} bg-warning {% endif %}
 						{% if similar.display['status'] == 'Active' %} bg-primary {% endif %}">
-						Status: {{ similar.display['status'] }}
+						<b> {{ similar.display['status'] }} </b>
 					</div>
 					<div class="col">
-						Final Price: ${{ "%.2f" | format(similar.display['final_price']|float) }}
+						<b>
+							Winning Price: ${{ "%.2f" | format(similar.display['final_price']|float) }}
+						</b>
 					</div>
 				</div>
 			</div>

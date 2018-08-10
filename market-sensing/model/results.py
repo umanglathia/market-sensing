@@ -21,13 +21,12 @@ def get_quote(sample, clfs, decision_tree):
 	return pred, lower, upper
 
 def format(item, encoders):
-	item.display = {}
+
 	for attr in data_input.parameters:
 		if attr in encoders:
 			item.data[attr] = encoders[attr][item.data[attr]]
 		if item.data[attr] == None:
 			item.data[attr] = ""
-
 		if item.display[attr] != "":
 			if attr in ['length', 'width', 'height']:
 				item.display[attr] += "mm"
