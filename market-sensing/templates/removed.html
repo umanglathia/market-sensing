@@ -1,0 +1,185 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container text-center">
+	<form action="/remove" method="post">
+	<div>
+	<div class="form-row form-group mt-2">
+		<button type="submit" class="btn btn-success btn-block"> Save </button>
+	</div>
+	{% for program in data %}
+		<div>
+			<div class="card-header mt-2">
+				<h4 class="card-title"> {{program.display['customer']}} {{program.display['engine']}} (Program #{{ "%05d"| format(program.display['program_number']|int) }})</h4>
+			</div>
+			<div class="card-body text-left">
+				<div class="row">
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Market Segment: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{program.display['market_segment']}}</span>
+						</div>	
+					</div>	
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Type of Tubes: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['tube_types'] }} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> # of Tubes: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['num_tubes']}} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Bypass Valve: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['bypass_valve'] }} </span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Market: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['market'] }} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Mass: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['mass'] }} </span>
+						</div>
+					</div>		
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Length: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['length'] }} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> # of Brackets: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['brackets'] }} </span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Module: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['module'] }} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Peak: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ "{:,}".format(program.display['peak_volume']|int) }} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Width: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['width'] }} </span>
+						</div>
+					</div>		
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Spigots: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['spigots']}} </span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> SOP Year: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['sop_year'] }} </span>
+						</div>
+					</div>		
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Lifetime: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ "{:,}".format(program.display['lifetime_volume']|int) }}</span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Height: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['height']}} </span>
+						</div>
+					</div>
+					<div class="col row">
+						<div class="col-sm-7">
+							<span class="card-text"> Casted Flange: </span>
+						</div>
+						<div class="text-center col-sm-5"> 
+							<span> {{ program.display['casted_flange']}} </span>
+						</div>
+					</div>			
+				</div>
+			</div>
+			<div class="card-footer m-0 p-2">
+				<div class="row">
+					<div class="col">
+						<b>
+						BorgWarner Quote: ${{ "%.2f" | format(program.display['bw_quote']|float) }}
+						</b>
+					</div>
+					<div class="col
+						{% if program.display['status'] == 'Won' %} bg-success {% endif %}
+						{% if program.display['status'] == 'Lost' %} bg-danger {% endif %}
+						{% if program.display['status'] == 'Cancelled' %} bg-warning {% endif %}
+						{% if program.display['status'] == 'Active' %} bg-primary {% endif %}">
+						<b> {{ program.display['status'] }} </b>
+					</div>
+					<div class="col">
+						<b>
+							Winning Price: ${{ "%.2f" | format(program.display['final_price']|float) }}
+						</b>
+					</div>
+				</div>
+				<div class="form-check">
+				    <input type="checkbox" class="form-check-input"
+				    	id = "{{ program.data['id'] }}"
+				    	{% if program.data['use'] == 'yes' %} checked="checked" {% endif %}
+				    	disabled>
+				    <label class="form-check-label" for="included">Included</label>
+			  	</div>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+</div>
+{% block results %}{% endblock %}
+{% endblock %}

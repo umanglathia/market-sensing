@@ -2,7 +2,9 @@ import math
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
-from model.config import *
+import model.config as config
+
+features_used = config.FEATURES_USED
 
 # SPLITS THE DATA INTO TRAINING AND TESTING DATA
 def split_data(data):

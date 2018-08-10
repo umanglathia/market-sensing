@@ -1,9 +1,13 @@
-from model.config import *
 from collections import Counter
 import math
 import model.data_input as data_input
+import model.config as config
 
-numerical = data_input.numerical
+input_file = config.INPUT_FILE
+parameters = config.PARAMETERS
+numerical = config.NUMERICAL
+features_used = config.FEATURES_USED
+
 dropoff = 0.1
 x_zero = 1.0
 a = dropoff*x_zero/(x_zero - dropoff)

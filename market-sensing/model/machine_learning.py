@@ -5,10 +5,12 @@ import model.results as results, model.save as save, model.similarity as similar
 from random import shuffle
 import numpy as np
 from model.ml_models import *
-from model.config import *
+import model.config as config
 
-features_used = data_input.features_used
-INPUT_FILE = "model/test_data.csv"
+input_file = config.INPUT_FILE
+parameters = config.PARAMETERS
+numerical = config.NUMERICAL
+features_used = config.FEATURES_USED
 
 # number of bootstrap models
 num_iterations = 100
@@ -177,10 +179,14 @@ def add_cooler(program):
 	csv_line = data_input.create_csv_item(program)
 
 	# ADD COOLER TO EXCEL
-	data_input.add_to_csv(INPUT_FILE, csv_line)
+	data_input.add_to_csv(input_file, csv_line)
 
 	# UPDATE DATA
+	clean()
 	update_data()
+	model_type = 'least_squares'
+	parameter = ''
+	base, error = create(model_type, parameter)
 
 	return "SUCCESS"
 

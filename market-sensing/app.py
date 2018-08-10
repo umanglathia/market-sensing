@@ -171,18 +171,17 @@ def add():
 		for attr in parameters:
 			program[attr] = input_form.get(attr, '')
 
+		program['use'] = "Yes"
 		success = machine_learning.add_cooler(program)
 
 		if success == "SUCCESS":
-			model_type = 'least_squares'
-			parameter = ''
-			base, error = machine_learning.create(model_type, parameter)
 			return render_template('added.html', **locals())
 
 @app.route("/remove", methods=['GET', 'POST'])
 def remove():
+	data = machine_learning.get_data()
+
 	if request.method == 'GET':	
-		data = machine_learning.get_data()
 		return render_template('remove.html', **locals())
 
 	if request.method == 'POST':

@@ -1,4 +1,8 @@
-from model.config import *
+import model.config as config
+
+parameters = config.PARAMETERS
+numerical = config.NUMERICAL
+features_used = config.FEATURES_USED
 
 # Program object, used for input
 class Program:
