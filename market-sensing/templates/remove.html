@@ -1,10 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="container text-center">
+	<form action="/remove" method="post">
 	<div>
-		{% for program in data %}
-		<div class="card mb-4">
-			<div class="card-header">
+	<div class="form-row form-group mt-2">
+		<button type="submit" class="btn btn-warning btn-block"> Save </button>
+	</div>
+	{% for program in data %}
+		<div>
+			<div class="card-header mt-2">
 				<h4 class="card-title"> {{program.display['customer']}} {{program.display['engine']}} (Program #{{ "%05d"| format(program.display['program_number']|int) }})</h4>
 			</div>
 			<div class="card-body text-left">
@@ -165,9 +169,15 @@
 						</b>
 					</div>
 				</div>
+				<div class="form-check">
+				    <input type="checkbox" class="form-check-input"
+				    	id = "{{ program.data['id'] }}"
+				    	{% if program.data['use'] == 'yes' %} checked="checked" {% endif %} >
+				    <label class="form-check-label" for="included">Included</label>
+			  	</div>
 			</div>
 		</div>
-		{% endfor %}
+	{% endfor %}
 	</div>
 </div>
 {% block results %}{% endblock %}

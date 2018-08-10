@@ -63,7 +63,8 @@ def get_scores(cooler, data, model):
 	r2 = get_r2()
 
 	for i, item in enumerate(data):
-		scores[i] = globals()[model](cooler, item, averages, stdevs, r2)
+		if item.data['use'] == 'yes':
+			scores[i] = globals()[model](cooler, item, averages, stdevs, r2)
 
 	return scores
 

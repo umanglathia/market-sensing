@@ -1,0 +1,22 @@
+Program Number,Use,Customer,Engine,Market Segment,Market,Module?,Type of Tube,Number of Tubes,Length,Width,Height,Mass,Bypass Valve,Number of Brackets,"Spigots, Straight or Bend?",Casted Flange?,Number of Gas Boxes,Peak Volume,Total Volume,SOP Year,BW Quote,Status,Final Price
+613,Yes,Ford,,Passenger,North America,No,,,,,,,No,,,,,290700,769600,2017,25.11,Lost,20
+,Yes,Ford,,,North America,No,Hybrid,3,93.67,52,5.2,,,0,Straight,,2,1945800,1945800,,18.11,Lost,16.95
+,Yes,Ford,,,North America,No,Hybrid,5,114,52,5,,,0,Straight,,1,1135000,1135000,,,Lost,18.13
+651,Yes,Ford,,,North America,No,Hybrid,6,120,55,5,1029.26,,3,Bent,,2,194000,905000,2018,31.28,Won,31.28
+,Yes,FCA,,,North America,No,Hybrid,6,147.33,35,5,1825,,1,Straight,,2,2255900,2255900,,,Cancelled,30.48
+707,Yes,VCC,,,EU,No,Hybrid,,,,,,,,,,,302912,1532554,2018,25.04,Won,25.04
+709,Yes,VCC,,,EU,No,Hybrid,7,114,52.15,5,,,,Bend,,1,70357,385480,2019,26.76,Won,26.76
+,No,Ford,,,North America,No,Hybrid,7,122,50,60,,,,,,,291660,891980,2020,,Won,
+1120,Yes,Nissan,,,Asia,No,Hybrid,7,122,50,63,1244,,,,,,435648,1714773,2020,,Lost,21
+1198,Yes,Nissan,,,Asia,No,Hybrid,,,,,,,,,,,194481,920816,2019,17.6,Won,17.6
+1337,Yes,HKMC,,,Asia,No,Hybrid,6,113,60,45,1510,,,,,,145836,640651,2020,24.42,Won,24.42
+1613,Yes,HKMC,,,Asia,No,Hybrid,7,89,53,62,1170,,,,,,221953,986472,2020,25.59,Won,25.59
+1124,Yes,HKMC,,,Asia,No,Hybrid,9,62.1,,,1300,,,,,,236744,1247308,2019,32.72,Won,32.72
+1422,Yes,HKMC,,,Asia,No,Hybrid,9,62.1,60.1,,1300,,3,Bent,,,48947,235339,2019,32.72,Won,32.72
+10061,Yes,Mitsubishi,,,Asia,No,Hybrid,3,100,26,62,610,,,,,,111818,476967,2020,,Lost,21.43
+,No,Maruti,,,Asia,No,Corrugate,5,106.6,46.21,,,,,,,,150000,750000,2020,,,
+10070,No,HMC,,,Asia,No,Hybrid,3,150,32,62,1210,,,,,,135000,0,,,Won,
+10203,Yes,HMC,,,Asia,No,Hybrid,6,90,47,62,1220,,,,,,0,0,,38,Won,38
+,Yes,Mitsubishi,,,Asia,No,Hybrid,8,,,,1038,,,,,,147000,577000,2012,31,Active,31
+,Yes,Mitsubishi,,,Asia,No,Corrugate,24,,,,,,,,,,,,,33,Active,33
+,No,GM,,,North America,No,Hybrid,9,119,63.12,42,2200,,3,,,2,,,,,Active,

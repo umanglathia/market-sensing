@@ -148,15 +148,15 @@ def test(action):
 		base, error = machine_learning.create(model_type, parameter)
 		return render_template('created.html', **locals())
 
-@app.route("/update", methods=['GET']):
+@app.route("/update", methods=['GET'])
 def update():
 	machine_learning.clean()
 	machine_learning.update_data()
 	model_type = 'least_squares'
 	parameter = ''
 	base, error = machine_learning.create(model_type, parameter)
-	return render_template('update_data.html', **locals())
-			
+	return render_template('updated.html', **locals())
+
 @app.route("/add", methods=['GET', 'POST'])
 def add():
 	form = ModelForm(request.form)

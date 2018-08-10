@@ -29,7 +29,7 @@ def parse_data(input_file):
 	data = []
 
 	# for each cooler in the file
-	for line in lines[1:]:
+	for idx, line in enumerate(lines[1:]):
 
 		# create a Program object for it
 		item_dict = {}
@@ -41,6 +41,7 @@ def parse_data(input_file):
 
 		# turn dictionary into object
 		program = Program(item_dict)
+		program.data['id'] = idx
 		
 		# add data to data to use
 		data.append(program)

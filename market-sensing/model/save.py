@@ -24,13 +24,11 @@ def get_version(prefix, delete=False):
 		version += 1
 
 def update(data_type, data):
-	print(data_type)
 	prefix = get_prefix(data_type)
 	filename = prefix + str(get_version(prefix)) + ".pk"
 	with open(filename, "wb") as file:
 		pickle.dump(data, file)
 
-	print(filename)
 	return
 
 def load(data_type, version=-1):

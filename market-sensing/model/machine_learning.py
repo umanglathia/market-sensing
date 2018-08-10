@@ -41,9 +41,10 @@ def create(model_type, parameter):
 	data, encoders, averages = save.load("data")
 
 	# only use those value that have a final price
-	ml_data = [item for item in data if item.data['final_price'] != None]
-	for item in ml_data:
-		print(item.data)
+	ml_data = []
+	for item in data:
+		if item.data['final_price'] != None and item.data['use'] == 'yes':
+			ml_data.append(item)
 
 	# normalize values
 	normalized = [(data_input.replace_blanks(item, averages)) for item in ml_data]
