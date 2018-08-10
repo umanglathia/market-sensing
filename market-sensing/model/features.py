@@ -9,6 +9,7 @@ def split_data(data):
 	length = math.floor(len(data)*7.0/10.0)
 	return data[:length], data[length+1:]
 
+# CONVERTS NUMERICAL VALUES INTO FEATURES TO BE USED BY THE ML MODEL
 def numerical(x, attr):
 	return float(x.data[attr])
 

@@ -137,6 +137,9 @@ def test(action):
 		if action == "data":
 			machine_learning.clean()
 			machine_learning.update_data()
+			model_type = 'least_squares'
+			parameter = ''
+			base, error = machine_learning.create(model_type, parameter)
 			return render_template('update_data.html', **locals())
 
 	if request.method == 'POST' and action == 'create':
@@ -145,6 +148,15 @@ def test(action):
 		base, error = machine_learning.create(model_type, parameter)
 		return render_template('created.html', **locals())
 
+@app.route("/update", methods=['GET']):
+def update():
+	machine_learning.clean()
+	machine_learning.update_data()
+	model_type = 'least_squares'
+	parameter = ''
+	base, error = machine_learning.create(model_type, parameter)
+	return render_template('update_data.html', **locals())
+			
 @app.route("/add", methods=['GET', 'POST'])
 def add():
 	form = ModelForm(request.form)
@@ -162,6 +174,9 @@ def add():
 		success = machine_learning.add_cooler(program)
 
 		if success == "SUCCESS":
+			model_type = 'least_squares'
+			parameter = ''
+			base, error = machine_learning.create(model_type, parameter)
 			return render_template('added.html', **locals())
 
 @app.route("/remove", methods=['GET', 'POST'])
@@ -198,4 +213,4 @@ def model():
 		return render_template('results.html', **locals())
 
 if __name__ == "__main__":
-	app.run()
+	app.run(host='0.0.0.0')

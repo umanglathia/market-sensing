@@ -16,6 +16,9 @@ Before this application will work, you will need to use the command 'pip install
 	 - sklearn
 	 - scipy
 
+DEPLOYING:
+run 'python app.py' to use the native development server (note: this works for low volume applications but is not designed for high volume applications. If these are necessary, use a WSGI server, information online).
+
 FILES:
 app.py - The main router for this application and the one that provides the interface layer. Use the command 'python app.py' to begin running this application once it is downloaded and the requirements are fulfilled
 

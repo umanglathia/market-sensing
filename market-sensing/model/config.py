@@ -1,5 +1,5 @@
 # location of the file used for the training data for the machine learning model
-input_file = "model/training_data.csv"
+input_file = "model/data/training_data.csv"
 
 # this should match up one-to-one with the csv used for the training data. if an feature is 
 # added or removed in the excel file, it needs to be added or removed here

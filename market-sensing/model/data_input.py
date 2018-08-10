@@ -67,7 +67,6 @@ def int_encode(data):
 	return data, encoders
 
 def encode_quote(item, encoders):
-	print(encoders['customer'])
 	for attr in features_used:
 		if attr not in numerical:
 			item.data[attr] = encoders[attr].index(item.data[attr])
