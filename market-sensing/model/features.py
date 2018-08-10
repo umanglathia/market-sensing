@@ -4,8 +4,9 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 from model.config import *
 
+# SPLITS THE DATA INTO TRAINING AND TESTING DATA
 def split_data(data):
-	length = math.floor(len(data)*9.0/10.0)
+	length = math.floor(len(data)*7.0/10.0)
 	return data[:length], data[length+1:]
 
 def numerical(x, attr):
